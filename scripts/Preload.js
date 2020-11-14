@@ -35,6 +35,7 @@ steamGame.Preload.prototype = {
             this.load.atlasJSONHash('heart', 'sprites/game/heart.png', 'sprites/game/heart.json');
         this.load.atlasJSONHash('steamMeter', 'sprites/game/steamMeter.png', 'sprites/game/steamMeter.json');
             this.load.atlasJSONHash('elecMeter', 'sprites/game/ElectricMeter.png', 'sprites/game/ElectricMeter.json');
+        this.load.atlasJSONHash('ticker', 'sprites/game/ticker.png', 'sprites/game/ticker.json');
     },
     create: function() {
         this.state.start('MainMenu');

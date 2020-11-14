@@ -73,6 +73,8 @@ steamGame.Game.prototype = {
         this.player.maxEnergy = this.playerData.maxEnergy || 100;
         this.player.currentEnergy = this.playerData.currentEnergy || this.player.maxEnergy;
         this.player.currency = this.playerData.currency || 0;
+        this.player.currencyData = {};
+        this.player.newC = this.player.currency;
 
         this.player.timer = 75;
         this.player.newSLevel = 0;
@@ -93,6 +95,19 @@ steamGame.Game.prototype = {
            this['heart' + i.toString()].fixedToCamera = true;
            this['heart' + i.toString()].scale.setTo (this.scalingFactor*0.65,this.scalingFactor*0.65)
            this.highestHeart = i;
+        }
+
+        this.ticker = {};
+        for (i = 0; i < 4; i++) {
+            if (this.ticker['plate' + i.toString()] == null) {
+                this.ticker.posx = this.game.camera.width * 0.8;
+            } else {
+                this.ticker.posx = this.ticker['plate' + i.toString()].x + this.ticker['plate' + i.toString()].width
+            }
+            this.ticker['plate' + (i + 1).toString()] = this.game.add.sprite(this.ticker.posx, 10, 'ticker');
+            this.ticker['plate' + (i + 1).toString()].fixedToCamera = true;
+            this.ticker['plate' + (i + 1).toString()].scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
+            this.ticker['plate' + (i + 1).toString()].animations.add('flip', [10, 11, 12, 13, 14, 15]);
         }
 
         //steam meter declaration
@@ -133,7 +148,14 @@ steamGame.Game.prototype = {
             this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Currency: ' + this.player.currency, this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
+            
+            if (this.player.currency < 9990) {
+                this.player.newC += 10;
+            } else if (this.player.currency >= 9990 && this.player.currency < 9999){
+                this.player.newC += 1;
+            }
         }
 
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt);
@@ -236,6 +258,49 @@ steamGame.Game.prototype = {
                 this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
             }
 
+            /***************************************** Currency tracker **************************************************************************************************/
+            if (this.player.newC != this.player.currency) {
+                this.player.currency = this.player.newC;
+                //this.changeTicker(this.player.currency, this.ticker, this.player.currencyData);
+                this.player.currencyData.digit1 = Math.floor(this.player.currency / 1000);
+                this.player.currencyData.digit2 = Math.floor(this.player.currency / 100) - (this.player.currencyData.digit1 * 10);
+                this.player.currencyData.digit3 = Math.floor(this.player.currency / 10) - (this.player.currencyData.digit1 * 100) - (this.player.currencyData.digit2 * 10);
+                this.player.currencyData.digit4 = this.player.currency - (this.player.currencyData.digit1 * 1000) - (this.player.currencyData.digit2 * 100) - (this.player.currencyData.digit3 * 10);
+                this.ticker.plate1.animations.play('flip', 12, false);
+                this.ticker.plate2.animations.play('flip', 12, false);
+                this.ticker.plate3.animations.play('flip', 12, false);
+                this.ticker.plate4.animations.play('flip', 12, false);
+            }
+
+            if(this.ticker.plate1.animations.isPlaying != true) {
+                if (this.ticker.plate1.frame >= 15 && this.ticker.plate1.frame != this.player.currencyData.digit1) {
+                    this.ticker.plate1.frame = this.player.currencyData.digit1;
+                } else if(this.ticker.plate1.frame == 15) {
+                    this.ticker.plate1.frame = this.player.currencyData.digit1;
+                }
+            }
+            if(this.ticker.plate2.animations.isPlaying != true) {
+                if (this.ticker.plate2.frame >= 15 && this.ticker.plate2.frame != this.player.currencyData.digit2) {
+                    this.ticker.plate2.frame = this.player.currencyData.digit2;
+                } else if(this.ticker.plate2.frame == 15) {
+                    this.ticker.plate2.frame = this.player.currencyData.digit2;
+                }
+            }
+            if(this.ticker.plate3.animations.isPlaying != true) {
+                if (this.ticker.plate3.frame >= 15 && this.ticker.plate3.frame != this.player.currencyData.digit3) {
+                    this.ticker.plate3.frame = this.player.currencyData.digit3;
+                } else if(this.ticker.plate3.frame == 15) {
+                    this.ticker.plate3.frame = this.player.currencyData.digit3;
+                }
+            }
+            if(this.ticker.plate4.animations.isPlaying != true) {
+                if (this.ticker.plate4.frame >= 15 && this.ticker.plate4.frame != this.player.currencyData.digit4) {
+                    this.ticker.plate4.frame = this.player.currencyData.digit4;
+                } else if(this.ticker.plate4.frame == 15) {
+                    this.ticker.plate4.frame = this.player.currencyData.digit4;
+                }
+            }
+
 
             /***************************************** Player Movement Handling ******************************************************************************************/
             this.player.body.velocity.x = 0;
@@ -323,5 +388,16 @@ steamGame.Game.prototype = {
                 player.newSLevel = 0;
             }
         }
+    },
+    changeTicker: function(currency, ticker, digits) {
+        digits.digit1 = Math.floor(currency / 1000);
+        digits.digit2 = Math.floor(currency / 100) - (currency.digit1 * 10);
+        digits.digit3 = Math.floor(currency / 10) - (currency.digit1 * 100) - (currency.digit2 * 10);
+        digits.digit4 = currency - (currency.digit1 * 1000) - (currency.digit2 * 100) - (currency.digit3 * 10);
+        ticker.plate1.animations.play('flip', 12, false);
+        
+        /*ticker.plate2.animations.play('flip', 12, false);
+        ticker.plate3.animations.play('flip', 12, false);
+        ticker.plate4.animations.play('flip', 12, false);*/
     }
 };
