@@ -46,22 +46,22 @@ steamGame.Game.prototype = {
         //this.game.world.setBounds(0, 0, this.game.world.width, this.game.world.height);
  
         //player declaration
-        this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'protest');
+        this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'milutin');
         this.player.anchor.setTo(0.5, 0.5);
-        this.player.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.player.animations.add('idleDown', [8, 9, 10, 11, 12], 4, true);
-        this.player.animations.add('idleLeft', [0, 1, 2, 3, 4], 4, true);
-        this.player.animations.add('idleRight', [0, 1, 2, 3, 4], 4, true);
-        this.player.animations.add('idleUp', [16, 17, 18, 19, 20], 4, true);
-        this.player.animations.add('runDown', [13, 14, 15, 14], 4, true);
-        this.player.animations.add('runLeft', [5, 6, 7, 6], 4, true);
-        this.player.animations.add('runUp', [22, 23, 24, 23], 4, true);
-        this.player.animations.add('runRight', [5, 6, 7, 6], 4, true);
+        this.player.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
+        this.player.animations.add('idleDown', [39, 39, 39, 39, 39, 40, 40, 40, 41, 41, 41, 39], 12, true);
+        this.player.animations.add('idleLeft', [42, 42, 42, 42, 42, 43, 43, 43, 44, 44, 44, 42], 12, true);
+        this.player.animations.add('idleRight', [42, 42, 42, 42, 42, 43, 43, 43, 44, 44, 44, 42], 12, true);
+        this.player.animations.add('idleUp', [36, 36, 36, 36, 36, 37, 37, 37, 38, 38, 38, 36], 12, true);
+        this.player.animations.add('runDown', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 12, true);
+        this.player.animations.add('runLeft', [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], 12, true);
+        this.player.animations.add('runUp', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 12, true);
+        this.player.animations.add('runRight', [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], 12, true);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
         this.player.debug = true;
         this.player.speed = (this.game.world.width / 13.66);
-        this.player.body.setSize(12, 22, 10, 6);
+        this.player.body.setSize(12, 22, 10, 10);
         this.player.body.collideWorldBounds = true;
         this.game.camera.follow(this.player, 1);
 
@@ -323,14 +323,14 @@ steamGame.Game.prototype = {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
             if (upKey.isDown || upArrow.isDown) {
-                this.player.body.velocity.y = -this.player.speed;
+                this.player.body.velocity.y = -this.player.speed * 0.9;
             } else if (downKey.isDown || downArrow.isDown) {
-                this.player.body.velocity.y = this.player.speed;
+                this.player.body.velocity.y = this.player.speed * 0.9;
             }
             if (rightKey.isDown || rightArrow.isDown) {
-                this.player.body.velocity.x = this.player.speed;
+                this.player.body.velocity.x = this.player.speed * 1.2;
             } else if (leftKey.isDown || leftArrow.isDown) {
-                this.player.body.velocity.x = -this.player.speed;
+                this.player.body.velocity.x = -this.player.speed * 1.2;
             }
 
             /************************************** Animation Controller for Player movement *****************************************************************************/
@@ -339,14 +339,14 @@ steamGame.Game.prototype = {
             if (this.player.body.velocity.x < 0) {
                 this.animationName = 'runLeft';
                 this.direction = 'left'
-                if (this.player.scale.x > 0) {
+                if (this.player.scale.x < 0) {
                     this.player.scale.x = this.player.scale.x * -1;
                 }
             }
             if (this.player.body.velocity.x > 0) {
                 this.animationName = 'runRight';
                 this.direction = 'right'
-                if (this.player.scale.x < 0) {
+                if (this.player.scale.x > 0) {
                     this.player.scale.x = this.player.scale.x * -1;
                 }
             }
@@ -360,7 +360,7 @@ steamGame.Game.prototype = {
             }
             //change current animation
             if (this.player.animations.name !== this.animationName && this.animationName !== 'stopped') {
-                this.player.animations.play(this.animationName, 4, true);
+                this.player.animations.play(this.animationName, 12, true);
             } else if (this.animationName == 'stopped') {
                 if (this.direction == 'down') {
                     this.player.animations.play('idleDown', 4, true);
