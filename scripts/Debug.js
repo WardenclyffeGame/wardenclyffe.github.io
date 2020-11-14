@@ -78,6 +78,7 @@ steamGame.Game.prototype = {
 
         this.player.timer = 75;
         this.player.newSLevel = 0;
+        this.player.newELevel = 0;
 
         //Heart declaration
         for (i = 0; i < (this.player.maxHP/2); i++) {
@@ -159,7 +160,8 @@ steamGame.Game.prototype = {
         }
 
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt);
-        this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
+        //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
+        this.game.physics.arcade.collide(this.player, this.wall, this.debugElec);
         if (this.menuState == 0) {
             /***************************************** Player HP manager ******************************************************************************************/
             if (this.player.currentHP < this.player.maxHP) {
@@ -256,6 +258,15 @@ steamGame.Game.prototype = {
                 this.steamLevel.y += this.diffSteam * this.scalingFactor * 0.65
             } else {
                 this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+            }
+
+            /***************************************** Player Electricity Handler **********************************************************************************************/
+            if (this.player.currentEnergy < this.player.maxEnergy) {
+                this.diffEnergy = this.player.currentEnergy / this.player.maxEnergy;
+                this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * (0.65 * this.diffEnergy));
+                this.elecLevel.y += this.diffEnergy * this.scalingFactor * 0.65
+            } else {
+                this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
             }
 
             /***************************************** Currency tracker **************************************************************************************************/
@@ -389,15 +400,20 @@ steamGame.Game.prototype = {
             }
         }
     },
-    changeTicker: function(currency, ticker, digits) {
-        digits.digit1 = Math.floor(currency / 1000);
-        digits.digit2 = Math.floor(currency / 100) - (currency.digit1 * 10);
-        digits.digit3 = Math.floor(currency / 10) - (currency.digit1 * 100) - (currency.digit2 * 10);
-        digits.digit4 = currency - (currency.digit1 * 1000) - (currency.digit2 * 100) - (currency.digit3 * 10);
-        ticker.plate1.animations.play('flip', 12, false);
-        
-        /*ticker.plate2.animations.play('flip', 12, false);
-        ticker.plate3.animations.play('flip', 12, false);
-        ticker.plate4.animations.play('flip', 12, false);*/
+    debugElec: function(player, walls) {
+        /*if (player.currentSteam < player.maxSteam) {
+            player.newSLevel += 0.1;
+            if (player.newSLevel >= 1) {
+                player.currentSteam ++;
+                player.newSLevel = 0;
+            }
+        }*/
+        if (player.currentEnergy > 0) {
+            player.newELevel -= 0.1;
+            if (player.newELevel <= -1) {
+                player.currentEnergy --;
+                player.newELevel = 0;
+            }
+        }
     }
 };
