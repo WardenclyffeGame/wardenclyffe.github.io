@@ -6,7 +6,7 @@
 var steamGame = steamGame || {};
 
 //this basically creates our viewing window and defines a max size, then phaser auto scales it
-steamGame.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '');
+steamGame.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '', null, false, false);
 
 //addressing the predefined states from phaser
 //namely boot up, preload, menu, and game
