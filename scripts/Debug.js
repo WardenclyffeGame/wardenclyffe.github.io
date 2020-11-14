@@ -137,6 +137,12 @@ steamGame.Game.prototype = {
         this.elecLevel.anchor.setTo(0, 86/96);
         this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
 
+        //frame declaration
+        this.frame = this.game.add.sprite(this.game.camera.width, 8, 'frame');
+        this.frame.anchor.setTo(1,0);
+        this.frame.fixedToCamera = true;
+        this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
+
         
 
     },
