@@ -125,6 +125,10 @@ steamGame.Game.prototype = {
             this.ticker['plate' + (i + 1).toString()].scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
             this.ticker['plate' + (i + 1).toString()].animations.add('flip', [10, 11, 12, 13, 14, 15]);
         }
+        this.ticker.logo = this.game.add.sprite(this.ticker.plate1.x, this.ticker.plate1.y, 'KronaL');
+        this.ticker.logo.anchor.setTo(1, 0);
+        this.ticker.logo.fixedToCamera = true;
+        this.ticker.logo.scale.setTo(this.scalingFactor / 2, this.scalingFactor / 2);
 
         //steam meter declaration
         this.steamMeter = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) + 5), 'steamMeter');
