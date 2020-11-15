@@ -166,8 +166,8 @@ steamGame.Game.prototype = {
         this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'KronaL');
         this.game.physics.arcade.enable(this.dummy);
         this.dummy.hit = false;
-        this.dummy.maxHP = 10;
-        this.dummy.currentHP = 10;
+        this.dummy.maxHP = 3;
+        this.dummy.currentHP = this.dummy.maxHP;
 
 
 
