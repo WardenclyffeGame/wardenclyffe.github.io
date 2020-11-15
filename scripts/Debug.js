@@ -20,10 +20,13 @@ steamGame.Game.prototype = {
         rightKey = this.game.input.keyboard.addKey(68) //d
         rightArrow = this.game.input.keyboard.addKey(39); // ->
         //other interactivity
-        spaceKey = this.game.input.keyboard.addKey(32); //space for swipe
+        spaceKey = this.game.input.keyboard.addKey(32); //space for swipe and interact
         selectKey = this.game.input.keyboard.addKey(27) //escape
-        startKey = this.game.input.keyboard.addKey(69) // e
-        mapKey = this.game.input.keyboard.addKey(81) // q
+        mapKey = this.game.input.keyboard.addKey(69) // e map
+        abilityKey = this.game.input.keyboard.addKey(81) // q ability
+        abilityScreenKey = this.game.input.keyboard.addKey(9); // tab ability screen
+        dashKey = this.game.input.keyboard.addKey(16); // shift dash
+
         debugKey = this.game.input.keyboard.addKey(48); // 0
 
         //begin scene setup
