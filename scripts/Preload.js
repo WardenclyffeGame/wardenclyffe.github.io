@@ -38,6 +38,7 @@ steamGame.Preload.prototype = {
         this.load.atlasJSONHash('ticker', 'sprites/game/ticker.png', 'sprites/game/ticker.json');
             this.load.image('frame', 'sprites/game/frame.png');
         this.load.atlasJSONHash('milutin', 'sprites/game/milutinSheet.png', 'sprites/game/milutinSheet.json');
+            this.load.image('KronaL', 'sprites/game/kronaLogo.png');
     },
     create: function() {
         this.state.start('MainMenu');

@@ -35,6 +35,7 @@ steamGame.Game.prototype = {
         this.floor.setScale(this.scalingFactor);
         this.wall = this.map.createLayer('wall');
         this.wall.setScale(this.scalingFactor);
+        this.wall.hit = false;
         this.game.physics.arcade.enable(this.wall);
         //this.wall.debug = true;
         this.map.setCollisionBetween(4, 17, true, 'wall');
@@ -157,6 +158,15 @@ steamGame.Game.prototype = {
         this.frame.fixedToCamera = true;
         this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
 
+        //testing object for slashing
+        this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'KronaL');
+        this.game.physics.arcade.enable(this.dummy);
+        this.dummy.hit = false;
+        this.dummy.maxHP = 10;
+        this.dummy.currentHP = 10;
+
+
+
         
 
     },
@@ -166,7 +176,8 @@ steamGame.Game.prototype = {
         if (debugKey.isDown) {
             this.game.debug.text('True health: ' + this.player.currentHP, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            //this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
@@ -175,6 +186,7 @@ steamGame.Game.prototype = {
 
             this.game.debug.body(this.player);
             this.game.debug.body(this.player.swipe);
+            this.game.debug.body(this.dummy);
             
             if (this.player.currency < 9990) {
                 this.player.newC += 10;
@@ -185,7 +197,8 @@ steamGame.Game.prototype = {
 
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
-        this.game.physics.arcade.collide(this.player, this.wall, this.debugElec);
+        this.game.physics.arcade.collide(this.player, this.wall, this.debugElec, null, this);
+        this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
         if (this.menuState == 0) {
             /***************************************** Player HP manager ******************************************************************************************/
             if (this.player.currentHP < this.player.maxHP) {
@@ -358,7 +371,7 @@ steamGame.Game.prototype = {
                     this.player.swipe.body.velocity.x = -this.player.speed * 1.2;
                 }
             }
-            if(spaceKey.isDown && this.player.state == 'walk') {
+            if(spaceKey.duration < 1 && spaceKey.isDown && this.player.state == 'walk') {
                 if(this.direction == 'up') {
                     this.player.state = 'attack';
                     this.animationName = 'swipeUp';
@@ -372,9 +385,12 @@ steamGame.Game.prototype = {
                     this.player.state = 'attack';
                     this.animationName = 'swipeSide';
                 }
-                this.game.time.events.add(Phaser.Timer.SECOND * 0.350, function(){
+                this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
                     this.player.state = 'walk';
                     this.animationName = "stopped";
+                }, this);
+                this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){
+                    spaceKey.duration = 0;
                 }, this);
             }
 
@@ -482,6 +498,13 @@ steamGame.Game.prototype = {
                 player.newSLevel = 0;
             }
         }
+        if (player.currentSteam > 0 && walls == 'attacked') {
+            player.newSLevel -= 0.1;
+            if (player.newSLevel <= -1) {
+                player.currentSteam --;
+                player.newSLevel = 0;
+            }
+        }
     },
     debugElec: function(player, walls) {
         /*if (player.currentSteam < player.maxSteam) {
@@ -496,6 +519,23 @@ steamGame.Game.prototype = {
             if (player.newELevel <= -1) {
                 player.currentEnergy --;
                 player.newELevel = 0;
+            }
+        }
+    },
+    debugSwipe: function(){
+        if(this.player.state == 'attack') {
+            if(this.dummy.hit == false && this.dummy.currentHP > 1) {
+                this.dummy.hit = true;
+
+                this.dummy.currentHP -= 1;
+
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){
+                    this.dummy.hit = false;
+                }, this);
+            }
+            if(this.dummy.hit == false && this.dummy.currentHP == 1) {
+                this.dummy.currentHP = 0;
+                this.dummy.destroy();
             }
         }
     }
