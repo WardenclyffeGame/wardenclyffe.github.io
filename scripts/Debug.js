@@ -48,6 +48,7 @@ steamGame.Game.prototype = {
         //player declaration
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'milutin');
         this.player.anchor.setTo(0.5, 0.5);
+        this.player.swipe = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY);
         this.player.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
         this.player.animations.add('idleDown', [39, 39, 39, 39, 39, 40, 40, 40, 41, 41, 41, 39], 12, true);
         this.player.animations.add('idleLeft', [42, 42, 42, 42, 42, 43, 43, 43, 44, 44, 44, 42], 12, true);
@@ -59,11 +60,19 @@ steamGame.Game.prototype = {
         this.player.animations.add('runRight', [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], 12, true);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
-        this.player.debug = true;
         this.player.speed = (this.game.world.width / 13.66);
         this.player.body.setSize(12, 22, 10, 10);
         this.player.body.collideWorldBounds = true;
         this.game.camera.follow(this.player, 1);
+
+        this.game.physics.arcade.enable(this.player.swipe);
+        this.player.swipe.x = this.player.x - (this.player.body.width / 2);
+        this.player.swipe.y = this.player.y + (this.player.height / 2);
+        this.player.swipe.anchor.setTo(1, 1);
+        this.player.swipe.width = 14 * this.scalingFactor;
+        this.player.swipe.height = this.player.body.height;
+        this.player.swipe.debug = true;
+        //this.player.swipe.body.setSize(this.player.body.width, this.player.body.height);
 
         //ui declaration
         this.player.maxHP = this.playerData.maxHP || 6;
@@ -157,6 +166,10 @@ steamGame.Game.prototype = {
             this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('Active direction: ' + this.direction, this.game.world.centerX - 150, this.game.camera.height - 45, null, 'rgb(0, 0, 0)');
+
+            this.game.debug.body(this.player);
+            this.game.debug.body(this.player.swipe);
             
             if (this.player.currency < 9990) {
                 this.player.newC += 10;
@@ -322,15 +335,21 @@ steamGame.Game.prototype = {
             /***************************************** Player Movement Handling ******************************************************************************************/
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
+            this.player.swipe.body.velocity.x = 0;
+            this.player.swipe.body.velocity.y = 0;
             if (upKey.isDown || upArrow.isDown) {
                 this.player.body.velocity.y = -this.player.speed * 0.9;
+                this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
             } else if (downKey.isDown || downArrow.isDown) {
                 this.player.body.velocity.y = this.player.speed * 0.9;
+                this.player.swipe.body.velocity.y = this.player.speed * 0.9;
             }
             if (rightKey.isDown || rightArrow.isDown) {
                 this.player.body.velocity.x = this.player.speed * 1.2;
+                this.player.swipe.body.velocity.x = this.player.speed * 1.2;
             } else if (leftKey.isDown || leftArrow.isDown) {
                 this.player.body.velocity.x = -this.player.speed * 1.2;
+                this.player.swipe.body.velocity.x = -this.player.speed * 1.2;
             }
 
             /************************************** Animation Controller for Player movement *****************************************************************************/
@@ -338,25 +357,45 @@ steamGame.Game.prototype = {
             this.direction = this.direction || 'down';
             if (this.player.body.velocity.x < 0) {
                 this.animationName = 'runLeft';
-                this.direction = 'left'
+                this.direction = 'left';
+                this.player.swipe.x = this.player.x - (this.player.body.width / 2);
+                this.player.swipe.y = this.player.y + (this.player.height / 2);
+                this.player.swipe.anchor.setTo(1, 1);
+                this.player.swipe.width = 14 * this.scalingFactor;
+                this.player.swipe.height = this.player.body.height;
                 if (this.player.scale.x < 0) {
                     this.player.scale.x = this.player.scale.x * -1;
                 }
             }
             if (this.player.body.velocity.x > 0) {
                 this.animationName = 'runRight';
-                this.direction = 'right'
+                this.direction = 'right';
+                this.player.swipe.x = this.player.x + (this.player.body.width / 2);
+                this.player.swipe.y = this.player.y + (this.player.height / 2);
+                this.player.swipe.anchor.setTo(0, 1);
+                this.player.swipe.width = 14 * this.scalingFactor;
+                this.player.swipe.height = this.player.body.height;
                 if (this.player.scale.x > 0) {
                     this.player.scale.x = this.player.scale.x * -1;
                 }
             }
             if (this.player.body.velocity.y < 0) {
                 this.animationName = 'runUp';
-                this.direction = 'up'
+                this.direction = 'up';
+                this.player.swipe.x = this.player.body.x - (this.player.body.width * 0.25);
+                this.player.swipe.y = this.player.body.y;
+                this.player.swipe.anchor.setTo(0, 0.5);
+                this.player.swipe.width = this.player.body.width * 1.5;
+                this.player.swipe.height = 28 * this.scalingFactor;
             }
             if (this.player.body.velocity.y > 0) {
                 this.animationName = 'runDown';
-                this.direction = 'down'
+                this.direction = 'down';
+                this.player.swipe.x = this.player.body.x - (this.player.body.width * 0.25);
+                this.player.swipe.y = this.player.body.y + this.player.body.height;
+                this.player.swipe.anchor.setTo(0, 0.5);
+                this.player.swipe.width = this.player.body.width * 1.5;
+                this.player.swipe.height = 28 * this.scalingFactor;
             }
             //change current animation
             if (this.player.animations.name !== this.animationName && this.animationName !== 'stopped') {
