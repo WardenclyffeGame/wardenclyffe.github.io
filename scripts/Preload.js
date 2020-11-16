@@ -32,12 +32,12 @@ steamGame.Preload.prototype = {
         //this.load.atlasJSONHash('protest', 'sprites/game/testingProtag.png', 'sprites/game/testingProtag.json');
             this.load.image('debugTiles', 'sprites/game/testTiles.png');
         this.load.tilemap('debugMap', 'maps/debugMap.json', null, Phaser.Tilemap.TILED_JSON);
-            this.load.atlasJSONHash('heart', 'sprites/game/heart.png', 'sprites/game/heart.json');
-        this.load.atlasJSONHash('steamMeter', 'sprites/game/steamMeter.png', 'sprites/game/steamMeter.json');
-            this.load.atlasJSONHash('elecMeter', 'sprites/game/ElectricMeter.png', 'sprites/game/ElectricMeter.json');
-        this.load.atlasJSONHash('ticker', 'sprites/game/ticker.png', 'sprites/game/ticker.json');
+            this.load.atlasJSONHash('heart', 'sprites/game/heart.png', 'sprites/game/jsonKeys/heart.json');
+        this.load.atlasJSONHash('steamMeter', 'sprites/game/steamMeter.png', 'sprites/game/jsonKeys/steamMeter.json');
+            this.load.atlasJSONHash('elecMeter', 'sprites/game/ElectricMeter.png', 'sprites/game/jsonKeys/ElectricMeter.json');
+        this.load.atlasJSONHash('ticker', 'sprites/game/ticker.png', 'sprites/game/jsonKeys/ticker.json');
             this.load.image('frame', 'sprites/game/frame.png');
-        this.load.atlasJSONHash('milutin', 'sprites/game/milutinSheet.png', 'sprites/game/milutinSheet.json');
+        this.load.atlasJSONHash('milutin', 'sprites/game/milutinSheet.png', 'sprites/game/jsonKeys/milutinSheet.json');
             this.load.image('KronaL', 'sprites/game/kronaLogo.png');
         this.load.image('KronaG', 'sprites/game/kronaG.png');
         this.load.image('KronaS', 'sprites/game/kronaS.png');
