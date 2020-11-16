@@ -172,7 +172,17 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
 
+        this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 100, this.game.world.centerY, 'KronaG');
+        this.game.physics.arcade.enable(this.kronaTestG);
+        this.kronaTestG.value = 60;
 
+        this.kronaTestS = this.game.add.sprite(this.game.world.centerX - 120, this.game.world.centerY, 'KronaS');
+        this.game.physics.arcade.enable(this.kronaTestS);
+        this.kronaTestS.value = 36;
+
+        this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - 140, this.game.world.centerY, 'KronaZ');
+        this.game.physics.arcade.enable(this.kronaTestZ);
+        this.kronaTestZ.value = 12;
 
         
 
@@ -205,6 +215,9 @@ steamGame.Game.prototype = {
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
         this.game.physics.arcade.collide(this.player, this.wall, this.debugElec, null, this);
+        this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
+        this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
+        this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
         if (this.menuState == 0) {
             /***************************************** Player HP manager ******************************************************************************************/
@@ -545,5 +558,9 @@ steamGame.Game.prototype = {
                 this.dummy.destroy();
             }
         }
+    },
+    collect: function(player, coin) {
+        player.newC += coin.value;
+        coin.destroy();
     }
 };
