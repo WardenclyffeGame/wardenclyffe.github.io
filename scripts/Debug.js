@@ -213,6 +213,7 @@ steamGame.Game.prototype = {
         this.ASBomb.frame = 1;
         this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASBomb);
+        this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
         //map screen to the right
         //pause appear
         //this.createPauseMenu(this);
@@ -529,7 +530,7 @@ steamGame.Game.prototype = {
             }
             //moving any and all menus away
             if (this.ASGroup.pos == 'down') {
-                if (this.ASGroup.cameraOffset.y > -1 * (this.game.camera.height / 6)) {
+                if (this.ASGroup.cameraOffset.y > this.ASGroup.maxH) {
                     this.ASGroup.cameraOffset.y -= this.game.camera.height / 120;
                     this.ASGroup.stationary = false;
                 } else {
@@ -541,7 +542,7 @@ steamGame.Game.prototype = {
         if (this.menuState == 'ability') {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
-            if (this.ASGroup.cameraOffset.y < this.game.camera.y * 0.75) {
+            if (this.ASGroup.cameraOffset.y < this.ASGroup.maxH + this.game.camera.height) {
                 this.ASGroup.cameraOffset.y += this.game.camera.height / 120;
                 this.ASGroup.stationary = false;
             } else {
