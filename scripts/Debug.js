@@ -97,6 +97,8 @@ steamGame.Game.prototype = {
         this.player.currencyData = {};
         this.player.newC = this.player.currency;
 
+        this.player.hasBomb = this.playerData.hasBomb || false;
+
         this.player.timer = 75;
         this.player.newSLevel = 0;
         this.player.newELevel = 0;
@@ -200,9 +202,17 @@ steamGame.Game.prototype = {
         this.abilityScreenBack.anchor.setTo(0.5, 0.5);
         this.abilityScreenBack.width = this.game.camera.width / 1.5;
         this.abilityScreenBack.height = this.game.camera.height * 0.8;
-        this.abilityScreenBack.fixedToCamera = true;
-        this.abilityScreenBack.stationary = true;
-        this.abilityScreenBack.pos = 'up';
+        this.ASGroup = this.game.add.group();
+        this.ASGroup.add(this.abilityScreenBack);
+        this.ASGroup.fixedToCamera = true;
+        this.ASGroup.stationary = true;
+        this.ASGroup.pos = 'up';
+
+        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0.9 * 32), 'Bomb');
+        this.ASBomb.anchor.setTo(0.5, 0.5);
+        this.ASBomb.frame = 1;
+        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBomb);
         //map screen to the right
         //pause appear
         //this.createPauseMenu(this);
@@ -518,25 +528,25 @@ steamGame.Game.prototype = {
                 }
             }
             //moving any and all menus away
-            if (this.abilityScreenBack.pos == 'down') {
-                if (this.abilityScreenBack.cameraOffset.y > -1 * (this.game.camera.height / 2)) {
-                    this.abilityScreenBack.cameraOffset.y -= this.game.camera.height / 120;
-                    this.abilityScreenBack.stationary = false;
+            if (this.ASGroup.pos == 'down') {
+                if (this.ASGroup.cameraOffset.y > -1 * (this.game.camera.height / 6)) {
+                    this.ASGroup.cameraOffset.y -= this.game.camera.height / 120;
+                    this.ASGroup.stationary = false;
                 } else {
-                    this.abilityScreenBack.stationary = true;
-                    this.abilityScreenBack.pos = 'up';
+                    this.ASGroup.stationary = true;
+                    this.ASGroup.pos = 'up';
                 }
             }
         }
         if (this.menuState == 'ability') {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
-            if (this.abilityScreenBack.cameraOffset.y < (this.game.camera.height / 2)) {
-                this.abilityScreenBack.cameraOffset.y += this.game.camera.height / 120;
-                this.abilityScreenBack.stationary = false;
+            if (this.ASGroup.cameraOffset.y < this.game.camera.y * 0.75) {
+                this.ASGroup.cameraOffset.y += this.game.camera.height / 120;
+                this.ASGroup.stationary = false;
             } else {
-                this.abilityScreenBack.stationary = true;
-                this.abilityScreenBack.pos = 'down';
+                this.ASGroup.stationary = true;
+                this.ASGroup.pos = 'down';
             }
         }
     },
@@ -609,10 +619,10 @@ steamGame.Game.prototype = {
         coin.destroy();
     },
     abilityTrans: function() {
-        if (this.abilityScreenBack.stationary == true) {
-            if (this.abilityScreenBack.pos == 'up') {
+        if (this.ASGroup.stationary == true) {
+            if (this.ASGroup.pos == 'up') {
                 this.menuState = 'ability';
-            } else if (this.abilityScreenBack.pos == 'down') {
+            } else if (this.ASGroup.pos == 'down') {
                 this.menuState = 'none';
             }
         }
