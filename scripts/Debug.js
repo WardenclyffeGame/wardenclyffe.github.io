@@ -104,6 +104,8 @@ steamGame.Game.prototype = {
         this.player.newELevel = 0;
         this.player.state = 'walk';
 
+        this.debugText = {};
+
         //menustate declarations
         this.menuState = 'none';
 
@@ -224,20 +226,21 @@ steamGame.Game.prototype = {
         /***************************************** Collision handler for player vs. layers and debug text ***************************************************************/
         
         if (debugKey.isDown) {
-            this.game.debug.text('True health: ' + this.player.currentHP, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
-            //this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            //this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Active direction: ' + this.direction, this.game.world.centerX - 150, this.game.camera.height - 45, null, 'rgb(0, 0, 0)');
+            this.debugText = this.debugText || {};
+            this.debugText.HP = this.game.debug.text('True health: ' + this.player.currentHP, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
+            //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
+            this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
+            this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
+            this.debugText.DIR = this.game.debug.text('Active direction: ' + this.direction, this.game.world.centerX - 150, this.game.camera.height - 45, null, 'rgb(0, 0, 0)');
 
-            this.game.debug.body(this.player);
-            this.game.debug.body(this.player.swipe);
-            this.game.debug.body(this.dummy);
+            this.debugText.PLYR = this.game.debug.body(this.player);
+            this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
+            this.debugText.DB = this.game.debug.body(this.dummy);
             
             if (this.player.currency < 9990) {
                 this.player.newC += 10;
@@ -245,6 +248,9 @@ steamGame.Game.prototype = {
                 this.player.newC += 1;
             }
         }
+        /*if (debugKey.isUp) {
+            this.debugText.destroy();
+        }*/
 
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
@@ -549,6 +555,10 @@ steamGame.Game.prototype = {
                 this.ASGroup.stationary = true;
                 this.ASGroup.pos = 'down';
             }
+
+            if (this.player.hasBomb == true) {
+                this.ASBomb.frame = 0;
+            }
         }
     },
     debugHurt: function(player, walls) {
@@ -610,13 +620,19 @@ steamGame.Game.prototype = {
             }
             if(this.dummy.hit == false && this.dummy.currentHP == 1) {
                 this.dummy.currentHP = 0;
+                this.dummy.value = 100;
                 this.dummy.destroy();
-                this.player.newC += 100;
+                this.collect(this.player, this.dummy);
+                this.player.hasBomb = true;
             }
         }
     },
     collect: function(player, coin) {
-        player.newC += coin.value;
+        if (player.newC + coin.value < 10000) {
+            player.newC += coin.value;
+        } else {
+            player.newC = 9999;
+        }
         coin.destroy();
     },
     abilityTrans: function() {
