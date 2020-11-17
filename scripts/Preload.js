@@ -43,6 +43,7 @@ steamGame.Preload.prototype = {
         this.load.image('KronaS', 'sprites/game/kronaS.png');
         this.load.image('KronaZ', 'sprites/game/kronaZ.png');
             this.load.atlasJSONHash('Bomb', 'sprites/game/Bomb.png', 'sprites/game/jsonKeys/Bomb.json');
+        this.load.image('abilityBack', 'sprites/game/abilityMenu.png');
     },
     create: function() {
         this.state.start('MainMenu');

@@ -10,6 +10,7 @@ steamGame.Game.prototype = {
 
     create: function(){
 
+        /******************************KEY DECLARATIONS***********************************/
         //movement 
         upKey = this.game.input.keyboard.addKey(87) //w
         upArrow = this.game.input.keyboard.addKey(38); // ^
@@ -29,6 +30,10 @@ steamGame.Game.prototype = {
 
         debugKey = this.game.input.keyboard.addKey(48); // 0
 
+        abilityScreenKey.onDown.add(this.abilityTrans, this);
+
+        this.game.input.keyboard.addKeyCapture(9);
+
         //begin scene setup
         this.game.stage.backgroundColor = '#acbfbc';
         this.scalingFactor = (this.game.world.width / 19) / 32;
@@ -44,12 +49,10 @@ steamGame.Game.prototype = {
         this.map.setCollisionBetween(4, 17, true, 'wall');
         this.floor.resizeWorld();
 
-        //menustate declarations
-        this.menuState = 0;
-
         //set scene boundary
         //this.game.world.setBounds(0, 0, this.game.world.width, this.game.world.height);
  
+        /*************************************SINGLE MOST VITAL PIECE: THE PLAYER************************************************/
         //player declaration
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'milutin');
         this.player.anchor.setTo(0.5, 0.5);
@@ -82,7 +85,8 @@ steamGame.Game.prototype = {
         this.player.swipe.debug = true;
         //this.player.swipe.body.setSize(this.player.body.width, this.player.body.height);
 
-        //ui declaration
+        /****************ALSO VITAL: SAVE STATE INFORMATION / PLAYER DATA********************/
+        //player object stuff declaration
         this.player.maxHP = this.playerData.maxHP || 6;
         this.player.currentHP = this.playerData.currentHP || this.player.maxHP;
         this.player.maxSteam = this.playerData.maxSteam || 100;
@@ -93,27 +97,53 @@ steamGame.Game.prototype = {
         this.player.currencyData = {};
         this.player.newC = this.player.currency;
 
+        this.player.hasBomb = this.playerData.hasBomb || false;
+
         this.player.timer = 75;
         this.player.newSLevel = 0;
         this.player.newELevel = 0;
         this.player.state = 'walk';
 
+        //menustate declarations
+        this.menuState = 'none';
+
+        //testing object for slashing
+        this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'KronaL');
+        this.game.physics.arcade.enable(this.dummy);
+        this.dummy.hit = false;
+        this.dummy.maxHP = 3;
+        this.dummy.currentHP = this.dummy.maxHP;
+
+        this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 100, this.game.world.centerY, 'KronaG');
+        this.game.physics.arcade.enable(this.kronaTestG);
+        this.kronaTestG.value = 60;
+
+        this.kronaTestS = this.game.add.sprite(this.game.world.centerX - 120, this.game.world.centerY, 'KronaS');
+        this.game.physics.arcade.enable(this.kronaTestS);
+        this.kronaTestS.value = 36;
+
+        this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - 140, this.game.world.centerY, 'KronaZ');
+        this.game.physics.arcade.enable(this.kronaTestZ);
+        this.kronaTestZ.value = 12;
+
+
+        /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
         //Heart declaration
         for (i = 0; i < (this.player.maxHP/2); i++) {
-           this.hPosX = 0;
-           this.hSpawn;
-           if(this['heart' + (i-1).toString()] != null){
-               this.hPosX = i; 
-           }
-           if(this.hPosX > 0){
-               this.hSpawn = this['heart' + (i - 1).toString()].width + this['heart' + (i - 1).toString()].x - 5;
-           } else {
-               this.hSpawn = 0;
-           }
-           this['heart' + i.toString()] = this.game.add.sprite(this.hSpawn + 5, 10 , 'heart');
-           this['heart' + i.toString()].fixedToCamera = true;
-           this['heart' + i.toString()].scale.setTo (this.scalingFactor*0.65,this.scalingFactor*0.65)
-           this.highestHeart = i;
+            this.hPosX = 0;
+            this.hSpawn;
+            if(this['heart' + (i-1).toString()] != null){
+                this.hPosX = i; 
+            }
+            if(this.hPosX > 0){
+                this.hSpawn = this['heart' + (i - 1).toString()].width + this['heart' + (i - 1).toString()].x - 5;
+            } else {
+                this.hSpawn = 0;
+            }
+            this['heart' + i.toString()] = this.game.add.sprite(this.hSpawn + 5, 10 , 'heart');
+            this['heart' + i.toString()].fixedToCamera = true;
+            this['heart' + i.toString()].scale.setTo (this.scalingFactor*0.65,this.scalingFactor*0.65)
+            this.highestHeart = i;
         }
 
         this.ticker = {};
@@ -165,25 +195,28 @@ steamGame.Game.prototype = {
         this.frame.fixedToCamera = true;
         this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
 
-        //testing object for slashing
-        this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'KronaL');
-        this.game.physics.arcade.enable(this.dummy);
-        this.dummy.hit = false;
-        this.dummy.maxHP = 3;
-        this.dummy.currentHP = this.dummy.maxHP;
 
-        this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 100, this.game.world.centerY, 'KronaG');
-        this.game.physics.arcade.enable(this.kronaTestG);
-        this.kronaTestG.value = 60;
+        /*******************************************MENU SCREENS********************************************/
+        //ability screen above
+        this.abilityScreenBack = this.game.add.sprite(this.game.camera.x + (this.game.camera.width / 2), this.game.camera.y - (this.game.camera.height / 2), 'abilityBack');
+        this.abilityScreenBack.anchor.setTo(0.5, 0.5);
+        this.abilityScreenBack.width = this.game.camera.width / 1.5;
+        this.abilityScreenBack.height = this.game.camera.height * 0.8;
+        this.ASGroup = this.game.add.group();
+        this.ASGroup.add(this.abilityScreenBack);
+        this.ASGroup.fixedToCamera = true;
+        this.ASGroup.stationary = true;
+        this.ASGroup.pos = 'up';
 
-        this.kronaTestS = this.game.add.sprite(this.game.world.centerX - 120, this.game.world.centerY, 'KronaS');
-        this.game.physics.arcade.enable(this.kronaTestS);
-        this.kronaTestS.value = 36;
-
-        this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - 140, this.game.world.centerY, 'KronaZ');
-        this.game.physics.arcade.enable(this.kronaTestZ);
-        this.kronaTestZ.value = 12;
-
+        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0.9 * 32), 'Bomb');
+        this.ASBomb.anchor.setTo(0.5, 0.5);
+        this.ASBomb.frame = 1;
+        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBomb);
+        this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
+        //map screen to the right
+        //pause appear
+        //this.createPauseMenu(this);
         
 
     },
@@ -195,7 +228,8 @@ steamGame.Game.prototype = {
             this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            //this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -219,7 +253,7 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
-        if (this.menuState == 0) {
+        if (this.menuState == 'none') {
             /***************************************** Player HP manager ******************************************************************************************/
             if (this.player.currentHP < this.player.maxHP) {
                 this.player.diffHP = this.player.maxHP - this.player.currentHP;
@@ -494,6 +528,27 @@ steamGame.Game.prototype = {
                     this.player.animations.play('idleLeft', 4, true);
                 }
             }
+            //moving any and all menus away
+            if (this.ASGroup.pos == 'down') {
+                if (this.ASGroup.cameraOffset.y > this.ASGroup.maxH + (this.game.camera.height * 0.5)) {
+                    this.ASGroup.cameraOffset.y -= this.game.camera.height / 120;
+                    this.ASGroup.stationary = false;
+                } else {
+                    this.ASGroup.stationary = true;
+                    this.ASGroup.pos = 'up';
+                }
+            }
+        }
+        if (this.menuState == 'ability') {
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            if (this.ASGroup.cameraOffset.y < this.ASGroup.maxH + (this.game.camera.height * 1.5)) {
+                this.ASGroup.cameraOffset.y += this.game.camera.height / 120;
+                this.ASGroup.stationary = false;
+            } else {
+                this.ASGroup.stationary = true;
+                this.ASGroup.pos = 'down';
+            }
         }
     },
     debugHurt: function(player, walls) {
@@ -556,11 +611,21 @@ steamGame.Game.prototype = {
             if(this.dummy.hit == false && this.dummy.currentHP == 1) {
                 this.dummy.currentHP = 0;
                 this.dummy.destroy();
+                this.player.newC += 100;
             }
         }
     },
     collect: function(player, coin) {
         player.newC += coin.value;
         coin.destroy();
+    },
+    abilityTrans: function() {
+        if (this.ASGroup.stationary == true) {
+            if (this.ASGroup.pos == 'up') {
+                this.menuState = 'ability';
+            } else if (this.ASGroup.pos == 'down') {
+                this.menuState = 'none';
+            }
+        }
     }
 };
