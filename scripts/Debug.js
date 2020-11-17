@@ -10,6 +10,7 @@ steamGame.Game.prototype = {
 
     create: function(){
 
+        /******************************KEY DECLARATIONS***********************************/
         //movement 
         upKey = this.game.input.keyboard.addKey(87) //w
         upArrow = this.game.input.keyboard.addKey(38); // ^
@@ -44,12 +45,10 @@ steamGame.Game.prototype = {
         this.map.setCollisionBetween(4, 17, true, 'wall');
         this.floor.resizeWorld();
 
-        //menustate declarations
-        this.menuState = 0;
-
         //set scene boundary
         //this.game.world.setBounds(0, 0, this.game.world.width, this.game.world.height);
  
+        /*************************************SINGLE MOST VITAL PIECE: THE PLAYER************************************************/
         //player declaration
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'milutin');
         this.player.anchor.setTo(0.5, 0.5);
@@ -82,7 +81,8 @@ steamGame.Game.prototype = {
         this.player.swipe.debug = true;
         //this.player.swipe.body.setSize(this.player.body.width, this.player.body.height);
 
-        //ui declaration
+        /****************ALSO VITAL: SAVE STATE INFORMATION / PLAYER DATA********************/
+        //player object stuff declaration
         this.player.maxHP = this.playerData.maxHP || 6;
         this.player.currentHP = this.playerData.currentHP || this.player.maxHP;
         this.player.maxSteam = this.playerData.maxSteam || 100;
@@ -98,72 +98,8 @@ steamGame.Game.prototype = {
         this.player.newELevel = 0;
         this.player.state = 'walk';
 
-        //Heart declaration
-        for (i = 0; i < (this.player.maxHP/2); i++) {
-           this.hPosX = 0;
-           this.hSpawn;
-           if(this['heart' + (i-1).toString()] != null){
-               this.hPosX = i; 
-           }
-           if(this.hPosX > 0){
-               this.hSpawn = this['heart' + (i - 1).toString()].width + this['heart' + (i - 1).toString()].x - 5;
-           } else {
-               this.hSpawn = 0;
-           }
-           this['heart' + i.toString()] = this.game.add.sprite(this.hSpawn + 5, 10 , 'heart');
-           this['heart' + i.toString()].fixedToCamera = true;
-           this['heart' + i.toString()].scale.setTo (this.scalingFactor*0.65,this.scalingFactor*0.65)
-           this.highestHeart = i;
-        }
-
-        this.ticker = {};
-        for (i = 0; i < 4; i++) {
-            if (this.ticker['plate' + i.toString()] == null) {
-                this.ticker.posx = this.game.camera.width * 0.8;
-            } else {
-                this.ticker.posx = this.ticker['plate' + i.toString()].x + this.ticker['plate' + i.toString()].width
-            }
-            this.ticker['plate' + (i + 1).toString()] = this.game.add.sprite(this.ticker.posx, 10, 'ticker');
-            this.ticker['plate' + (i + 1).toString()].fixedToCamera = true;
-            this.ticker['plate' + (i + 1).toString()].scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
-            this.ticker['plate' + (i + 1).toString()].animations.add('flip', [10, 11, 12, 13, 14, 15]);
-        }
-        this.ticker.logo = this.game.add.sprite(this.ticker.plate1.x, this.ticker.plate1.y, 'KronaL');
-        this.ticker.logo.anchor.setTo(1, 0);
-        this.ticker.logo.fixedToCamera = true;
-        this.ticker.logo.scale.setTo(this.scalingFactor / 2, this.scalingFactor / 2);
-
-        //steam meter declaration
-        this.steamMeter = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) + 5), 'steamMeter');
-        this.steamMeter.frame = 0;
-        this.steamMeter.fixedToCamera = true;
-        this.steamMeter.anchor.setTo(0, 1);
-        this.steamMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
-
-        this.steamLevel = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'steamMeter');
-        this.steamLevel.frame = 1;
-        this.steamLevel.fixedToCamera = true;
-        this.steamLevel.anchor.setTo(0, 86/96);
-        this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
-
-        //Elec Meter declaration
-        this.elecMeter = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) + 5), 'elecMeter');
-        this.elecMeter.frame = 0;
-        this.elecMeter.fixedToCamera = true;
-        this.elecMeter.anchor.setTo(0, 1);
-        this.elecMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
-
-        this.elecLevel = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'elecMeter');
-        this.elecLevel.frame = 1;
-        this.elecLevel.fixedToCamera = true;
-        this.elecLevel.anchor.setTo(0, 86/96);
-        this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
-
-        //frame declaration
-        this.frame = this.game.add.sprite(this.game.camera.width, 8, 'frame');
-        this.frame.anchor.setTo(1,0);
-        this.frame.fixedToCamera = true;
-        this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
+        //menustate declarations
+        this.menuState = 0;
 
         //testing object for slashing
         this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'KronaL');
@@ -183,6 +119,75 @@ steamGame.Game.prototype = {
         this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - 140, this.game.world.centerY, 'KronaZ');
         this.game.physics.arcade.enable(this.kronaTestZ);
         this.kronaTestZ.value = 12;
+
+
+        /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
+        //Heart declaration
+        for (i = 0; i < (this.player.maxHP/2); i++) {
+            this.hPosX = 0;
+            this.hSpawn;
+            if(this['heart' + (i-1).toString()] != null){
+                this.hPosX = i; 
+            }
+            if(this.hPosX > 0){
+                this.hSpawn = this['heart' + (i - 1).toString()].width + this['heart' + (i - 1).toString()].x - 5;
+            } else {
+                this.hSpawn = 0;
+            }
+            this['heart' + i.toString()] = this.game.add.sprite(this.hSpawn + 5, 10 , 'heart');
+            this['heart' + i.toString()].fixedToCamera = true;
+            this['heart' + i.toString()].scale.setTo (this.scalingFactor*0.65,this.scalingFactor*0.65)
+            this.highestHeart = i;
+         }
+ 
+         this.ticker = {};
+         for (i = 0; i < 4; i++) {
+             if (this.ticker['plate' + i.toString()] == null) {
+                 this.ticker.posx = this.game.camera.width * 0.8;
+             } else {
+                 this.ticker.posx = this.ticker['plate' + i.toString()].x + this.ticker['plate' + i.toString()].width
+             }
+             this.ticker['plate' + (i + 1).toString()] = this.game.add.sprite(this.ticker.posx, 10, 'ticker');
+             this.ticker['plate' + (i + 1).toString()].fixedToCamera = true;
+             this.ticker['plate' + (i + 1).toString()].scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
+             this.ticker['plate' + (i + 1).toString()].animations.add('flip', [10, 11, 12, 13, 14, 15]);
+         }
+         this.ticker.logo = this.game.add.sprite(this.ticker.plate1.x, this.ticker.plate1.y, 'KronaL');
+         this.ticker.logo.anchor.setTo(1, 0);
+         this.ticker.logo.fixedToCamera = true;
+         this.ticker.logo.scale.setTo(this.scalingFactor / 2, this.scalingFactor / 2);
+ 
+         //steam meter declaration
+         this.steamMeter = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) + 5), 'steamMeter');
+         this.steamMeter.frame = 0;
+         this.steamMeter.fixedToCamera = true;
+         this.steamMeter.anchor.setTo(0, 1);
+         this.steamMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+ 
+         this.steamLevel = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'steamMeter');
+         this.steamLevel.frame = 1;
+         this.steamLevel.fixedToCamera = true;
+         this.steamLevel.anchor.setTo(0, 86/96);
+         this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+ 
+         //Elec Meter declaration
+         this.elecMeter = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) + 5), 'elecMeter');
+         this.elecMeter.frame = 0;
+         this.elecMeter.fixedToCamera = true;
+         this.elecMeter.anchor.setTo(0, 1);
+         this.elecMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+ 
+         this.elecLevel = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'elecMeter');
+         this.elecLevel.frame = 1;
+         this.elecLevel.fixedToCamera = true;
+         this.elecLevel.anchor.setTo(0, 86/96);
+         this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+ 
+         //frame declaration
+         this.frame = this.game.add.sprite(this.game.camera.width, 8, 'frame');
+         this.frame.anchor.setTo(1,0);
+         this.frame.fixedToCamera = true;
+         this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
 
         
 
@@ -556,6 +561,7 @@ steamGame.Game.prototype = {
             if(this.dummy.hit == false && this.dummy.currentHP == 1) {
                 this.dummy.currentHP = 0;
                 this.dummy.destroy();
+                this.player.newC += 100;
             }
         }
     },
