@@ -214,7 +214,7 @@ steamGame.Game.prototype = {
 
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
-        this.game.physics.arcade.collide(this.player, this.wall, this.debugElec, null, this);
+        this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
@@ -518,13 +518,13 @@ steamGame.Game.prototype = {
                 player.newSLevel = 0;
             }
         }
-        if (player.currentSteam > 0 && walls == 'attacked') {
+        /*if (player.currentSteam > 0 && walls == 'attacked') {
             player.newSLevel -= 0.1;
             if (player.newSLevel <= -1) {
                 player.currentSteam --;
                 player.newSLevel = 0;
             }
-        }
+        }*/
     },
     debugElec: function(player, walls) {
         /*if (player.currentSteam < player.maxSteam) {
