@@ -542,7 +542,7 @@ steamGame.Game.prototype = {
         if (this.menuState == 'ability') {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
-            if (this.ASGroup.cameraOffset.y < this.ASGroup.maxH + (this.game.camera.height * 2)) {
+            if (this.ASGroup.cameraOffset.y < this.ASGroup.maxH + (this.game.camera.height * 1.5)) {
                 this.ASGroup.cameraOffset.y += this.game.camera.height / 120;
                 this.ASGroup.stationary = false;
             } else {
