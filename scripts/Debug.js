@@ -30,6 +30,10 @@ steamGame.Game.prototype = {
 
         debugKey = this.game.input.keyboard.addKey(48); // 0
 
+        abilityScreenKey.onDown.add(this.abilityTrans, this);
+
+        this.game.input.keyboard.addKeyCapture(9);
+
         //begin scene setup
         this.game.stage.backgroundColor = '#acbfbc';
         this.scalingFactor = (this.game.world.width / 19) / 32;
@@ -99,7 +103,7 @@ steamGame.Game.prototype = {
         this.player.state = 'walk';
 
         //menustate declarations
-        this.menuState = 0;
+        this.menuState = 'none';
 
         //testing object for slashing
         this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'KronaL');
@@ -138,57 +142,70 @@ steamGame.Game.prototype = {
             this['heart' + i.toString()].fixedToCamera = true;
             this['heart' + i.toString()].scale.setTo (this.scalingFactor*0.65,this.scalingFactor*0.65)
             this.highestHeart = i;
-         }
- 
-         this.ticker = {};
-         for (i = 0; i < 4; i++) {
-             if (this.ticker['plate' + i.toString()] == null) {
-                 this.ticker.posx = this.game.camera.width * 0.8;
-             } else {
-                 this.ticker.posx = this.ticker['plate' + i.toString()].x + this.ticker['plate' + i.toString()].width
-             }
-             this.ticker['plate' + (i + 1).toString()] = this.game.add.sprite(this.ticker.posx, 10, 'ticker');
-             this.ticker['plate' + (i + 1).toString()].fixedToCamera = true;
-             this.ticker['plate' + (i + 1).toString()].scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
-             this.ticker['plate' + (i + 1).toString()].animations.add('flip', [10, 11, 12, 13, 14, 15]);
-         }
-         this.ticker.logo = this.game.add.sprite(this.ticker.plate1.x, this.ticker.plate1.y, 'KronaL');
-         this.ticker.logo.anchor.setTo(1, 0);
-         this.ticker.logo.fixedToCamera = true;
-         this.ticker.logo.scale.setTo(this.scalingFactor / 2, this.scalingFactor / 2);
- 
-         //steam meter declaration
-         this.steamMeter = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) + 5), 'steamMeter');
-         this.steamMeter.frame = 0;
-         this.steamMeter.fixedToCamera = true;
-         this.steamMeter.anchor.setTo(0, 1);
-         this.steamMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
- 
-         this.steamLevel = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'steamMeter');
-         this.steamLevel.frame = 1;
-         this.steamLevel.fixedToCamera = true;
-         this.steamLevel.anchor.setTo(0, 86/96);
-         this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
- 
-         //Elec Meter declaration
-         this.elecMeter = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) + 5), 'elecMeter');
-         this.elecMeter.frame = 0;
-         this.elecMeter.fixedToCamera = true;
-         this.elecMeter.anchor.setTo(0, 1);
-         this.elecMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
- 
-         this.elecLevel = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'elecMeter');
-         this.elecLevel.frame = 1;
-         this.elecLevel.fixedToCamera = true;
-         this.elecLevel.anchor.setTo(0, 86/96);
-         this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
- 
-         //frame declaration
-         this.frame = this.game.add.sprite(this.game.camera.width, 8, 'frame');
-         this.frame.anchor.setTo(1,0);
-         this.frame.fixedToCamera = true;
-         this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
+        }
 
+        this.ticker = {};
+        for (i = 0; i < 4; i++) {
+            if (this.ticker['plate' + i.toString()] == null) {
+                this.ticker.posx = this.game.camera.width * 0.8;
+            } else {
+                this.ticker.posx = this.ticker['plate' + i.toString()].x + this.ticker['plate' + i.toString()].width
+            }
+            this.ticker['plate' + (i + 1).toString()] = this.game.add.sprite(this.ticker.posx, 10, 'ticker');
+            this.ticker['plate' + (i + 1).toString()].fixedToCamera = true;
+            this.ticker['plate' + (i + 1).toString()].scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
+            this.ticker['plate' + (i + 1).toString()].animations.add('flip', [10, 11, 12, 13, 14, 15]);
+        }
+        this.ticker.logo = this.game.add.sprite(this.ticker.plate1.x, this.ticker.plate1.y, 'KronaL');
+        this.ticker.logo.anchor.setTo(1, 0);
+        this.ticker.logo.fixedToCamera = true;
+        this.ticker.logo.scale.setTo(this.scalingFactor / 2, this.scalingFactor / 2);
+
+        //steam meter declaration
+        this.steamMeter = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) + 5), 'steamMeter');
+        this.steamMeter.frame = 0;
+        this.steamMeter.fixedToCamera = true;
+        this.steamMeter.anchor.setTo(0, 1);
+        this.steamMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+
+        this.steamLevel = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'steamMeter');
+        this.steamLevel.frame = 1;
+        this.steamLevel.fixedToCamera = true;
+        this.steamLevel.anchor.setTo(0, 86/96);
+        this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+
+        //Elec Meter declaration
+        this.elecMeter = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) + 5), 'elecMeter');
+        this.elecMeter.frame = 0;
+        this.elecMeter.fixedToCamera = true;
+        this.elecMeter.anchor.setTo(0, 1);
+        this.elecMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+
+        this.elecLevel = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'elecMeter');
+        this.elecLevel.frame = 1;
+        this.elecLevel.fixedToCamera = true;
+        this.elecLevel.anchor.setTo(0, 86/96);
+        this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+
+        //frame declaration
+        this.frame = this.game.add.sprite(this.game.camera.width, 8, 'frame');
+        this.frame.anchor.setTo(1,0);
+        this.frame.fixedToCamera = true;
+        this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
+
+
+        /*******************************************MENU SCREENS********************************************/
+        //ability screen above
+        this.abilityScreenBack = this.game.add.sprite(this.game.camera.x + (this.game.camera.width / 2), this.game.camera.y - (this.game.camera.height / 2), 'abilityBack');
+        this.abilityScreenBack.anchor.setTo(0.5, 0.5);
+        this.abilityScreenBack.width = this.game.camera.width / 1.5;
+        this.abilityScreenBack.height = this.game.camera.height * 0.8;
+        this.abilityScreenBack.fixedToCamera = true;
+        this.abilityScreenBack.stationary = true;
+        this.abilityScreenBack.pos = 'up';
+        //map screen to the right
+        //pause appear
+        //this.createPauseMenu(this);
         
 
     },
@@ -200,7 +217,8 @@ steamGame.Game.prototype = {
             this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            //this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -224,7 +242,7 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
-        if (this.menuState == 0) {
+        if (this.menuState == 'none') {
             /***************************************** Player HP manager ******************************************************************************************/
             if (this.player.currentHP < this.player.maxHP) {
                 this.player.diffHP = this.player.maxHP - this.player.currentHP;
@@ -499,6 +517,27 @@ steamGame.Game.prototype = {
                     this.player.animations.play('idleLeft', 4, true);
                 }
             }
+            //moving any and all menus away
+            if (this.abilityScreenBack.pos == 'down') {
+                if (this.abilityScreenBack.cameraOffset.y > -1 * (this.game.camera.height / 2)) {
+                    this.abilityScreenBack.cameraOffset.y -= this.game.camera.height / 120;
+                    this.abilityScreenBack.stationary = false;
+                } else {
+                    this.abilityScreenBack.stationary = true;
+                    this.abilityScreenBack.pos = 'up';
+                }
+            }
+        }
+        if (this.menuState == 'ability') {
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            if (this.abilityScreenBack.cameraOffset.y < (this.game.camera.height / 2)) {
+                this.abilityScreenBack.cameraOffset.y += this.game.camera.height / 120;
+                this.abilityScreenBack.stationary = false;
+            } else {
+                this.abilityScreenBack.stationary = true;
+                this.abilityScreenBack.pos = 'down';
+            }
         }
     },
     debugHurt: function(player, walls) {
@@ -568,5 +607,14 @@ steamGame.Game.prototype = {
     collect: function(player, coin) {
         player.newC += coin.value;
         coin.destroy();
+    },
+    abilityTrans: function() {
+        if (this.abilityScreenBack.stationary == true) {
+            if (this.abilityScreenBack.pos == 'up') {
+                this.menuState = 'ability';
+            } else if (this.abilityScreenBack.pos == 'down') {
+                this.menuState = 'none';
+            }
+        }
     }
 };
