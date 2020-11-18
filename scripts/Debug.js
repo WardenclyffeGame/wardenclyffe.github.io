@@ -299,8 +299,8 @@ steamGame.Game.prototype = {
 
         this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
         //map screen to the right
-        this.mapOverworld = this.game.add.sprite(this.game.camera.width / 2, this.game.camera.y + (this.game.camera.height * 1.5), 'mapOverworld');
-        this.abilityScreenBack.anchor.setTo(0.5, 0.5);
+        this.mapOverworld = this.game.add.sprite(0, 0, 'mapOverworld');
+        this.mapOverworld.anchor.setTo(0.5, 0.5);
         this.mapOverworld.width = this.game.camera.width / 1.5;
         this.mapOverworld.height = this.game.camera.height * 0.8;
         this.mapGroup = this.game.add.group();
@@ -309,7 +309,11 @@ steamGame.Game.prototype = {
         this.mapGroup.stationary = true;
         this.mapGroup.pos = 'down';
 
-        this.mapGroup.maxH = this.mapOverworld.cameraOffset.y;
+        this.mapGroup.maxH = this.game.camera.height * 1.5;
+        this.mapGroup.cameraOffset = {
+            x: this.game.camera.width / 2,
+            y: this.game.camera.height * 1.5
+        }
         //pause appear
         //this.createPauseMenu(this);
         
@@ -325,7 +329,8 @@ steamGame.Game.prototype = {
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.debugText.MS = this.game.debug.text('mapPos:' + this.mapGroup.cameraOffset.y, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -630,7 +635,7 @@ steamGame.Game.prototype = {
             //moving any and all menus away
             if (this.ASGroup.pos == 'down') {
                 if (this.ASGroup.cameraOffset.y > this.ASGroup.maxH + (this.game.camera.height * 0.5)) {
-                    this.ASGroup.cameraOffset.y -= this.game.camera.height / 80;
+                    this.ASGroup.cameraOffset.y -= this.game.camera.height / 40;
                     this.ASGroup.stationary = false;
                 } else {
                     this.ASGroup.stationary = true;
@@ -638,8 +643,8 @@ steamGame.Game.prototype = {
                 }
             }
             if (this.mapGroup.pos == 'up') {
-                if (this.mapGroup.cameraOffset.y > this.mapGroup.maxH + (this.game.camera.height * 0.5)) {
-                    this.mapGroup.cameraOffset.y -= this.game.camera.height / 80;
+                if (this.mapGroup.cameraOffset.y < this.mapGroup.maxH) {
+                    this.mapGroup.cameraOffset.y += this.game.camera.height / 40;
                     this.mapGroup.stationary = false;
                 } else {
                     this.mapGroup.stationary = true;
@@ -648,11 +653,20 @@ steamGame.Game.prototype = {
             }
         }
         if (this.menuState == 'ability') {
+            if (this.mapGroup.pos == 'up') {
+                if (this.mapGroup.cameraOffset.y < this.mapGroup.maxH) {
+                    this.mapGroup.cameraOffset.y += this.game.camera.height / 40;
+                    this.mapGroup.stationary = false;
+                } else {
+                    this.mapGroup.stationary = true;
+                    this.mapGroup.pos = 'down';
+                }
+            }
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
             this.animationName = "stopped";
             if (this.ASGroup.cameraOffset.y < this.ASGroup.maxH + (this.game.camera.height * 1.5)) {
-                this.ASGroup.cameraOffset.y += this.game.camera.height / 80;
+                this.ASGroup.cameraOffset.y += this.game.camera.height / 40;
                 this.ASGroup.stationary = false;
             } else {
                 this.ASGroup.stationary = true;
@@ -699,11 +713,20 @@ steamGame.Game.prototype = {
             }
         }
         if (this.menuState == 'map') {
+            if (this.ASGroup.pos == 'down') {
+                if (this.ASGroup.cameraOffset.y > this.ASGroup.maxH + (this.game.camera.height * 0.5)) {
+                    this.ASGroup.cameraOffset.y -= this.game.camera.height / 40;
+                    this.ASGroup.stationary = false;
+                } else {
+                    this.ASGroup.stationary = true;
+                    this.ASGroup.pos = 'up';
+                }
+            }
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
             this.animationName = "stopped";
-            if (this.mapGroup.cameraOffset.y > this.mapGroup.maxH - (this.game.camera.height / 2)) {
-                this.mapGroup.cameraOffset.y -= this.game.camera.height / 80;
+            if (this.mapGroup.cameraOffset.y > this.game.camera.height / 2) {
+                this.mapGroup.cameraOffset.y -= this.game.camera.height / 40;
                 this.mapGroup.stationary = false;
             } else {
                 this.mapGroup.stationary = true;
