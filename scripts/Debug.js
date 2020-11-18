@@ -215,11 +215,19 @@ steamGame.Game.prototype = {
         this.ASGroup.stationary = true;
         this.ASGroup.pos = 'up';
 
+        //bomb script
         this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0.9 * 32), 'Bomb');
         this.ASBomb.anchor.setTo(0.5, 0.5);
         this.ASBomb.frame = 1;
         this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASBomb);
+        //winan script
+        this.ASWinan = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0.9 * 32), 'Winan');
+        this.ASWinan.anchor.setTo(0.4, 0.4);
+        this.ASWinan.frame = 1;
+        this.ASWinan.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASWinan);
+
         this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
         //map screen to the right
         //pause appear
