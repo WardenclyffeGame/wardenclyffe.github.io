@@ -91,7 +91,7 @@ steamGame.Game.prototype = {
         this.player.currentHP = this.playerData.currentHP || this.player.maxHP;
         this.player.maxSteam = this.playerData.maxSteam || 100;
         this.player.currentSteam = this.playerData.currentSteam || this.player.maxSteam;
-        this.player.maxEnergy = this.playerData.maxEnergy || 100;
+        this.player.maxEnergy = this.playerData.maxEnergy || 50;
         this.player.currentEnergy = this.playerData.currentEnergy || this.player.maxEnergy;
         this.player.currency = this.playerData.currency || 0;
         this.player.currencyData = {};
@@ -335,7 +335,7 @@ steamGame.Game.prototype = {
 
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
-        this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam, null, this);
+        this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
@@ -640,6 +640,21 @@ steamGame.Game.prototype = {
 
             if (this.player.hasBomb == true) {
                 this.ASBomb.frame = 0;
+            }
+            if (this.player.hasWinan == true) {
+                this.ASWinan.frame = 0;
+            }
+            if (this.player.hasHook == true) {
+                this.ASHook.frame = 0;
+            }
+            if (this.player.hasSteamShield == true) {
+                this.ASSteamShield.frame = 0;
+            }
+            if (this.player.hasLightRod == true) {
+                this.ASLightRod.frame = 0;
+            }
+            if (this.player.hasBoots == true) {
+                this.ASBoots.frame = 0;
             }
             if (this.animationName == 'stopped') {
                 if (this.direction == 'down') {

@@ -127,11 +127,11 @@ steamGame.MainMenu.prototype = {
                 //currentHP: ,
                 maxSteam: 100,
                 //currentSteam: ,
-                maxEnergy: 100,
+                maxEnergy: 50,
                 //currentEnergy: ,
                 currency: 0,
                 ability: '',
-                dash: false,
+                hasboots: false,
                 //add more things in the future
             };
             this.game.state.start('Debug');
@@ -295,11 +295,11 @@ steamGame.MainMenu.prototype = {
                         //currentHP: ,
                         maxSteam: 100,
                         //currentSteam: ,
-                        maxEnergy: 100,
+                        maxEnergy: 50,
                         //currentEnergy: ,
                         currency: 0,
                         ability: '',
-                        dash: false,
+                        hasboots: false,
                         //add more things in the future
                     };
                     this.game.state.start('Debug');
@@ -311,11 +311,11 @@ steamGame.MainMenu.prototype = {
                         //currentHP: ,
                         maxSteam: 100,
                         //currentSteam: ,
-                        maxEnergy: 100,
+                        maxEnergy: 50,
                         //currentEnergy: ,
                         currency: 0,
                         ability: '',
-                        dash: false,
+                        hasboots: false,
                         //add more things in the future
                     };
                     this.game.state.start('Debug');
