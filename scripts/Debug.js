@@ -241,7 +241,7 @@ steamGame.Game.prototype = {
         this.ASLightRod.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASLightRod);
         
-        //SECOND ROW 
+        //ROW 2
         //bomb 
         this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Bomb');
         this.ASBomb.anchor.setTo(0.5, 0.5);
@@ -249,7 +249,7 @@ steamGame.Game.prototype = {
         this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASBomb);
 
-        //THIRD ROW
+        //ROW 3
         //boots 
         this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
         this.ASBoots.anchor.setTo(0.5, 0.5);
