@@ -31,6 +31,7 @@ steamGame.Game.prototype = {
         debugKey = this.game.input.keyboard.addKey(48); // 0
 
         abilityScreenKey.onDown.add(this.abilityTrans, this);
+        mapKey.onDown.add(this.mapTrans, this);
 
         this.game.input.keyboard.addKeyCapture(9);
 
@@ -298,6 +299,17 @@ steamGame.Game.prototype = {
 
         this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
         //map screen to the right
+        this.mapOverworld = this.game.add.sprite(this.game.camera.width / 2, this.game.camera.y + (this.game.camera.height * 1.5), 'mapOverworld');
+        this.abilityScreenBack.anchor.setTo(0.5, 0.5);
+        this.mapOverworld.width = this.game.camera.width / 1.5;
+        this.mapOverworld.height = this.game.camera.height * 0.8;
+        this.mapGroup = this.game.add.group();
+        this.mapGroup.add(this.mapOverworld);
+        this.mapGroup.fixedToCamera = true;
+        this.mapGroup.stationary = true;
+        this.mapGroup.pos = 'down';
+
+        this.mapGroup.maxH = this.mapOverworld.cameraOffset.y;
         //pause appear
         //this.createPauseMenu(this);
         
@@ -625,6 +637,15 @@ steamGame.Game.prototype = {
                     this.ASGroup.pos = 'up';
                 }
             }
+            if (this.mapGroup.pos == 'up') {
+                if (this.mapGroup.cameraOffset.y > this.mapGroup.maxH + (this.game.camera.height * 0.5)) {
+                    this.mapGroup.cameraOffset.y -= this.game.camera.height / 80;
+                    this.mapGroup.stationary = false;
+                } else {
+                    this.mapGroup.stationary = true;
+                    this.mapGroup.pos = 'down';
+                }
+            }
         }
         if (this.menuState == 'ability') {
             this.player.body.velocity.x = 0;
@@ -656,6 +677,39 @@ steamGame.Game.prototype = {
             if (this.player.hasBoots == true) {
                 this.ASBoots.frame = 0;
             }
+            if (this.animationName == 'stopped') {
+                if (this.direction == 'down') {
+                    this.player.animations.play('idleDown', 4, true);
+                    if (this.player.scale.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
+                }
+                if (this.direction == 'right') {
+                    this.player.animations.play('idleRight', 4, true);
+                }
+                if (this.direction == 'up') {
+                    this.player.animations.play('idleUp', 4, true);
+                    if (this.player.scale.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
+                }
+                if (this.direction == 'left') {
+                    this.player.animations.play('idleLeft', 4, true);
+                }
+            }
+        }
+        if (this.menuState == 'map') {
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            this.animationName = "stopped";
+            if (this.mapGroup.cameraOffset.y > this.mapGroup.maxH - (this.game.camera.height / 2)) {
+                this.mapGroup.cameraOffset.y -= this.game.camera.height / 80;
+                this.mapGroup.stationary = false;
+            } else {
+                this.mapGroup.stationary = true;
+                this.mapGroup.pos = 'up';
+            }
+
             if (this.animationName == 'stopped') {
                 if (this.direction == 'down') {
                     this.player.animations.play('idleDown', 4, true);
@@ -754,10 +808,23 @@ steamGame.Game.prototype = {
     },
     abilityTrans: function() {
         if (this.ASGroup.stationary == true) {
-            if (this.ASGroup.pos == 'up') {
-                this.menuState = 'ability';
-            } else if (this.ASGroup.pos == 'down') {
-                this.menuState = 'none';
+            if (this.menuState == 'none' || this.menuState == 'ability') {
+                if (this.ASGroup.pos == 'up') {
+                    this.menuState = 'ability';
+                } else if (this.ASGroup.pos == 'down') {
+                    this.menuState = 'none';
+                }
+            }
+        }
+    },
+    mapTrans: function() {
+        if (this.mapGroup.stationary == true) {
+            if (this.menuState == 'none' || this.menuState == 'map') {
+                if (this.mapGroup.pos == 'down') {
+                    this.menuState = 'map';
+                } else if (this.mapGroup.pos == 'up') {
+                    this.menuState = 'none';
+                }
             }
         }
     }
