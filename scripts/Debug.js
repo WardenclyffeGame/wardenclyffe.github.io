@@ -215,30 +215,50 @@ steamGame.Game.prototype = {
         this.ASGroup.stationary = true;
         this.ASGroup.pos = 'up';
 
-        //bomb script
-        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0.9 * 32), 'Bomb');
-        this.ASBomb.anchor.setTo(0.5, 0.5);
-        this.ASBomb.frame = 1;
-        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBomb);
-        //winan script
-        this.ASWinan = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 20), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0.9 * 32), 'winan');
+        //ROW 1
+        //winan 
+        this.ASWinan = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'winan');
         this.ASWinan.anchor.setTo(0.5, 0.5);
         this.ASWinan.frame = 1;
         this.ASWinan.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASWinan);
-        //hook script
-        this.ASHook = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 8), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0.9 * 32), 'Hook');
+        //hook 
+        this.ASHook = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'Hook');
         this.ASHook.anchor.setTo(0.5, 0.5);
         this.ASHook.frame = 1;
         this.ASHook.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASHook);
-        //lightRod script
-        this.ASLightRod = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -4), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0.9 * 32), 'lightRod');
+        //steamShield 
+        this.ASSteamShield = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 4), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'steamShield');
+        this.ASSteamShield.anchor.setTo(0.5, 0.5);
+        this.ASSteamShield.frame = 1;
+        this.ASSteamShield.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASSteamShield);
+         //lightRod 
+        this.ASLightRod = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'lightRod');
         this.ASLightRod.anchor.setTo(0.5, 0.5);
         this.ASLightRod.frame = 1;
         this.ASLightRod.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASLightRod);
+        
+        //SECOND ROW 
+        //bomb 
+        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Bomb');
+        this.ASBomb.anchor.setTo(0.5, 0.5);
+        this.ASBomb.frame = 1;
+        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBomb);
+
+        //THIRD ROW
+        //boots 
+        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
+        this.ASBoots.anchor.setTo(0.5, 0.5);
+        this.ASBoots.frame = 1;
+        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBoots);
+        
+        
+       
 
         this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
         //map screen to the right
