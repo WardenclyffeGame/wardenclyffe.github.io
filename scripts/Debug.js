@@ -629,6 +629,7 @@ steamGame.Game.prototype = {
         if (this.menuState == 'ability') {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
+            this.animationName = "stopped";
             if (this.ASGroup.cameraOffset.y < this.ASGroup.maxH + (this.game.camera.height * 1.5)) {
                 this.ASGroup.cameraOffset.y += this.game.camera.height / 80;
                 this.ASGroup.stationary = false;
@@ -639,6 +640,26 @@ steamGame.Game.prototype = {
 
             if (this.player.hasBomb == true) {
                 this.ASBomb.frame = 0;
+            }
+            if (this.animationName == 'stopped') {
+                if (this.direction == 'down') {
+                    this.player.animations.play('idleDown', 4, true);
+                    if (this.player.scale.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
+                }
+                if (this.direction == 'right') {
+                    this.player.animations.play('idleRight', 4, true);
+                }
+                if (this.direction == 'up') {
+                    this.player.animations.play('idleUp', 4, true);
+                    if (this.player.scale.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
+                }
+                if (this.direction == 'left') {
+                    this.player.animations.play('idleLeft', 4, true);
+                }
             }
         }
     },
