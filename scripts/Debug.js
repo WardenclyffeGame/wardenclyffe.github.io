@@ -115,7 +115,7 @@ steamGame.Game.prototype = {
         this.menuState = 'none';
 
         //testing object for slashing
-        this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'KronaL');
+        this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'Bomb');
         this.game.physics.arcade.enable(this.dummy);
         this.dummy.hit = false;
         this.dummy.maxHP = 3;
