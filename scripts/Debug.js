@@ -96,8 +96,13 @@ steamGame.Game.prototype = {
         this.player.currency = this.playerData.currency || 0;
         this.player.currencyData = {};
         this.player.newC = this.player.currency;
-
+        //ability declarations
         this.player.hasBomb = this.playerData.hasBomb || false;
+        this.player.hasBoots = this.playerData.hasBoots || false;
+        this.player.hasWinan = this.playerData.hasWinan || false;
+        this.player.hasHook = this.playerData.hasHook || false;
+        this.player.hasSteamShield = this.playerData.hasSteamShield || false;
+        this.player.hasLightRod = this.playerData.hasLightRod || false;
 
         this.player.timer = 75;
         this.player.newSLevel = 0;
