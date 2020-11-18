@@ -121,6 +121,12 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
 
+        this.dummy = this.game.add.sprite(this.game.world.centerX + 110, this.game.world.centerY, 'winan');
+        this.game.physics.arcade.enable(this.dummy);
+        this.dummy.hit = false;
+        this.dummy.maxHP = 3;
+        this.dummy.currentHP = this.dummy.maxHP;
+
         this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 100, this.game.world.centerY, 'KronaG');
         this.game.physics.arcade.enable(this.kronaTestG);
         this.kronaTestG.value = 60;
