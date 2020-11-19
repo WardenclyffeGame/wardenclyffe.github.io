@@ -477,50 +477,6 @@ steamGame.Game.prototype = {
                 this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
             }
 
-            /***************************************** Currency tracker **************************************************************************************************/
-            if (this.player.newC != this.player.currency) {
-                this.player.currency = this.player.newC;
-                //this.changeTicker(this.player.currency, this.ticker, this.player.currencyData);
-                this.player.currencyData.digit1 = Math.floor(this.player.currency / 1000);
-                this.player.currencyData.digit2 = Math.floor(this.player.currency / 100) - (this.player.currencyData.digit1 * 10);
-                this.player.currencyData.digit3 = Math.floor(this.player.currency / 10) - (this.player.currencyData.digit1 * 100) - (this.player.currencyData.digit2 * 10);
-                this.player.currencyData.digit4 = this.player.currency - (this.player.currencyData.digit1 * 1000) - (this.player.currencyData.digit2 * 100) - (this.player.currencyData.digit3 * 10);
-                this.ticker.plate1.animations.play('flip', 12, false);
-                this.ticker.plate2.animations.play('flip', 12, false);
-                this.ticker.plate3.animations.play('flip', 12, false);
-                this.ticker.plate4.animations.play('flip', 12, false);
-            }
-
-            if(this.ticker.plate1.animations.isPlaying != true) {
-                if (this.ticker.plate1.frame >= 15 && this.ticker.plate1.frame != this.player.currencyData.digit1) {
-                    this.ticker.plate1.frame = this.player.currencyData.digit1;
-                } else if(this.ticker.plate1.frame == 15) {
-                    this.ticker.plate1.frame = this.player.currencyData.digit1;
-                }
-            }
-            if(this.ticker.plate2.animations.isPlaying != true) {
-                if (this.ticker.plate2.frame >= 15 && this.ticker.plate2.frame != this.player.currencyData.digit2) {
-                    this.ticker.plate2.frame = this.player.currencyData.digit2;
-                } else if(this.ticker.plate2.frame == 15) {
-                    this.ticker.plate2.frame = this.player.currencyData.digit2;
-                }
-            }
-            if(this.ticker.plate3.animations.isPlaying != true) {
-                if (this.ticker.plate3.frame >= 15 && this.ticker.plate3.frame != this.player.currencyData.digit3) {
-                    this.ticker.plate3.frame = this.player.currencyData.digit3;
-                } else if(this.ticker.plate3.frame == 15) {
-                    this.ticker.plate3.frame = this.player.currencyData.digit3;
-                }
-            }
-            if(this.ticker.plate4.animations.isPlaying != true) {
-                if (this.ticker.plate4.frame >= 15 && this.ticker.plate4.frame != this.player.currencyData.digit4) {
-                    this.ticker.plate4.frame = this.player.currencyData.digit4;
-                } else if(this.ticker.plate4.frame == 15) {
-                    this.ticker.plate4.frame = this.player.currencyData.digit4;
-                }
-            }
-
-
             /***************************************** Player Movement Handling ******************************************************************************************/
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
@@ -899,6 +855,48 @@ steamGame.Game.prototype = {
                 if (this.direction == 'left') {
                     this.player.animations.play('idleLeft', 4, true);
                 }
+            }
+        }
+        /***************************************** Currency tracker **************************************************************************************************/
+        if (this.player.newC != this.player.currency) {
+            this.player.currency = this.player.newC;
+            //this.changeTicker(this.player.currency, this.ticker, this.player.currencyData);
+            this.player.currencyData.digit1 = Math.floor(this.player.currency / 1000);
+            this.player.currencyData.digit2 = Math.floor(this.player.currency / 100) - (this.player.currencyData.digit1 * 10);
+            this.player.currencyData.digit3 = Math.floor(this.player.currency / 10) - (this.player.currencyData.digit1 * 100) - (this.player.currencyData.digit2 * 10);
+            this.player.currencyData.digit4 = this.player.currency - (this.player.currencyData.digit1 * 1000) - (this.player.currencyData.digit2 * 100) - (this.player.currencyData.digit3 * 10);
+            this.ticker.plate1.animations.play('flip', 12, false);
+            this.ticker.plate2.animations.play('flip', 12, false);
+            this.ticker.plate3.animations.play('flip', 12, false);
+            this.ticker.plate4.animations.play('flip', 12, false);
+        }
+
+        if(this.ticker.plate1.animations.isPlaying != true) {
+            if (this.ticker.plate1.frame >= 15 && this.ticker.plate1.frame != this.player.currencyData.digit1) {
+                this.ticker.plate1.frame = this.player.currencyData.digit1;
+            } else if(this.ticker.plate1.frame == 15) {
+                this.ticker.plate1.frame = this.player.currencyData.digit1;
+            }
+        }
+        if(this.ticker.plate2.animations.isPlaying != true) {
+            if (this.ticker.plate2.frame >= 15 && this.ticker.plate2.frame != this.player.currencyData.digit2) {
+                this.ticker.plate2.frame = this.player.currencyData.digit2;
+            } else if(this.ticker.plate2.frame == 15) {
+                this.ticker.plate2.frame = this.player.currencyData.digit2;
+            }
+        }
+        if(this.ticker.plate3.animations.isPlaying != true) {
+            if (this.ticker.plate3.frame >= 15 && this.ticker.plate3.frame != this.player.currencyData.digit3) {
+                this.ticker.plate3.frame = this.player.currencyData.digit3;
+            } else if(this.ticker.plate3.frame == 15) {
+                this.ticker.plate3.frame = this.player.currencyData.digit3;
+            }
+        }
+        if(this.ticker.plate4.animations.isPlaying != true) {
+            if (this.ticker.plate4.frame >= 15 && this.ticker.plate4.frame != this.player.currencyData.digit4) {
+                this.ticker.plate4.frame = this.player.currencyData.digit4;
+            } else if(this.ticker.plate4.frame == 15) {
+                this.ticker.plate4.frame = this.player.currencyData.digit4;
             }
         }
     },
