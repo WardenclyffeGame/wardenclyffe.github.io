@@ -104,6 +104,8 @@ steamGame.Game.prototype = {
         this.player.hasHook = this.playerData.hasHook || false;
         this.player.hasSteamShield = this.playerData.hasSteamShield || false;
         this.player.hasLightRod = this.playerData.hasLightRod || false;
+        this.player.hasBoomerang = this.playerData.hasBoomerang || false;
+        this.player.hasGreekFire = this.playerData.hasGreekFire || false;
         this.player.curAbil = this.playerData.curAbil || null;
 
         this.player.timer = 75;
@@ -256,18 +258,18 @@ steamGame.Game.prototype = {
         this.ASBomb.frame = 1;
         this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASBomb);
-        //blank
-        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Bomb');
-        this.ASBomb.anchor.setTo(0.5, 0.5);
-        this.ASBomb.frame = 1;
-        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBomb);
-        //blank
-        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 4), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Bomb');
-        this.ASBomb.anchor.setTo(0.5, 0.5);
-        this.ASBomb.frame = 1;
-        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBomb);
+        //boomerang
+        this.ASBoomerang = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Boomerang');
+        this.ASBoomerang.anchor.setTo(0.5, 0.5);
+        this.ASBoomerang.frame = 1;
+        this.ASBoomerang.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBoomerang);
+        //greek fire
+        this.ASGreekFire = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 4), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'GreekFire');
+        this.ASGreekFire.anchor.setTo(0.5, 0.5);
+        this.ASGreekFire.frame = 1;
+        this.ASGreekFire.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASGreekFire);
         //blank
         this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Bomb');
         this.ASBomb.anchor.setTo(0.5, 0.5);
@@ -617,10 +619,10 @@ steamGame.Game.prototype = {
 
             if (this.frameAbil.name != this.ASGroup.curAbil) {
                 this.frameAbil.destroy();
-                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), this.ASGroup.curAbil);
+                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), this.ASGroup.curAbil);
                 this.frameAbil.anchor.setTo(1,0);
                 this.frameAbil.fixedToCamera = true;
-                this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+                this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
                 this.frameAbil.name = this.ASGroup.curAbil;
             }
             //moving any and all menus away
@@ -689,11 +691,22 @@ steamGame.Game.prototype = {
                 this.ASGroup.selPos.pos4 = 'LightRod';
                 this.hasItems = true;
             }
+            if (this.player.hasBoomerang == true) {
+                this.ASBoomerang.frame = 0;
+                this.ASGroup.selPos.pos6 = 'Boomerang';
+                this.hasItems = true;
+            }
+            if (this.player.hasGreekFire == true) {
+                this.ASGreekFire.frame = 0;
+                this.ASGroup.selPos.pos7 = 'GreekFire';
+                this.hasItems = true;
+            }
             if (this.player.hasBoots == true) {
                 this.ASBoots.frame = 0;
                 this.ASGroup.selPos.pos13 = 'Boots';
                 this.hasItems = true;
             }
+            
 
             if (upKey.isDown || upArrow.isDown) {
                 if (upKey.isDown && upKey.duration < 2) {
@@ -791,10 +804,10 @@ steamGame.Game.prototype = {
 
             if (this.frameAbil.name != this.ASGroup.selPos['pos' + this.ASGroup.curPos] && this.frameAbil.name != 'none') {
                 this.frameAbil.destroy();
-                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), this.ASGroup.selPos['pos' + this.ASGroup.curPos]);
+                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), this.ASGroup.selPos['pos' + this.ASGroup.curPos]);
                 this.frameAbil.anchor.setTo(1,0);
                 this.frameAbil.fixedToCamera = true;
-                this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+                this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
                 this.frameAbil.name = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
                 this.ASGroup.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
             }

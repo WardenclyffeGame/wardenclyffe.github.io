@@ -302,6 +302,8 @@ steamGame.MainMenu.prototype = {
                         hasBoots: false,
                         hasWinan: true,
                         hasHook: true,
+                        hasBoomerang: true,
+                        hasGreekFire: true,
                         curAbil: 'Hook',
                         //add more things in the future
                     };
