@@ -203,11 +203,11 @@ steamGame.Game.prototype = {
         this.frame.fixedToCamera = true;
         this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
 
-        this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 'Bomb');
+        this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2));
         this.frameAbil.anchor.setTo(1,0);
         this.frameAbil.fixedToCamera = true;
         this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.frameAbil.name = 'Bomb';
+        this.frameAbil.name = 'none';
 
 
         /*******************************************MENU SCREENS********************************************/
@@ -310,7 +310,7 @@ steamGame.Game.prototype = {
 
         this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
         this.ASGroup.selPos = {};
-        this.ASGroup.curAbil = 'Boots';
+        this.ASGroup.curAbil = 'none';
         //map screen to the right
         this.mapOverworld = this.game.add.sprite(0, 0, 'mapOverworld');
         this.mapOverworld.anchor.setTo(0.5, 0.5);
