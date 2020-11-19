@@ -343,7 +343,7 @@ steamGame.Game.prototype = {
             this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.debugText.MS = this.game.debug.text('mapPos:' + this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].cameraOffset.y, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -726,56 +726,95 @@ steamGame.Game.prototype = {
                 this.hasItems = true;
             }
 
-            if (upKey.duration > 0 || upArrow.duration > 0) {
-                if (upKey.duration < 2 && upArrow.duration < 2) {
-                    if (this.ASGroup.curPos != null) {
-                        if (this.ASGroup.pos['pos' + this.ASGroup.curPos - 4] != null) {
-                            this.ASSelector.cameraOffset = this['AS' + this.ASGroup.pos['pos' + this.ASGroup.curPos - 4]].cameraOffset;
-                            this.ASGroup.curPos -= 4;
-                        }
+            if (upKey.isDown || upArrow.isDown) {
+                if (upKey.isDown && upKey.duration < 2) {
+                    if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 4)]]) {
+                        this.ASGroup.curPos -= 4;
+                    } else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 8)]]) {
+                        this.ASGroup.curPos -= 8;
                     }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                         upKey.duration = 0;
+                    }, this);
+                }
+                if (upArrow.isDown && upArrow.duration < 2) {
+                    if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 4)]]) {
+                        this.ASGroup.curPos -= 4;
+                    } else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 8)]]) {
+                        this.ASGroup.curPos -= 8;
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                         upArrow.duration = 0;
                     }, this);
                 }
-            } else if (downKey.duration > 0 || downArrow.duration > 0) {
-                if (downKey.duration < 2 && downArrow.duration < 2) {
-                    if (this.ASGroup.curPos != null) {
-                        if (this.ASGroup.pos['pos' + this.ASGroup.curPos + 4] != null && this.ASGroup.pos['pos' + this.ASGroup.curPos + 4] < 13) {
-                            this.ASSelector.cameraOffset = this['AS' + this.ASGroup.pos['pos' + this.ASGroup.curPos + 4]].cameraOffset;
-                            this.ASGroup.curPos += 4;
-                        }
+            } else if (downKey.isDown || downArrow.isDown) {
+                if (downKey.isDown && downKey.duration < 2) {
+                    if (this.ASGroup.curPos != null && this.ASGroup.curPos + 4 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 4)]]) {
+                        this.ASGroup.curPos += 4;
+                    } else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 8 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 8)]]) {
+                        this.ASGroup.curPos += 8;
                     }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                         downKey.duration = 0;
+                    }, this);
+                }
+                if (downArrow.isDown && downArrow.duration < 2) {
+                    if (this.ASGroup.curPos != null && this.ASGroup.curPos + 4 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 4)]]) {
+                        this.ASGroup.curPos += 4;
+                    } else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 8 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 8)]]) {
+                        this.ASGroup.curPos += 8;
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                         downArrow.duration = 0;
                     }, this);
                 }
-            } else if (rightKey.duration > 0 || rightArrow.duration > 0) {
-                if (rightKey.duration < 2 && rightArrow.duration < 2) {
-                    if (this.ASGroup.curPos != null) {
-                        if (this.ASGroup.pos['pos' + this.ASGroup.curPos + 1] != null && this.ASGroup.pos['pos' + this.ASGroup.curPos + 1] < 13) {
-                            this.ASSelector.cameraOffset = this['AS' + this.ASGroup.pos['pos' + this.ASGroup.curPos + 1]].cameraOffset;
-                            this.ASGroup.curPos += 1;
-                        }
+            } else if (rightKey.isDown || rightArrow.isDown) {
+                if (rightKey.isDown && rightKey.duration < 2) {
+                    if (this.ASGroup.curPos != null && this.ASGroup.curPos + 1 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 1)]]) {
+                        this.ASGroup.curPos += 1;
+                    }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 2 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 2)]]) {
+                        this.ASGroup.curPos += 2;
+                    }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 3 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 3)]]) {
+                        this.ASGroup.curPos += 3;
                     }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                         rightKey.duration = 0;
+                    }, this);
+                }
+                if (rightArrow.isDown && rightArrow.duration < 2) {
+                    if (this.ASGroup.curPos != null && this.ASGroup.curPos + 1 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 1)]]) {
+                        this.ASGroup.curPos += 1;
+                    }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 2 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 2)]]) {
+                        this.ASGroup.curPos += 2;
+                    }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 3 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 3)]]) {
+                        this.ASGroup.curPos += 3;
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                         rightArrow.duration = 0;
                     }, this);
                 }
-            } else if (leftKey.duration > 0 || leftArrow.duration > 0) {
-                if (leftKey.duration < 2 && leftArrow.duration < 2) {
-                    if (this.ASGroup.curPos != null) {
-                        if (this.ASGroup.pos['pos' + this.ASGroup.curPos - 1] != null) {
-                            this.ASSelector.cameraOffset = this['AS' + this.ASGroup.pos['pos' + this.ASGroup.curPos - 1]].cameraOffset;
-                            this.ASGroup.curPos -= 1;
-                            this.ASGroup.curAbil = this.ASGroup.pos[this.ASGroup.curPos];
-                        }
+            } else if (leftKey.isDown || leftArrow.isDown) {
+                if (leftKey.isDown && leftKey.duration < 2) {
+                    if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 1)]]) {
+                        this.ASGroup.curPos -= 1;
+                    }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 2)]]) {
+                        this.ASGroup.curPos -= 2;
+                    }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 3)]]) {
+                        this.ASGroup.curPos -= 3;
                     }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                         leftKey.duration = 0;
+                    }, this);
+                }
+                if (leftArrow.isDown && leftArrow.duration < 2) {
+                    if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 1)]]) {
+                        this.ASGroup.curPos -= 1;
+                    }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 2)]]) {
+                        this.ASGroup.curPos -= 2;
+                    }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 3)]]) {
+                        this.ASGroup.curPos -= 3;
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                         leftArrow.duration = 0;
                     }, this);
                 }
@@ -926,8 +965,12 @@ steamGame.Game.prototype = {
                 this.dummy.destroy();
                 this.collect(this.player, this.dummy);
                 this.player.hasBomb = true;
-                this.ASGroup.curPos = 5;
-                this.ASGroup.curAbil = 'Bomb';
+                this.player.hasWinan = true;
+                this.player.hasLightRod = true;
+                //this.player.hasSteamShield = true;
+                //this.player.hasHook = true;
+                this.ASGroup.curPos = 1;
+                this.ASGroup.curAbil = 'Winan';
             }
         }
     },
