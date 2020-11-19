@@ -299,7 +299,10 @@ steamGame.MainMenu.prototype = {
                         //currentEnergy: ,
                         currency: 0,
                         ability: '',
-                        hasboots: false,
+                        hasBoots: false,
+                        hasWinan: true,
+                        hasHook: true,
+                        curAbil: 'Hook',
                         //add more things in the future
                     };
                     this.game.state.start('Debug');

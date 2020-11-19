@@ -104,6 +104,7 @@ steamGame.Game.prototype = {
         this.player.hasHook = this.playerData.hasHook || false;
         this.player.hasSteamShield = this.playerData.hasSteamShield || false;
         this.player.hasLightRod = this.playerData.hasLightRod || false;
+        this.player.curAbil = this.playerData.curAbil || null;
 
         this.player.timer = 75;
         this.player.newSLevel = 0;
@@ -310,7 +311,19 @@ steamGame.Game.prototype = {
 
         this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
         this.ASGroup.selPos = {};
-        this.ASGroup.curAbil = 'none';
+        if(this.player.curAbil == null) {
+        } else if (this.player.curAbil == 'Winan') {
+            this.ASGroup.curPos = 1;
+        } else if (this.player.curAbil == 'Hook') {
+            this.ASGroup.curPos = 2;
+        } else if (this.player.curAbil == 'SteamShield') {
+            this.ASGroup.curPos = 3;
+        } else if (this.player.curAbil == 'LightRod') {
+            this.ASGroup.curPos = 4;
+        } else if (this.player.curAbil == 'Bomb') {
+            this.ASGroup.curPos = 5;
+        }
+        this.ASGroup.curAbil = this.player.curAbil;
         //map screen to the right
         this.mapOverworld = this.game.add.sprite(0, 0, 'mapOverworld');
         this.mapOverworld.anchor.setTo(0.5, 0.5);
@@ -783,6 +796,7 @@ steamGame.Game.prototype = {
                 this.frameAbil.fixedToCamera = true;
                 this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
                 this.frameAbil.name = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
+                this.ASGroup.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
             }
 
             if (this.hasItems == true) {
