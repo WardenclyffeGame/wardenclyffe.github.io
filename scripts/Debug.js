@@ -820,13 +820,13 @@ steamGame.Game.prototype = {
                 }
             }
 
-            if (this.frameAbil.name != this.ASGroup.curAbil) {
+            if (this.frameAbil.name != this.ASGroup.selPos['pos' + this.ASGroup.curPos] && this.frameAbil.name != 'none') {
                 this.frameAbil.destroy();
-                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), this.ASGroup.curAbil);
+                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), this.ASGroup.selPos['pos' + this.ASGroup.curPos]);
                 this.frameAbil.anchor.setTo(1,0);
                 this.frameAbil.fixedToCamera = true;
                 this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-                this.frameAbil.name = this.ASGroup.curAbil;
+                this.frameAbil.name = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
             }
 
             if (this.hasItems == true) {
