@@ -203,6 +203,12 @@ steamGame.Game.prototype = {
         this.frame.fixedToCamera = true;
         this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
 
+        this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 'Bomb');
+        this.frameAbil.anchor.setTo(1,0);
+        this.frameAbil.fixedToCamera = true;
+        this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.frameAbil.name = 'Bomb';
+
 
         /*******************************************MENU SCREENS********************************************/
         //ability screen above
@@ -218,7 +224,7 @@ steamGame.Game.prototype = {
 
         //ROW 1
         //winan 
-        this.ASWinan = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'winan');
+        this.ASWinan = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'Winan');
         this.ASWinan.anchor.setTo(0.5, 0.5);
         this.ASWinan.frame = 1;
         this.ASWinan.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
@@ -230,13 +236,13 @@ steamGame.Game.prototype = {
         this.ASHook.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASHook);
         //steamShield 
-        this.ASSteamShield = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 4), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'steamShield');
+        this.ASSteamShield = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 4), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'SteamShield');
         this.ASSteamShield.anchor.setTo(0.5, 0.5);
         this.ASSteamShield.frame = 1;
         this.ASSteamShield.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASSteamShield);
          //lightRod 
-        this.ASLightRod = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'lightRod');
+        this.ASLightRod = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'LightRod');
         this.ASLightRod.anchor.setTo(0.5, 0.5);
         this.ASLightRod.frame = 1;
         this.ASLightRod.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
@@ -293,11 +299,18 @@ steamGame.Game.prototype = {
         this.ASBoots.frame = 1;
         this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASBoots);
+
+        this.ASSelector = this.game.add.sprite((this.game.camera.width * 3) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'selector');
+        this.ASSelector.anchor.setTo(0.5, 0.5);
+        this.ASSelector.scale.setTo(this.scalingFactor * 1.7, this.scalingFactor * 1.7);
+        this.ASGroup.add(this.ASSelector);
         
         
        
 
         this.ASGroup.maxH = this.abilityScreenBack.cameraOffset.y;
+        this.ASGroup.selPos = {};
+        this.ASGroup.curAbil = 'Boots';
         //map screen to the right
         this.mapOverworld = this.game.add.sprite(0, 0, 'mapOverworld');
         this.mapOverworld.anchor.setTo(0.5, 0.5);
@@ -330,7 +343,7 @@ steamGame.Game.prototype = {
             this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.debugText.MS = this.game.debug.text('mapPos:' + this.mapGroup.cameraOffset.y, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.debugText.MS = this.game.debug.text('mapPos:' + this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].cameraOffset.y, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -632,6 +645,15 @@ steamGame.Game.prototype = {
                     this.player.animations.play('idleLeft', 4, true);
                 }
             }
+
+            if (this.frameAbil.name != this.ASGroup.curAbil) {
+                this.frameAbil.destroy();
+                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), this.ASGroup.curAbil);
+                this.frameAbil.anchor.setTo(1,0);
+                this.frameAbil.fixedToCamera = true;
+                this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+                this.frameAbil.name = this.ASGroup.curAbil;
+            }
             //moving any and all menus away
             if (this.ASGroup.pos == 'down') {
                 if (this.ASGroup.cameraOffset.y > this.ASGroup.maxH + (this.game.camera.height * 0.5)) {
@@ -675,22 +697,108 @@ steamGame.Game.prototype = {
 
             if (this.player.hasBomb == true) {
                 this.ASBomb.frame = 0;
+                this.ASGroup.selPos.pos5 = 'Bomb';
+                this.hasItems = true;
             }
             if (this.player.hasWinan == true) {
                 this.ASWinan.frame = 0;
+                this.ASGroup.selPos.pos1 = 'Winan';
+                this.hasItems = true;
             }
             if (this.player.hasHook == true) {
                 this.ASHook.frame = 0;
+                this.ASGroup.selPos.pos2 = 'Hook';
+                this.hasItems = true;
             }
             if (this.player.hasSteamShield == true) {
                 this.ASSteamShield.frame = 0;
+                this.ASGroup.selPos.pos3 = 'SteamShield';
+                this.hasItems = true;
             }
             if (this.player.hasLightRod == true) {
                 this.ASLightRod.frame = 0;
+                this.ASGroup.selPos.pos4 = 'LightRod';
+                this.hasItems = true;
             }
             if (this.player.hasBoots == true) {
                 this.ASBoots.frame = 0;
+                this.ASGroup.selPos.pos13 = 'Boots';
+                this.hasItems = true;
             }
+
+            if (upKey.duration > 0 || upArrow.duration > 0) {
+                if (upKey.duration < 2 && upArrow.duration < 2) {
+                    if (this.ASGroup.curPos != null) {
+                        if (this.ASGroup.pos['pos' + this.ASGroup.curPos - 4] != null) {
+                            this.ASSelector.cameraOffset = this['AS' + this.ASGroup.pos['pos' + this.ASGroup.curPos - 4]].cameraOffset;
+                            this.ASGroup.curPos -= 4;
+                        }
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){
+                        upKey.duration = 0;
+                        upArrow.duration = 0;
+                    }, this);
+                }
+            } else if (downKey.duration > 0 || downArrow.duration > 0) {
+                if (downKey.duration < 2 && downArrow.duration < 2) {
+                    if (this.ASGroup.curPos != null) {
+                        if (this.ASGroup.pos['pos' + this.ASGroup.curPos + 4] != null && this.ASGroup.pos['pos' + this.ASGroup.curPos + 4] < 13) {
+                            this.ASSelector.cameraOffset = this['AS' + this.ASGroup.pos['pos' + this.ASGroup.curPos + 4]].cameraOffset;
+                            this.ASGroup.curPos += 4;
+                        }
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){
+                        downKey.duration = 0;
+                        downArrow.duration = 0;
+                    }, this);
+                }
+            } else if (rightKey.duration > 0 || rightArrow.duration > 0) {
+                if (rightKey.duration < 2 && rightArrow.duration < 2) {
+                    if (this.ASGroup.curPos != null) {
+                        if (this.ASGroup.pos['pos' + this.ASGroup.curPos + 1] != null && this.ASGroup.pos['pos' + this.ASGroup.curPos + 1] < 13) {
+                            this.ASSelector.cameraOffset = this['AS' + this.ASGroup.pos['pos' + this.ASGroup.curPos + 1]].cameraOffset;
+                            this.ASGroup.curPos += 1;
+                        }
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){
+                        rightKey.duration = 0;
+                        rightArrow.duration = 0;
+                    }, this);
+                }
+            } else if (leftKey.duration > 0 || leftArrow.duration > 0) {
+                if (leftKey.duration < 2 && leftArrow.duration < 2) {
+                    if (this.ASGroup.curPos != null) {
+                        if (this.ASGroup.pos['pos' + this.ASGroup.curPos - 1] != null) {
+                            this.ASSelector.cameraOffset = this['AS' + this.ASGroup.pos['pos' + this.ASGroup.curPos - 1]].cameraOffset;
+                            this.ASGroup.curPos -= 1;
+                            this.ASGroup.curAbil = this.ASGroup.pos[this.ASGroup.curPos];
+                        }
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){
+                        leftKey.duration = 0;
+                        leftArrow.duration = 0;
+                    }, this);
+                }
+            }
+
+            if (this.frameAbil.name != this.ASGroup.curAbil) {
+                this.frameAbil.destroy();
+                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), this.ASGroup.curAbil);
+                this.frameAbil.anchor.setTo(1,0);
+                this.frameAbil.fixedToCamera = true;
+                this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+                this.frameAbil.name = this.ASGroup.curAbil;
+            }
+
+            if (this.hasItems == true) {
+                if (this.ASSelector.x != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x) {
+                    this.ASSelector.x = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x;
+                }
+                if (this.ASSelector.y != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y) {
+                    this.ASSelector.y = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y;
+                }
+            }
+
             if (this.animationName == 'stopped') {
                 if (this.direction == 'down') {
                     this.player.animations.play('idleDown', 4, true);
@@ -818,6 +926,8 @@ steamGame.Game.prototype = {
                 this.dummy.destroy();
                 this.collect(this.player, this.dummy);
                 this.player.hasBomb = true;
+                this.ASGroup.curPos = 5;
+                this.ASGroup.curAbil = 'Bomb';
             }
         }
     },

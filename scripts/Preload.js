@@ -46,10 +46,11 @@ steamGame.Preload.prototype = {
         this.load.image('abilityBack', 'sprites/game/abilityMenu.png');
             this.load.atlasJSONHash('Boots', 'sprites/game/Boots.png', 'sprites/game/jsonKeys/Boots.json');
         this.load.atlasJSONHash('Hook', 'sprites/game/Hook.png', 'sprites/game/jsonKeys/Hook.json');
-            this.load.atlasJSONHash('lightRod', 'sprites/game/lightRod.png', 'sprites/game/jsonKeys/lightRod.json');
-        this.load.atlasJSONHash('winan', 'sprites/game/winan.png', 'sprites/game/jsonKeys/winan.json');
-            this.load.atlasJSONHash('steamShield', 'sprites/game/steamShield.png', 'sprites/game/jsonKeys/steamShield.json');
+            this.load.atlasJSONHash('LightRod', 'sprites/game/lightRod.png', 'sprites/game/jsonKeys/lightRod.json');
+        this.load.atlasJSONHash('Winan', 'sprites/game/winan.png', 'sprites/game/jsonKeys/winan.json');
+            this.load.atlasJSONHash('SteamShield', 'sprites/game/steamShield.png', 'sprites/game/jsonKeys/steamShield.json');
         this.load.image('mapOverworld', 'maps/worldMapBack.png');
+            this.load.image('selector', 'sprites/game/selector.png');
     },
     create: function() {
         this.state.start('MainMenu');
