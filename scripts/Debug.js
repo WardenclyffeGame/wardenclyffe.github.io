@@ -32,8 +32,10 @@ steamGame.Game.prototype = {
 
         abilityScreenKey.onDown.add(this.abilityTrans, this);
         mapKey.onDown.add(this.mapTrans, this);
+        selectKey.onDown.add(this.pause, this);
 
         this.game.input.keyboard.addKeyCapture(9);
+        this.game.input.keyboard.addKeyCapture(27);
 
         //begin scene setup
         this.game.stage.backgroundColor = '#acbfbc';
@@ -378,7 +380,16 @@ steamGame.Game.prototype = {
             y: this.game.camera.height * 1.5
         }
         //pause appear
-        //this.createPauseMenu(this);
+        this.pauseMenu = this.game.add.sprite(this.game.camera.width / 2, this.game.camera.height / 2, 'plaque');
+        this.pauseMenu.anchor.setTo(0.5, 0.5);
+        this.pauseMenu.width = this.game.camera.width / 2;
+        this.pauseMenu.height = this.game.camera.height * 0.6;
+        this.pauseGroup = this.game.add.group();
+        this.pauseGroup.add(this.pauseMenu);
+        this.pauseGroup.fixedToCamera = true;
+        this.pauseGroup.stationary = true;
+        this.pauseGroup.pos = 'gone';
+        this.pauseGroup.alpha = 0;
         
 
     },
@@ -679,6 +690,10 @@ steamGame.Game.prototype = {
                     this.mapGroup.pos = 'down';
                 }
             }
+            if (this.pauseGroup.pos == 'there') {
+                this.pauseGroup.alpha = 0;
+                this.pauseGroup.pos = 'gone';
+            }
         }
         if (this.menuState == 'ability') {
             if (this.mapGroup.pos == 'up') {
@@ -929,6 +944,54 @@ steamGame.Game.prototype = {
                 }
             }
         }
+        if (this.menuState == 'pause') {
+            if (this.ASGroup.pos == 'down') {
+                if (this.ASGroup.cameraOffset.y > this.ASGroup.maxH + (this.game.camera.height * 0.5)) {
+                    this.ASGroup.cameraOffset.y -= this.game.camera.height / 40;
+                    this.ASGroup.stationary = false;
+                } else {
+                    this.ASGroup.stationary = true;
+                    this.ASGroup.pos = 'up';
+                }
+            }
+            if (this.mapGroup.pos == 'up') {
+                if (this.mapGroup.cameraOffset.y < this.mapGroup.maxH) {
+                    this.mapGroup.cameraOffset.y += this.game.camera.height / 40;
+                    this.mapGroup.stationary = false;
+                } else {
+                    this.mapGroup.stationary = true;
+                    this.mapGroup.pos = 'down';
+                }
+            }
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            this.animationName = "stopped";
+            if (this.pauseGroup.pos == 'gone') {
+                this.pauseGroup.alpha = 1;
+                this.pauseGroup.pos = 'there';
+            }
+
+            if (this.animationName == 'stopped') {
+                if (this.direction == 'down') {
+                    this.player.animations.play('idleDown', 4, true);
+                    if (this.player.scale.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
+                }
+                if (this.direction == 'right') {
+                    this.player.animations.play('idleRight', 4, true);
+                }
+                if (this.direction == 'up') {
+                    this.player.animations.play('idleUp', 4, true);
+                    if (this.player.scale.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
+                }
+                if (this.direction == 'left') {
+                    this.player.animations.play('idleLeft', 4, true);
+                }
+            }
+        }
         /***************************************** Currency tracker **************************************************************************************************/
         if (this.player.newC != this.player.currency) {
             this.player.currency = this.player.newC;
@@ -1071,6 +1134,17 @@ steamGame.Game.prototype = {
                 } else if (this.mapGroup.pos == 'up') {
                     this.menuState = 'none';
                 }
+            }
+        }
+    },
+    pause: function() {
+        if (this.mapGroup.pos == 'down' && this.ASGroup.pos == 'up' && this.mapGroup.stationary == true && this.ASGroup.stationary == true) {
+            if (this.pauseGroup.pos == 'gone') {
+                this.menuState = 'pause';
+                this.pauseGroup.alpha = 1;
+            } else if (this.pauseGroup.pos == 'there') {
+                this.menuState = 'none';
+                this.pauseGroup.alpha = 0;
             }
         }
     }
