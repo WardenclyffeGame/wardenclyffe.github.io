@@ -27,6 +27,7 @@ steamGame.Game.prototype = {
         abilityKey = this.game.input.keyboard.addKey(81) // q ability
         abilityScreenKey = this.game.input.keyboard.addKey(9); // tab ability screen
         dashKey = this.game.input.keyboard.addKey(16); // shift dash
+        enterKey = this.game.input.keyboard.addKey(13); // enter
 
         debugKey = this.game.input.keyboard.addKey(48); // 0
 
@@ -391,10 +392,33 @@ steamGame.Game.prototype = {
         this.pauseGroup.pos = 'gone';
         this.pauseGroup.alpha = 0;
 
-        this.pauseText = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 3), 'pixelFont', 'Pause', 10);
+        this.pauseText = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 3), 'pixelFont', 'Pause', 15);
         this.pauseText.anchor.setTo(0.5, 0.5);
         this.pauseText.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
         this.pauseGroup.add(this.pauseText);
+
+        this.pauseTextC = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 12), 'pixelFont', 'Continue', 10);
+        this.pauseTextC.anchor.setTo(0.5, 0.5);
+        this.pauseTextC.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.pauseGroup.add(this.pauseTextC);
+
+        this.pauseTextS = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) + (this.pauseMenu.height / 12), 'pixelFont', 'Save', 10);
+        this.pauseTextS.anchor.setTo(0.5, 0.5);
+        this.pauseTextS.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.pauseGroup.add(this.pauseTextS);
+
+        this.pauseTextSQ = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) + (this.pauseMenu.height / 4), 'pixelFont', 'Save and Quit', 10);
+        this.pauseTextSQ.anchor.setTo(0.5, 0.5);
+        this.pauseTextSQ.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.pauseGroup.add(this.pauseTextSQ);
+
+        this.pausePointer = this.game.add.sprite((this.game.camera.width / 2) - (this.pauseTextSQ.width * (2 / 3)), (this.game.camera.height / 2) - (this.pauseMenu.height / 12), 'menuPointer');
+        this.pausePointer.anchor.setTo(1, 0.5);
+        this.pauseTextSQ.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.pausePointer.animations.add('spin', [0, 0, 1, 2, 3, 4, 4, 3, 2, 1]);
+        this.pausePointer.animations.play('spin', 12, true)
+        this.pausePointer.pos = 1;
+        this.pauseGroup.add(this.pausePointer);
         
 
     },
@@ -974,6 +998,75 @@ steamGame.Game.prototype = {
             if (this.pauseGroup.pos == 'gone') {
                 this.pauseGroup.alpha = 1;
                 this.pauseGroup.pos = 'there';
+            }
+
+            if (spaceKey.isDown || enterKey.isDown) {
+                if (this.pausePointer.pos == 1) {
+                    this.pause(this);
+                } else if (this.pausePointer.pos == 2) {
+                    //this.save(this);
+                } else if (this.pausePointer.pos == 3) {
+                    //this.save(this);
+                    //quit function
+                }
+            }
+
+            if (downKey.isDown || downArrow.isDown) {
+                if (downKey.isDown && downKey.duration < 1) {
+                    if (this.pausePointer.pos == 3) {
+                        this.pausePointer.pos = 1;
+                    } else {
+                        this.pausePointer.pos += 1;
+                    }
+
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                        downKey.duration = 0;
+                    }, this);
+                }
+                if (downArrow.isDown && downArrow.duration < 1) {
+                    if (this.pausePointer.pos == 3) {
+                        this.pausePointer.pos = 1;
+                    } else {
+                        this.pausePointer.pos += 1;
+                    }
+
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                        downArrow.duration = 0;
+                    }, this);
+                }
+            }
+
+            if (upKey.isDown || upArrow.isDown) {
+                if (upKey.isDown && upKey.duration < 1) {
+                    if (this.pausePointer.pos == 1) {
+                        this.pausePointer.pos = 3;
+                    } else {
+                        this.pausePointer.pos -= 1;
+                    }
+
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                        upKey.duration = 0;
+                    }, this);
+                }
+                if (upArrow.isDown && upArrow.duration < 1) {
+                    if (this.pausePointer.pos == 1) {
+                        this.pausePointer.pos = 3;
+                    } else {
+                        this.pausePointer.pos -= 1;
+                    }
+
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                        upArrow.duration = 0;
+                    }, this);
+                }
+            }
+
+            if (this.pausePointer.pos == 1) {
+                this.pausePointer.y = (this.game.camera.height / 2) - (this.pauseMenu.height / 12);
+            } else if (this.pausePointer.pos == 2) {
+                this.pausePointer.y = (this.game.camera.height / 2) + (this.pauseMenu.height / 12);
+            } else if (this.pausePointer.pos == 3) {
+                this.pausePointer.y = (this.game.camera.height / 2) + (this.pauseMenu.height / 4);
             }
 
             if (this.animationName == 'stopped') {
