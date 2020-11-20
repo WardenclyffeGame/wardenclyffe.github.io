@@ -427,6 +427,9 @@ steamGame.Game.prototype = {
         
         if (debugKey.isDown) {
             this.debugText = this.debugText || {};
+            this.playerData1_2 = localStorage.getItem('playerData');
+            this.playerData2 = JSON.parse(this.playerData1_2);
+            //this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData1_2, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             this.debugText.HP = this.game.debug.text('True health: ' + this.player.currentHP, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
@@ -443,11 +446,11 @@ steamGame.Game.prototype = {
             this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             this.debugText.DB = this.game.debug.body(this.dummy);
             
-            if (this.player.currency < 9990) {
+            /*if (this.player.currency < 9990) {
                 this.player.newC += 10;
             } else if (this.player.currency >= 9990 && this.player.currency < 9999){
                 this.player.newC += 1;
-            }
+            }*/
         }
         /*if (debugKey.isUp) {
             this.debugText.destroy();
@@ -1004,7 +1007,7 @@ steamGame.Game.prototype = {
                 if (this.pausePointer.pos == 1) {
                     this.pause(this);
                 } else if (this.pausePointer.pos == 2) {
-                    //this.save(this);
+                    this.save(this);
                     this.pause(this);
                 } else if (this.pausePointer.pos == 3) {
                     //this.save(this);
@@ -1247,5 +1250,28 @@ steamGame.Game.prototype = {
                 this.pausePointer.pos = 1;
             }
         }
+    },
+    save: function() {
+        this.playerData.maxHP = this.player.maxHP;
+        this.playerData.currentHP = this.player.currentHP;
+        this.playerData.maxSteam = this.player.maxSteam;
+        this.playerData.currentSteam = this.player.currentSteam;
+        this.playerData.maxEnergy = this.player.maxEnergy;
+        this.playerData.currentEnergy = this.player.currentEnergy;
+        this.playerData.currency = this.player.currency;
+        this.playerData.newC = this.player.currency;
+        //ability declarations
+        this.playerData.hasBomb = this.player.hasBomb;
+        this.playerData.hasBoots = this.player.hasBoots;
+        this.playerData.hasExoArm = this.player.hasExoArm;
+        this.playerData.hasTaserSword = this.player.hasTaserSword;
+        this.playerData.hasWinan = this.player.hasWinan;
+        this.playerData.hasHook = this.player.hasHook;
+        this.playerData.hasSteamShield = this.player.hasSteamShield;
+        this.playerData.hasLightRod = this.player.hasLightRod;
+        this.playerData.hasBoomerang = this.player.hasBoomerang;
+        this.playerData.hasGreekFire = this.player.hasGreekFire;
+        this.playerData.curAbil = this.player.curAbil;
+        localStorage.setItem('playerData', JSON.stringify(this.playerData));
     }
 };
