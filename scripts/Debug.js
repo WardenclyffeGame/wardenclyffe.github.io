@@ -1011,8 +1011,8 @@ steamGame.Game.prototype = {
                     this.save(this);
                     this.pause(this);
                 } else if (this.pausePointer.pos == 3) {
-                    //this.save(this);
-                    //quit function
+                    this.save(this);
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.35, function(){window.location.href = "http://wardenclyffegame.github.io";}, this);
                 }
             }
 

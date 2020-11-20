@@ -346,10 +346,10 @@ steamGame.MainMenu.prototype = {
             else if (this.pointerPos == 2) {
                 this.menuPointer.y = this.menuText4.y
                 if (enterKey.isDown) {
-                    window.location.href = "http://tsar-dev-collective.github.io";
+                    window.location.href = "http://wardenclyffegame.github.io";
                 }
                 if (space.isDown) {
-                    window.location.href = "http://tsar-dev-collective.github.io";
+                    window.location.href = "http://wardenclyffegame.github.io";
                 }
             }
         }
