@@ -332,7 +332,16 @@ steamGame.MainMenu.prototype = {
             }
             else if (this.pointerPos == 1) {
                 this.menuPointer.y = this.menuText3.y;
-                //replace with menuText3 when continue game is an option
+                if (enterKey.isDown) {
+                    //enter default save state loading later, for now just start game
+                    tthis.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
+                    this.game.state.start('Debug');
+                }
+                if (space.isDown) {
+                    //enter default save state loading later, for now just start game
+                    this.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
+                    this.game.state.start('Debug');
+                }
             }
             else if (this.pointerPos == 2) {
                 this.menuPointer.y = this.menuText4.y

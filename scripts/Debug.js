@@ -427,9 +427,9 @@ steamGame.Game.prototype = {
         
         if (debugKey.isDown) {
             this.debugText = this.debugText || {};
-            this.playerData1_2 = localStorage.getItem('playerData');
-            this.playerData2 = JSON.parse(this.playerData1_2);
-            //this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData1_2, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            //this.playerData1_2 = window.localStorage.getItem('playerData');
+            //this.playerData2 = JSON.parse(this.playerData1_2);
+            //this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData2, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             this.debugText.HP = this.game.debug.text('True health: ' + this.player.currentHP, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
@@ -1272,6 +1272,6 @@ steamGame.Game.prototype = {
         this.playerData.hasBoomerang = this.player.hasBoomerang;
         this.playerData.hasGreekFire = this.player.hasGreekFire;
         this.playerData.curAbil = this.player.curAbil;
-        localStorage.setItem('playerData', JSON.stringify(this.playerData));
+        window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
     }
 };
