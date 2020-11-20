@@ -299,12 +299,16 @@ steamGame.MainMenu.prototype = {
                         //currentEnergy: ,
                         currency: 0,
                         ability: '',
-                        hasBoots: false,
+                        hasBoots: true,
+                        hasExoArm: true,
                         hasWinan: true,
                         hasHook: true,
+                        hasSteamShield: true,
                         hasBoomerang: true,
                         hasGreekFire: true,
-                        curAbil: 'Hook',
+                        hadLightRod: true,
+                        hasTaserSword: true,
+                        curAbil: 'Winan',
                         //add more things in the future
                     };
                     this.game.state.start('Debug');
