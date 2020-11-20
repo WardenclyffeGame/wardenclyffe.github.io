@@ -1244,6 +1244,7 @@ steamGame.Game.prototype = {
             } else if (this.pauseGroup.pos == 'there') {
                 this.menuState = 'none';
                 this.pauseGroup.alpha = 0;
+                this.pausePointer.pos = 1;
             }
         }
     }
