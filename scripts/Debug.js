@@ -99,18 +99,18 @@ steamGame.Game.prototype = {
         this.player.currentEnergy = this.playerData.currentEnergy || this.player.maxEnergy;
         this.player.currency = this.playerData.currency || 0;
         this.player.currencyData = {};
-        this.player.newC = this.player.currency;
+        this.player.newC = this.playerData.newC || 0;
         //ability declarations
-        this.player.hasBomb = this.playerData.hasBomb || false;
-        this.player.hasBoots = this.playerData.hasBoots || false;
-        this.player.hasExoArm = this.playerData.hasExoArm || false;
-        this.player.hasTaserSword = this.playerData.hasTaserSword || false;
-        this.player.hasWinan = this.playerData.hasWinan || false;
-        this.player.hasHook = this.playerData.hasHook || false;
-        this.player.hasSteamShield = this.playerData.hasSteamShield || false;
-        this.player.hasLightRod = this.playerData.hasLightRod || false;
-        this.player.hasBoomerang = this.playerData.hasBoomerang || false;
-        this.player.hasGreekFire = this.playerData.hasGreekFire || false;
+        this.player.hasBomb = this.playerData.hasBomb || 0;
+        this.player.hasBoots = this.playerData.hasBoots || 0;
+        this.player.hasExoArm = this.playerData.hasExoArm || 0;
+        this.player.hasTaserSword = this.playerData.hasTaserSword || 0;
+        this.player.hasWinan = this.playerData.hasWinan || 0;
+        this.player.hasHook = this.playerData.hasHook || 0;
+        this.player.hasSteamShield = this.playerData.hasSteamShield || 0;
+        this.player.hasLightRod = this.playerData.hasLightRod || 0;
+        this.player.hasBoomerang = this.playerData.hasBoomerang || 0;
+        this.player.hasGreekFire = this.playerData.hasGreekFire || 0;
         this.player.curAbil = this.playerData.curAbil || null;
 
         this.player.timer = 75;
@@ -427,11 +427,12 @@ steamGame.Game.prototype = {
         
         if (debugKey.isDown) {
             this.debugText = this.debugText || {};
-            //this.playerData1_2 = window.localStorage.getItem('playerData');
-            //this.playerData2 = JSON.parse(this.playerData1_2);
-            //this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData2, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
-            this.debugText.HP = this.game.debug.text('True health: ' + this.player.currentHP, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
-            this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
+            this.playerData1_2 = window.localStorage.getItem('playerData');
+            this.playerData2 = JSON.parse(this.playerData1_2);
+            this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData1_2, this.game.world.centerX - 1900, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            //this.debugText.HP = this.game.debug.text('True health: ' + this.player.currentHP, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            //this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
+            this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
@@ -748,52 +749,52 @@ steamGame.Game.prototype = {
                 this.ASGroup.pos = 'down';
             }
 
-            if (this.player.hasBomb == true) {
+            if (this.player.hasBomb == 1) {
                 this.ASBomb.frame = 0;
                 this.ASGroup.selPos.pos5 = 'Bomb';
                 this.hasItems = true;
             }
-            if (this.player.hasWinan == true) {
+            if (this.player.hasWinan == 1) {
                 this.ASWinan.frame = 0;
                 this.ASGroup.selPos.pos1 = 'Winan';
                 this.hasItems = true;
             }
-            if (this.player.hasHook == true) {
+            if (this.player.hasHook == 1) {
                 this.ASHook.frame = 0;
                 this.ASGroup.selPos.pos2 = 'Hook';
                 this.hasItems = true;
             }
-            if (this.player.hasSteamShield == true) {
+            if (this.player.hasSteamShield == 1) {
                 this.ASSteamShield.frame = 0;
                 this.ASGroup.selPos.pos3 = 'SteamShield';
                 this.hasItems = true;
             }
-            if (this.player.hasLightRod == true) {
+            if (this.player.hasLightRod == 1) {
                 this.ASLightRod.frame = 0;
                 this.ASGroup.selPos.pos4 = 'LightRod';
                 this.hasItems = true;
             }
-            if (this.player.hasBoomerang == true) {
+            if (this.player.hasBoomerang == 1) {
                 this.ASBoomerang.frame = 0;
                 this.ASGroup.selPos.pos6 = 'Boomerang';
                 this.hasItems = true;
             }
-            if (this.player.hasGreekFire == true) {
+            if (this.player.hasGreekFire == 1) {
                 this.ASGreekFire.frame = 0;
                 this.ASGroup.selPos.pos7 = 'GreekFire';
                 this.hasItems = true;
             }
-            if (this.player.hasBoots == true) {
+            if (this.player.hasBoots == 1) {
                 this.ASBoots.frame = 0;
                 //this.ASGroup.selPos.pos13 = 'Boots';
                 //this.hasItems = true;
             }
-            if (this.player.hasExoArm == true) {
+            if (this.player.hasExoArm == 1) {
                 this.ASArm.frame = 0;
                 //this.ASGroup.selPos.pos14 = 'ExoArm';
                 //this.hasItems = true;
             }
-            if (this.player.hasTaserSword == true) {
+            if (this.player.hasTaserSword == 1) {
                 this.ASSword.frame = 1;
                 //this.ASGroup.selPos.pos14 = 'ExoArm';
                 //this.hasItems = true;
@@ -1199,11 +1200,11 @@ steamGame.Game.prototype = {
                 this.dummy.value = 100;
                 this.dummy.destroy();
                 this.collect(this.player, this.dummy);
-                this.player.hasBomb = true;
-                this.player.hasWinan = true;
-                this.player.hasLightRod = true;
-                //this.player.hasSteamShield = true;
-                //this.player.hasHook = true;
+                this.player.hasBomb = 1;
+                this.player.hasWinan = 1;
+                this.player.hasLightRod = 1;
+                //this.player.hasSteamShield = 1;
+                //this.player.hasHook = 1;
                 this.ASGroup.curPos = 1;
                 this.ASGroup.curAbil = 'Winan';
             }
@@ -1258,7 +1259,7 @@ steamGame.Game.prototype = {
         this.playerData.currentSteam = this.player.currentSteam;
         this.playerData.maxEnergy = this.player.maxEnergy;
         this.playerData.currentEnergy = this.player.currentEnergy;
-        this.playerData.currency = this.player.currency;
+        this.playerData.currency = 0;
         this.playerData.newC = this.player.currency;
         //ability declarations
         this.playerData.hasBomb = this.player.hasBomb;
@@ -1271,7 +1272,7 @@ steamGame.Game.prototype = {
         this.playerData.hasLightRod = this.player.hasLightRod;
         this.playerData.hasBoomerang = this.player.hasBoomerang;
         this.playerData.hasGreekFire = this.player.hasGreekFire;
-        this.playerData.curAbil = this.player.curAbil;
+        this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];;
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
     }
 };

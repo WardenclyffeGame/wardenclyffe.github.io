@@ -334,7 +334,7 @@ steamGame.MainMenu.prototype = {
                 this.menuPointer.y = this.menuText3.y;
                 if (enterKey.isDown) {
                     //enter default save state loading later, for now just start game
-                    tthis.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
+                    this.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
                     this.game.state.start('Debug');
                 }
                 if (space.isDown) {
