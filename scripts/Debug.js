@@ -390,6 +390,11 @@ steamGame.Game.prototype = {
         this.pauseGroup.stationary = true;
         this.pauseGroup.pos = 'gone';
         this.pauseGroup.alpha = 0;
+
+        this.pauseText = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 3), 'pixelFont', 'Pause', 10);
+        this.pauseText.anchor.setTo(0.5, 0.5);
+        this.pauseText.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.pauseGroup.add(this.pauseText);
         
 
     },
