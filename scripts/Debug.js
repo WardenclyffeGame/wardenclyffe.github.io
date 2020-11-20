@@ -97,7 +97,7 @@ steamGame.Game.prototype = {
         this.player.currentSteam = this.playerData.currentSteam || this.player.maxSteam;
         this.player.maxEnergy = this.playerData.maxEnergy || 50;
         this.player.currentEnergy = this.playerData.currentEnergy || this.player.maxEnergy;
-        this.player.currency = this.playerData.currency || 0;
+        this.player.currency = 0;
         this.player.currencyData = {};
         this.player.newC = this.playerData.newC || 0;
         //ability declarations
@@ -1260,7 +1260,7 @@ steamGame.Game.prototype = {
         this.playerData.maxEnergy = this.player.maxEnergy;
         this.playerData.currentEnergy = this.player.currentEnergy;
         this.playerData.currency = 0;
-        this.playerData.newC = this.player.currency;
+        this.playerData.newC = this.player.newC;
         //ability declarations
         this.playerData.hasBomb = this.player.hasBomb;
         this.playerData.hasBoots = this.player.hasBoots;
