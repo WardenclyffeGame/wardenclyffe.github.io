@@ -364,6 +364,14 @@ steamGame.Game.prototype = {
         this.mapGroup.stationary = true;
         this.mapGroup.pos = 'down';
 
+        this.milutinHead = this.game.add.sprite((this.game.camera.width / 20) - (this.scalingFactor * 17 * 10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 45), 'milutinHead');
+        this.milutinHead.anchor.setTo(0.5, 0.5);
+        this.milutinHead.frame = 0;
+        this.milutinHead.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.mapGroup.add(this.milutinHead);
+        this.milutinHead.animations.add('Blink');
+        this.milutinHead.animations.play('Blink', 1.5, true);
+
         this.mapGroup.maxH = this.game.camera.height * 1.5;
         this.mapGroup.cameraOffset = {
             x: this.game.camera.width / 2,

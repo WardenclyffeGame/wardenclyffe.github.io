@@ -56,6 +56,7 @@ steamGame.Preload.prototype = {
         this.load.image('mapOverworld', 'maps/worldMapBack.png');
             this.load.image('selector', 'sprites/game/selector.png');
         this.load.image('Council', 'sprites/game/Council.png');
+        this.load.atlasJSONHash('milutinHead', 'sprites/game/milutinHead.png', 'sprites/game/jsonKeys/milutinHead.json');
     },
     create: function() {
         this.state.start('MainMenu');
