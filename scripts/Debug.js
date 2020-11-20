@@ -1005,6 +1005,7 @@ steamGame.Game.prototype = {
                     this.pause(this);
                 } else if (this.pausePointer.pos == 2) {
                     //this.save(this);
+                    this.pause(this);
                 } else if (this.pausePointer.pos == 3) {
                     //this.save(this);
                     //quit function
