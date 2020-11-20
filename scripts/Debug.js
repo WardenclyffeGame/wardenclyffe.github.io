@@ -100,6 +100,8 @@ steamGame.Game.prototype = {
         //ability declarations
         this.player.hasBomb = this.playerData.hasBomb || false;
         this.player.hasBoots = this.playerData.hasBoots || false;
+        this.player.hasExoArm = this.playerData.hasExoArm || false;
+        this.player.hasTaserSword = this.playerData.hasTaserSword || false;
         this.player.hasWinan = this.playerData.hasWinan || false;
         this.player.hasHook = this.playerData.hasHook || false;
         this.player.hasSteamShield = this.playerData.hasSteamShield || false;
@@ -302,6 +304,31 @@ steamGame.Game.prototype = {
         this.ASBoots.frame = 1;
         this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASBoots);
+
+        //equipment section
+        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -29), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -1.6 * 32), 'Boots');
+        this.ASBoots.anchor.setTo(0.5, 0.5);
+        this.ASBoots.frame = 1;
+        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBoots);
+
+        this.ASArm = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -35), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2.3 * 32), 'ExoArm');
+        this.ASArm.anchor.setTo(0.5, 0.5);
+        this.ASArm.frame = 1;
+        this.ASArm.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASArm);
+
+        this.ASSword = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -31.7), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'menuSword');
+        this.ASSword.anchor.setTo(0.5, 0.5);
+        this.ASSword.frame = 0;
+        this.ASSword.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASSword);
+
+        this.ASCouncil = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -31.7), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 2 * 32), 'Council');
+        this.ASCouncil.anchor.setTo(0.5, 0.5);
+        this.ASCouncil.frame = 0;
+        this.ASCouncil.scale.setTo(this.scalingFactor * 2.6, this.scalingFactor * 2.6);
+        this.ASGroup.add(this.ASCouncil);
 
         this.ASSelector = this.game.add.sprite((this.game.camera.width * 3) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'selector');
         this.ASSelector.anchor.setTo(0.5, 0.5);
@@ -703,8 +730,18 @@ steamGame.Game.prototype = {
             }
             if (this.player.hasBoots == true) {
                 this.ASBoots.frame = 0;
-                this.ASGroup.selPos.pos13 = 'Boots';
-                this.hasItems = true;
+                //this.ASGroup.selPos.pos13 = 'Boots';
+                //this.hasItems = true;
+            }
+            if (this.player.hasExoArm == true) {
+                this.ASArm.frame = 0;
+                //this.ASGroup.selPos.pos14 = 'ExoArm';
+                //this.hasItems = true;
+            }
+            if (this.player.hasTaserSword == true) {
+                this.ASSword.frame = 1;
+                //this.ASGroup.selPos.pos14 = 'ExoArm';
+                //this.hasItems = true;
             }
             
 

@@ -51,8 +51,11 @@ steamGame.Preload.prototype = {
             this.load.atlasJSONHash('SteamShield', 'sprites/game/steamShield.png', 'sprites/game/jsonKeys/steamShield.json');
         this.load.atlasJSONHash('Boomerang', 'sprites/game/Boomerang.png', 'sprites/game/jsonKeys/Boomerang.json');
             this.load.atlasJSONHash('GreekFire', 'sprites/game/GreekFire.png', 'sprites/game/jsonKeys/GreekFire.json');
+        this.load.atlasJSONHash('ExoArm', 'sprites/game/ExoArm.png', 'sprites/game/jsonKeys/ExoArm.json');
+            this.load.atlasJSONHash('menuSword', 'sprites/game/Sword.png', 'sprites/game/jsonKeys/Sword.json');
         this.load.image('mapOverworld', 'maps/worldMapBack.png');
             this.load.image('selector', 'sprites/game/selector.png');
+        this.load.image('Council', 'sprites/game/Council.png');
     },
     create: function() {
         this.state.start('MainMenu');
