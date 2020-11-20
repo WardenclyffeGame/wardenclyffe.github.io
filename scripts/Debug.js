@@ -273,11 +273,11 @@ steamGame.Game.prototype = {
         this.ASGreekFire.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASGreekFire);
         //blank
-        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Bomb');
-        this.ASBomb.anchor.setTo(0.5, 0.5);
-        this.ASBomb.frame = 1;
-        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBomb);
+        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Boots');
+        this.ASBoots.anchor.setTo(0.5, 0.5);
+        this.ASBoots.frame = 1;
+        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBoots);
 
         //ROW 3
         //boots 
