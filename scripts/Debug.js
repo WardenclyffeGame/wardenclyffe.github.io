@@ -117,6 +117,7 @@ steamGame.Game.prototype = {
         this.player.newSLevel = 0;
         this.player.newELevel = 0;
         this.player.state = 'walk';
+        this.idling = false;
 
         this.debugText = {};
 
@@ -572,11 +573,15 @@ steamGame.Game.prototype = {
             }
 
             /***************************************** Player Movement Handling ******************************************************************************************/
-            this.player.body.velocity.x = 0;
-            this.player.body.velocity.y = 0;
-            this.player.swipe.body.velocity.x = 0;
-            this.player.swipe.body.velocity.y = 0;
+            if (this.player.state == 'hurt' && this.knockbackTimer == null) {
+                this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.15, function(){ this.player.state = 'walk'; }, this);
+            }
             if (this.player.state == 'walk') {
+                this.game.time.events.remove(this.knockbackTimer)
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+                this.player.swipe.body.velocity.x = 0;
+                this.player.swipe.body.velocity.y = 0;
                 if (upKey.isDown || upArrow.isDown) {
                     this.player.body.velocity.y = -this.player.speed * 0.9;
                     this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
@@ -608,7 +613,8 @@ steamGame.Game.prototype = {
                 }
                 this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
                     this.player.state = 'walk';
-                    this.animationName = "stopped";
+                    this.game.time.events.remove(this.idleTimer1);
+                    this.idling = false;
                 }, this);
                 this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){
                     spaceKey.duration = 0;
@@ -618,7 +624,12 @@ steamGame.Game.prototype = {
             /************************************** Animation Controller for Player movement *****************************************************************************/
             this.direction = this.direction || 'down';
             if (this.player.state == 'walk') {
-                this.animationName = "stopped";
+                if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0 && this.idling == false) {
+                    //this.idleTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * 20, function(){ this.animationName = 'runLeft' }, this);
+                    this.animationName = "stopped";
+                    this.idling = true;
+                }
+                
                 if (this.player.body.velocity.x < 0) {
                     this.animationName = 'runLeft';
                     this.direction = 'left';
@@ -630,6 +641,8 @@ steamGame.Game.prototype = {
                     if (this.player.scale.x < 0) {
                         this.player.scale.x = this.player.scale.x * -1;
                     }
+                    this.game.time.events.remove(this.idleTimer1);
+                    this.idling = false;
                 }
                 if (this.player.body.velocity.x > 0) {
                     this.animationName = 'runRight';
@@ -642,6 +655,8 @@ steamGame.Game.prototype = {
                     if (this.player.scale.x > 0) {
                         this.player.scale.x = this.player.scale.x * -1;
                     }
+                    this.game.time.events.remove(this.idleTimer1);
+                    this.idling = false;
                 }
                 if (this.player.body.velocity.y < 0) {
                     this.animationName = 'runUp';
@@ -651,6 +666,8 @@ steamGame.Game.prototype = {
                     this.player.swipe.anchor.setTo(0, 0.6);
                     this.player.swipe.width = this.player.body.width * 1.5;
                     this.player.swipe.height = 34 * this.scalingFactor;
+                    this.game.time.events.remove(this.idleTimer1);
+                    this.idling = false;
                 }
                 if (this.player.body.velocity.y > 0) {
                     this.animationName = 'runDown';
@@ -660,6 +677,8 @@ steamGame.Game.prototype = {
                     this.player.swipe.anchor.setTo(0, 0.8);
                     this.player.swipe.width = this.player.body.width * 1.5;
                     this.player.swipe.height = 42 * this.scalingFactor;
+                    this.game.time.events.remove(this.idleTimer1);
+                    this.idling = false;
                 }
             }
             if (this.direction == 'left') {
@@ -1207,6 +1226,8 @@ steamGame.Game.prototype = {
                 //this.player.hasHook = 1;
                 this.ASGroup.curPos = 1;
                 this.ASGroup.curAbil = 'Winan';
+                this.player.state = 'hurt';
+                this.player.body.velocity.x = -500;
             }
         }
     },
