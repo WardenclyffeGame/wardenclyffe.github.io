@@ -598,6 +598,8 @@ steamGame.Game.prototype = {
                 }
             }
             if(spaceKey.duration < 1 && spaceKey.isDown && this.player.state == 'walk') {
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
                 if(this.direction == 'up') {
                     this.player.state = 'attack';
                     this.animationName = 'swipeUp';
