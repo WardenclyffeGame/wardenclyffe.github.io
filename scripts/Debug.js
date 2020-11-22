@@ -1227,7 +1227,7 @@ steamGame.Game.prototype = {
                 this.ASGroup.curPos = 1;
                 this.ASGroup.curAbil = 'Winan';
                 this.player.state = 'hurt';
-                this.player.body.velocity.x = -500;
+                this.player.body.velocity.x = -500; // dont forget to add direction conditionals
             }
         }
     },
