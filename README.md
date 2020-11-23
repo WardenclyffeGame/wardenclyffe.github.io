@@ -3,7 +3,7 @@
 **v.0.1 11-25-20** <br>
   *~Character* <br>
     <ul>
-    <li>+Added Milutin </li>
+    +Added Milutin <br>
     +Added movement <br>
     +Added animations <br>
     +Added idle <br>
@@ -12,7 +12,9 @@
       +100hp <br>
       +100s <br>
       +50e <br>
+    </ul>
   *~Combat* <br>
+    
     +Added Sword <br>
       +Added Sword combos <br>
     +Added functionality <br>
