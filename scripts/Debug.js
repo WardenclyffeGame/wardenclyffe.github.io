@@ -650,8 +650,8 @@ steamGame.Game.prototype = {
                             this.player.state = 'walk';
                             this.game.time.events.remove(this.idleTimer1);
                             this.idling = false;
-                            this.player.combo = 0;
                         }, this);
+                        this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){ this.player.combo = 0; }, this);
                     }
                     else if (this.player.combo == 1) {
                         if(this.direction == 'up') {
@@ -682,8 +682,8 @@ steamGame.Game.prototype = {
                             this.player.state = 'walk';
                             this.game.time.events.remove(this.idleTimer1);
                             this.idling = false;
-                            this.player.combo = 0;
                         }, this);
+                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){ this.player.combo = 0; }, this);
                     }
                     else if (this.player.combo == 2) {
                         if(this.direction == 'up') {
@@ -710,12 +710,13 @@ steamGame.Game.prototype = {
                         this.player.combo = 3;
                         this.game.time.events.remove(this.comboTimer2);
                         this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
-                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                        this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
                             this.player.state = 'walk';
                             this.game.time.events.remove(this.idleTimer1);
                             this.idling = false;
                             this.player.combo = 0;
                         }, this);
+                        
                     }
                     this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){
                         spaceKey.duration = 0;
