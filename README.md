@@ -1,53 +1,51 @@
 # wardenclyffe.github.io
-cool and awesome (zap)
 
-
-v.0.1 11-25-20
-  ~Character
-    +Added Milutin
-    +Added movement
-    +Added animations
-    +Added idle
-    +Added Hurt frames
-    +Added base health and meters
-      +100hp
-      +100s
-      +50e 
-  ~Combat
-    +Added Sword
-      +Added Sword combos
-    +Added functionality
-    +Added knockback
-      +Corrected directional knockback
-    +Added damage
-  ~HUD
-    +Health bar functionality
-    +Steam bar functionality
-    +Energy bar functionality 
-    +Currency ticker functionality
-    +Abiltiy Menu functionality
-      +Added selector function
-      +Added Winan sprite
-      +Added Grapple sprite
-      +Added Steam Shield sprite
-      +Added Lightning Rod sprite
-      +Added Bomb sprite
-      +Added Boomerang sprite
-      +Added Greek Fire sprite
-    +Added Left Ability menu
-      +Added Council tracker
-      +Added Sword
-      +Added intristic ability category
-       +Added Boots
-       +Added Exo-Arm
-    +Added Pause menu
-    +Added Map
-      +Location tracker in concept
-      +Districts conceptualized 
-  ~Map
-    +Created Debug Map
-    +Collision tiles implemented
-    +Several base tiles drawn
-  ~Miscellaneous
-    +Save state capability
+**v.0.1 11-25-20**
+  *~Character* <br>
+    +Added Milutin <br>
+    +Added movement <br>
+    +Added animations <br>
+    +Added idle <br>
+    +Added Hurt frames <br>
+    +Added base health and meters <br>
+      +100hp <br>
+      +100s <br>
+      +50e <br>
+  *~Combat* <br>
+    +Added Sword <br>
+      +Added Sword combos <br>
+    +Added functionality <br>
+    +Added knockback <br>
+      +Corrected directional knockback <br>
+    +Added damage <br>
+  *~HUD* <br>
+    +Health bar functionality <br>
+    +Steam bar functionality <br>
+    +Energy bar functionality <br>
+    +Currency ticker functionality <br>
+    +Abiltiy Menu functionality <br>
+      +Added selector function <br>
+      +Added Winan sprite <br>
+      +Added Grapple sprite <br>
+      +Added Steam Shield sprite <br>
+      +Added Lightning Rod sprite <br>
+      +Added Bomb sprite <br>
+      +Added Boomerang sprite <br>
+      +Added Greek Fire sprite <br>
+    +Added Left Ability menu <br>
+      +Added Council tracker <br>
+      +Added Sword <br>
+      +Added intristic ability category <br>
+       +Added Boots <br>
+       +Added Exo-Arm <br>
+    +Added Pause menu <br>
+    +Added Map <br>
+      +Location tracker in concept <br>
+      +Districts conceptualized <br>
+  *~Map* <br>
+    +Created Debug Map <br>
+    +Collision tiles implemented <br>
+    +Several base tiles drawn <br>
+  *~Miscellaneous* <br>
+    +Save state capability <br>
     +
