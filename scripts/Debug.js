@@ -456,11 +456,11 @@ steamGame.Game.prototype = {
             this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             this.debugText.DB = this.game.debug.body(this.dummy);
             
-            /*if (this.player.currency < 9990) {
+            if (this.player.currency < 9990) {
                 this.player.newC += 10;
             } else if (this.player.currency >= 9990 && this.player.currency < 9999){
                 this.player.newC += 1;
-            }*/
+            }
         }*/
         /*if (debugKey.isUp) {
             this.debugText.destroy();
