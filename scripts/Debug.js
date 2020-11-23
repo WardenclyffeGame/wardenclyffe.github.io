@@ -73,6 +73,12 @@ steamGame.Game.prototype = {
         this.player.animations.add('swipeUp', [45, 46, 47, 48], 12, true);
         this.player.animations.add('swipeDown', [49, 50, 51, 52], 12, true);
         this.player.animations.add('swipeSide', [53, 54, 55, 56], 12, true);
+        this.player.animations.add('swipeUp2', [57, 58, 59, 60], 12, true);
+        this.player.animations.add('swipeDown2', [61, 62, 63, 64], 12, true);
+        this.player.animations.add('swipeSide2', [65, 66, 67, 68], 12, true);
+        this.player.animations.add('swipeUp3', [69, 70, 71, 72], 12, true);
+        this.player.animations.add('swipeDown3', [73, 74, 75, 76], 12, true);
+        this.player.animations.add('swipeSide3', [77, 78, 79, 80], 12, true);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
         this.player.speed = (this.game.world.width / 13.66);
@@ -574,7 +580,27 @@ steamGame.Game.prototype = {
 
             /***************************************** Player Movement Handling ******************************************************************************************/
             if (this.player.state == 'hurt' && this.knockbackTimer == null) {
-                this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.15, function(){ this.player.state = 'walk'; }, this);
+                this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.15, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
+                this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(){ this.player.state = 'walk'; }, this);
+            } if (this.player.state == 'hurt') {
+                if (this.direction == 'right') {
+                    this.player.frame = 83;
+                    if (this.player.scale.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
+                }
+                if (this.direction == 'left') {
+                    this.player.frame = 83;
+                    if (this.player.scale.x > 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
+                }
+                if (this.direction == 'up') {
+                    this.player.frame = 81;
+                }
+                if (this.direction == 'down') {
+                    this.player.frame = 82;
+                }
             }
             if (this.player.state == 'walk') {
                 this.game.time.events.remove(this.knockbackTimer)
@@ -1229,6 +1255,22 @@ steamGame.Game.prototype = {
                 this.ASGroup.curPos = 1;
                 this.ASGroup.curAbil = 'Winan';
                 this.player.state = 'hurt';
+                if (this.direction == 'right') {
+                    this.player.body.velocity.x = -500;
+                    this.player.swipe.body.velocity.x = -500;
+                }
+                if (this.direction == 'left') {
+                    this.player.body.velocity.x = 500;
+                    this.player.swipe.body.velocity.x = 500;
+                }
+                if (this.direction == 'up') {
+                    this.player.body.velocity.y = 500;
+                    this.player.swipe.body.velocity.y = 500;
+                }
+                if (this.direction == 'down') {
+                    this.player.body.velocity.y = -500;
+                    this.player.swipe.body.velocity.y = -500;
+                }
                 //this.player.body.velocity.x = -500; // dont forget to add direction conditionals
             }
         }
