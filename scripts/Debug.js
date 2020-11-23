@@ -434,7 +434,7 @@ steamGame.Game.prototype = {
     update: function(){
         /***************************************** Collision handler for player vs. layers and debug text ***************************************************************/
         
-        if (debugKey.isDown) {
+        /*if (debugKey.isDown) {
             this.debugText = this.debugText || {};
             this.playerData1_2 = window.localStorage.getItem('playerData');
             this.playerData2 = JSON.parse(this.playerData1_2);
@@ -461,7 +461,7 @@ steamGame.Game.prototype = {
             } else if (this.player.currency >= 9990 && this.player.currency < 9999){
                 this.player.newC += 1;
             }*/
-        }
+        }*/
         /*if (debugKey.isUp) {
             this.debugText.destroy();
         }*/
@@ -626,7 +626,7 @@ steamGame.Game.prototype = {
                 }
             }
             if(spaceKey.duration < 1 && spaceKey.isDown && this.player.combo < 3) {
-                if (this.player.state == 'walk' || this.player.combo > 0) {
+                if (this.player.state == 'walk') {
                     this.player.body.velocity.x = 0;
                     this.player.body.velocity.y = 0;
                     this.player.swipe.body.velocity.x = 0;
