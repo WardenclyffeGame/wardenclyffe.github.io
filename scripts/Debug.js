@@ -1330,20 +1330,20 @@ steamGame.Game.prototype = {
                 this.ASGroup.curAbil = 'Winan';
                 this.player.state = 'hurt';
                 if (this.direction == 'right') {
-                    this.player.body.velocity.x = -500;
-                    this.player.swipe.body.velocity.x = -500;
+                    this.player.body.velocity.x = -this.player.speed * 3;
+                    this.player.swipe.body.velocity.x = -this.player.speed * 3;
                 }
                 if (this.direction == 'left') {
-                    this.player.body.velocity.x = 500;
-                    this.player.swipe.body.velocity.x = 500;
+                    this.player.body.velocity.x = this.player.speed * 3;
+                    this.player.swipe.body.velocity.x = this.player.speed * 3;
                 }
                 if (this.direction == 'up') {
-                    this.player.body.velocity.y = 500;
-                    this.player.swipe.body.velocity.y = 500;
+                    this.player.body.velocity.y = this.player.speed * 3;
+                    this.player.swipe.body.velocity.y = this.player.speed * 3;
                 }
                 if (this.direction == 'down') {
-                    this.player.body.velocity.y = -500;
-                    this.player.swipe.body.velocity.y = -500;
+                    this.player.body.velocity.y = -this.player.speed * 3;
+                    this.player.swipe.body.velocity.y = -this.player.speed * 3;
                 }
                 //this.player.body.velocity.x = -500; // dont forget to add direction conditionals
             }
