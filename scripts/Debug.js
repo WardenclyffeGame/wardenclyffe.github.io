@@ -118,6 +118,7 @@ steamGame.Game.prototype = {
         this.player.hasLightRod = this.playerData.hasLightRod || 0;
         this.player.hasBoomerang = this.playerData.hasBoomerang || 0;
         this.player.hasGreekFire = this.playerData.hasGreekFire || 0;
+        this.player.hasStunBaton = this.playerData.hasStunBaton || 0;
         this.player.curAbil = this.playerData.curAbil || null;
 
         this.player.timer = 75;
@@ -266,12 +267,12 @@ steamGame.Game.prototype = {
         this.ASGroup.add(this.ASLightRod);
         
         //ROW 2
-        //bomb 
-        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Bomb');
-        this.ASBomb.anchor.setTo(0.5, 0.5);
-        this.ASBomb.frame = 1;
-        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBomb);
+        //Baton
+        this.ASStunBaton = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'StunBaton');
+        this.ASStunBaton.anchor.setTo(0.5, 0.5);
+        this.ASStunBaton.frame = 1;
+        this.ASStunBaton.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASStunBaton);
         //boomerang
         this.ASBoomerang = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Boomerang');
         this.ASBoomerang.anchor.setTo(0.5, 0.5);
@@ -292,12 +293,12 @@ steamGame.Game.prototype = {
         this.ASGroup.add(this.ASBoots);
 
         //ROW 3
-        //boots 
-        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
-        this.ASBoots.anchor.setTo(0.5, 0.5);
-        this.ASBoots.frame = 1;
-        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBoots);
+        //bomb 
+        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Bomb');
+        this.ASBomb.anchor.setTo(0.5, 0.5);
+        this.ASBomb.frame = 1;
+        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBomb);
         //blank 
         this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
         this.ASBoots.anchor.setTo(0.5, 0.5);
@@ -361,8 +362,16 @@ steamGame.Game.prototype = {
             this.ASGroup.curPos = 3;
         } else if (this.player.curAbil == 'LightRod') {
             this.ASGroup.curPos = 4;
-        } else if (this.player.curAbil == 'Bomb') {
+        } else if (this.player.curAbil == 'StunBaton') {
             this.ASGroup.curPos = 5;
+        } else if (this.player.curAbil == 'Boomerang') {
+            this.ASGroup.curPos = 6;
+        } else if (this.player.curAbil == 'GreekFire') {
+            this.ASGroup.curPos = 7;
+        } else if (this.player.curAbil == 'Hammer') {
+            this.ASGroup.curPos = 8;
+        } else if (this.player.curAbil == 'Bomb') {
+            this.ASGroup.curPos = 9;
         }
         this.ASGroup.curAbil = this.player.curAbil;
         //map screen to the right
@@ -873,7 +882,7 @@ steamGame.Game.prototype = {
 
             if (this.player.hasBomb == 1) {
                 this.ASBomb.frame = 0;
-                this.ASGroup.selPos.pos5 = 'Bomb';
+                this.ASGroup.selPos.pos9 = 'Bomb';
                 this.hasItems = true;
             }
             if (this.player.hasWinan == 1) {
@@ -906,6 +915,16 @@ steamGame.Game.prototype = {
                 this.ASGroup.selPos.pos7 = 'GreekFire';
                 this.hasItems = true;
             }
+            if (this.player.hasStunBaton == 1) {
+                this.ASStunBaton.frame = 0;
+                this.ASGroup.selPos.pos5 = 'StunBaton';
+                this.hasItems = true;
+            }
+            /*if (this.player.hasHammer == 1) {
+                this.ASHammer.frame = 0;
+                this.ASGroup.selPos.pos8 = 'Hammer';
+                this.hasItems = true;
+            }*/
             if (this.player.hasBoots == 1) {
                 this.ASBoots.frame = 0;
                 //this.ASGroup.selPos.pos13 = 'Boots';
@@ -1325,10 +1344,13 @@ steamGame.Game.prototype = {
                 this.player.hasBomb = 1;
                 this.player.hasWinan = 1;
                 this.player.hasLightRod = 1;
-                //this.player.hasSteamShield = 1;
-                //this.player.hasHook = 1;
-                this.ASGroup.curPos = 1;
-                this.ASGroup.curAbil = 'Winan';
+                this.player.hasStunBaton = 1;
+                this.player.hasSteamShield = 1;
+                this.player.hasHook = 1;
+                this.player.hasBoomerang = 1;
+                this.player.hasGreekFire = 1;
+                this.ASGroup.curPos = 5;
+                this.ASGroup.curAbil = 'StunBaton';
                 this.player.state = 'hurt';
                 if (this.direction == 'right') {
                     this.player.body.velocity.x = -this.player.speed * 3;
@@ -1412,6 +1434,7 @@ steamGame.Game.prototype = {
         this.playerData.hasLightRod = this.player.hasLightRod;
         this.playerData.hasBoomerang = this.player.hasBoomerang;
         this.playerData.hasGreekFire = this.player.hasGreekFire;
+        this.playerData.hasStunBaton = this.player.hasStunBaton;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];;
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
     }
