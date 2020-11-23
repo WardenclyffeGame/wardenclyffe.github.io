@@ -8,14 +8,17 @@ v.0.1 11-25-20
     +Added movement
     +Added animations
     +Added idle
+    +Added Hurt frames
     +Added base health and meters
       +100hp
       +100s
-      +100e 
+      +50e 
   ~Combat
     +Added Sword
+      +Added Sword combos
     +Added functionality
     +Added knockback
+      +Corrected directional knockback
     +Added damage
   ~HUD
     +Health bar functionality
