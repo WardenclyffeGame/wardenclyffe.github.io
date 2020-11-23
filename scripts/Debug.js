@@ -626,7 +626,7 @@ steamGame.Game.prototype = {
                 }
             }
             if(spaceKey.duration < 1 && spaceKey.isDown && this.player.combo < 3) {
-                if (this.player.state == 'walk') {
+                if (this.player.state != 'attack') {
                     this.player.body.velocity.x = 0;
                     this.player.body.velocity.y = 0;
                     this.player.swipe.body.velocity.x = 0;
@@ -646,12 +646,12 @@ steamGame.Game.prototype = {
                             this.animationName = 'swipeSide';
                         }
                         this.player.combo = 1;
-                        this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                        this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
                             this.player.state = 'walk';
                             this.game.time.events.remove(this.idleTimer1);
                             this.idling = false;
                         }, this);
-                        this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){ this.player.combo = 0; }, this);
+                        this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.player.combo = 0; }, this);
                     }
                     else if (this.player.combo == 1) {
                         if(this.direction == 'up') {
@@ -683,7 +683,7 @@ steamGame.Game.prototype = {
                             this.game.time.events.remove(this.idleTimer1);
                             this.idling = false;
                         }, this);
-                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){ this.player.combo = 0; }, this);
+                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.player.combo = 0; }, this);
                     }
                     else if (this.player.combo == 2) {
                         if(this.direction == 'up') {
