@@ -123,6 +123,7 @@ steamGame.Game.prototype = {
         this.player.newSLevel = 0;
         this.player.newELevel = 0;
         this.player.state = 'walk';
+        this.player.combo = 0;
         this.idling = false;
 
         this.debugText = {};
@@ -623,30 +624,102 @@ steamGame.Game.prototype = {
                     this.player.swipe.body.velocity.x = -this.player.speed * 1.2;
                 }
             }
-            if(spaceKey.duration < 1 && spaceKey.isDown && this.player.state == 'walk') {
-                this.player.body.velocity.x = 0;
-                this.player.body.velocity.y = 0;
-                if(this.direction == 'up') {
-                    this.player.state = 'attack';
-                    this.animationName = 'swipeUp';
-                } else if(this.direction == 'down') {
-                    this.player.state = 'attack';
-                    this.animationName = 'swipeDown';
-                } else if(this.direction == 'left') {
-                    this.player.state = 'attack';
-                    this.animationName = 'swipeSide';
-                } else if(this.direction == 'right') {
-                    this.player.state = 'attack';
-                    this.animationName = 'swipeSide';
+            if(spaceKey.duration < 1 && spaceKey.isDown && this.player.combo < 3) {
+                if (this.player.state == 'walk' || this.player.combo > 0) {
+                    this.player.body.velocity.x = 0;
+                    this.player.body.velocity.y = 0;
+                    this.player.swipe.body.velocity.x = 0;
+                    this.player.swipe.body.velocity.y = 0;
+                    if (this.player.combo == 0) {
+                        if(this.direction == 'up') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeUp';
+                        } else if(this.direction == 'down') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeDown';
+                        } else if(this.direction == 'left') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeSide';
+                        } else if(this.direction == 'right') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeSide';
+                        }
+                        this.player.combo = 1;
+                        this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                            this.player.state = 'walk';
+                            this.game.time.events.remove(this.idleTimer1);
+                            this.idling = false;
+                            this.player.combo = 0;
+                        }, this);
+                    }
+                    else if (this.player.combo == 1) {
+                        if(this.direction == 'up') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeUp2';
+                            this.player.body.velocity.y = -this.player.speed * 1.5;
+                            this.player.swipe.body.velocity.y = -this.player.speed * 1.5;
+                        } else if(this.direction == 'down') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeDown2';
+                            this.player.body.velocity.y = this.player.speed * 1.5;
+                            this.player.swipe.body.velocity.y = this.player.speed * 1.5;
+                        } else if(this.direction == 'left') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeSide2';
+                            this.player.body.velocity.x = -this.player.speed * 1.5;
+                            this.player.swipe.body.velocity.x = -this.player.speed * 1.5;
+                        } else if(this.direction == 'right') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeSide2';
+                            this.player.body.velocity.x = this.player.speed * 1.5;
+                            this.player.swipe.body.velocity.x = this.player.speed * 1.5;
+                        }
+                        this.player.combo = 2;
+                        this.game.time.events.remove(this.comboTimer1);
+                        this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
+                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                            this.player.state = 'walk';
+                            this.game.time.events.remove(this.idleTimer1);
+                            this.idling = false;
+                            this.player.combo = 0;
+                        }, this);
+                    }
+                    else if (this.player.combo == 2) {
+                        if(this.direction == 'up') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeUp3';
+                            this.player.body.velocity.y = -this.player.speed * 2;
+                            this.player.swipe.body.velocity.y = -this.player.speed * 2;
+                        } else if(this.direction == 'down') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeDown3';
+                            this.player.body.velocity.y = this.player.speed * 2;
+                            this.player.swipe.body.velocity.y = this.player.speed * 2;
+                        } else if(this.direction == 'left') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeSide3';
+                            this.player.body.velocity.x = -this.player.speed * 2;
+                            this.player.swipe.body.velocity.x = -this.player.speed * 2;
+                        } else if(this.direction == 'right') {
+                            this.player.state = 'attack';
+                            this.animationName = 'swipeSide3';
+                            this.player.body.velocity.x = this.player.speed * 2;
+                            this.player.swipe.body.velocity.x = this.player.speed * 2;
+                        }
+                        this.player.combo = 3;
+                        this.game.time.events.remove(this.comboTimer2);
+                        this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
+                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                            this.player.state = 'walk';
+                            this.game.time.events.remove(this.idleTimer1);
+                            this.idling = false;
+                            this.player.combo = 0;
+                        }, this);
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){
+                        spaceKey.duration = 0;
+                    }, this);
                 }
-                this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
-                    this.player.state = 'walk';
-                    this.game.time.events.remove(this.idleTimer1);
-                    this.idling = false;
-                }, this);
-                this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){
-                    spaceKey.duration = 0;
-                }, this);
             }
 
             /************************************** Animation Controller for Player movement *****************************************************************************/
