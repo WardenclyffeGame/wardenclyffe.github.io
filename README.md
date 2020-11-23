@@ -1,8 +1,9 @@
 # wardenclyffe.github.io
 
-**v.0.1 11-25-20**
+**v.0.1 11-25-20** <br>
   *~Character* <br>
-    +Added Milutin <br>
+    <ul>
+    <li>+Added Milutin </li>
     +Added movement <br>
     +Added animations <br>
     +Added idle <br>
