@@ -30,8 +30,9 @@ steamGame.Preload.prototype = {
         this.load.bitmapFont('pixelFont', 'sprites/pixelFont.png', 'sprites/pixelFont.fnt');
             this.load.atlasJSONHash('menuPointer', 'sprites/images/menuPointer.png', 'sprites/images/menuPointer.json');
         //this.load.atlasJSONHash('protest', 'sprites/game/testingProtag.png', 'sprites/game/testingProtag.json');
-            this.load.atlasJSONHash('debugTiles', 'sprites/game/testTiles.png', 'sprites/game/jsonKeys/testTiles.json');
-        this.load.tilemap('debugMap', 'maps/debugMap.json', null, Phaser.Tilemap.TILED_JSON);
+            //this.load.atlasJSONHash('debugTiles', 'sprites/game/testTiles.png', 'sprites/game/jsonKeys/testTiles.json');
+            this.load.image('debugTiles', 'sprites/game/Tiles.png');
+        this.load.tilemap('debugMap', 'maps/DebugMap2.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.atlasJSONHash('heart', 'sprites/game/heart.png', 'sprites/game/jsonKeys/heart.json');
         this.load.atlasJSONHash('steamMeter', 'sprites/game/steamMeter.png', 'sprites/game/jsonKeys/steamMeter.json');
             this.load.atlasJSONHash('elecMeter', 'sprites/game/ElectricMeter.png', 'sprites/game/jsonKeys/ElectricMeter.json');
@@ -58,6 +59,8 @@ steamGame.Preload.prototype = {
         this.load.image('Council', 'sprites/game/Council.png');
             this.load.atlasJSONHash('milutinHead', 'sprites/game/milutinHead.png', 'sprites/game/jsonKeys/milutinHead.json');
         this.load.atlasJSONHash('StunBaton', 'sprites/game/StunBaton.png', 'sprites/game/jsonKeys/StunBaton.json');
+            this.load.atlasJSONHash('Dummy', 'sprites/game/Dummy.png', 'sprites/game/jsonKeys/Dummy.json');
+        this.load.atlasJSONHash('Hammer', 'sprites/game/Hammer.png', 'sprites/game/jsonKeys/Hammer.json');
     },
     create: function() {
         this.state.start('MainMenu');

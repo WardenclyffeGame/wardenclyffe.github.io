@@ -9,7 +9,6 @@ steamGame.Game.prototype = {
     },*/
 
     create: function(){
-
         /******************************KEY DECLARATIONS***********************************/
         //movement 
         upKey = this.game.input.keyboard.addKey(87) //w
@@ -43,24 +42,30 @@ steamGame.Game.prototype = {
         this.game.stage.backgroundColor = '#acbfbc';
         this.scalingFactor = (this.game.world.width / 19) / 32;
         this.map = this.game.add.tilemap('debugMap');
-        this.map.addTilesetImage('TileSets', 'debugTiles');
-        this.floor = this.map.createLayer('floor');
-        this.floor.setScale(this.scalingFactor);
+        this.map.addTilesetImage('DebugTiles', 'debugTiles');
+        this.water = this.map.createLayer('water');
+        this.water.setScale(this.scalingFactor);
         this.wall = this.map.createLayer('wall');
         this.wall.setScale(this.scalingFactor);
         this.wall.hit = false;
-        this.map.forEach(this.animateTile, this, 0, 0, 36, 36, this.wall);
         this.game.physics.arcade.enable(this.wall);
+        this.floor = this.map.createLayer('floor');
+        this.floor.setScale(this.scalingFactor);
+        this.decWall = this.map.createLayer('wall1');
+        this.decWall.setScale(this.scalingFactor);
+        this.decFloor = this.map.createLayer('floor1');
+        this.decFloor.setScale(this.scalingFactor);
+        
         //this.wall.debug = true;
         this.map.setCollisionBetween(4, 17, true, 'wall');
-        this.floor.resizeWorld();
+        this.water.resizeWorld();
 
         //set scene boundary
         //this.game.world.setBounds(0, 0, this.game.world.width, this.game.world.height);
  
         /*************************************SINGLE MOST VITAL PIECE: THE PLAYER************************************************/
         //player declaration
-        this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'milutin');
+        this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY + (this.scalingFactor * 32), 'milutin');
         this.player.anchor.setTo(0.5, 0.5);
         this.player.swipe = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY);
         this.player.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
@@ -83,7 +88,7 @@ steamGame.Game.prototype = {
         this.player.animations.add('swipeSide3', [77, 78, 79, 80], 12, true);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
-        this.player.speed = (this.game.world.width / 13.66);
+        this.player.speed = (this.scalingFactor * 320) / 3.2;
         this.player.body.setSize(12, 22, 10, 10);
         this.player.body.collideWorldBounds = true;
         this.game.camera.follow(this.player, 1);
@@ -135,9 +140,10 @@ steamGame.Game.prototype = {
         this.menuState = 'none';
 
         //testing object for slashing
-        this.dummy = this.game.add.sprite(this.game.world.centerX + 100, this.game.world.centerY, 'Bomb');
+        this.dummy = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY + (100 * this.scalingFactor), 'Dummy');
         this.game.physics.arcade.enable(this.dummy);
         this.dummy.hit = false;
+        this.dummy.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2)
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
 
@@ -287,11 +293,11 @@ steamGame.Game.prototype = {
         this.ASGreekFire.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASGreekFire);
         //blank
-        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Boots');
-        this.ASBoots.anchor.setTo(0.5, 0.5);
-        this.ASBoots.frame = 1;
-        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBoots);
+        this.ASHammer = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Hammer');
+        this.ASHammer.anchor.setTo(0.5, 0.5);
+        this.ASHammer.frame = 1;
+        this.ASHammer.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASHammer);
 
         //ROW 3
         //bomb 
@@ -476,9 +482,9 @@ steamGame.Game.prototype = {
             this.debugText.destroy();
         }*/
 
-        //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt);
+        this.game.physics.arcade.collide(this.player, this.wall);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
-        this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt, null, this);
+        //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
@@ -921,11 +927,11 @@ steamGame.Game.prototype = {
                 this.ASGroup.selPos.pos5 = 'StunBaton';
                 this.hasItems = true;
             }
-            /*if (this.player.hasHammer == 1) {
+            if (this.player.hasHammer == 1) {
                 this.ASHammer.frame = 0;
                 this.ASGroup.selPos.pos8 = 'Hammer';
                 this.hasItems = true;
-            }*/
+            }
             if (this.player.hasBoots == 1) {
                 this.ASBoots.frame = 0;
                 //this.ASGroup.selPos.pos13 = 'Boots';
@@ -1330,11 +1336,13 @@ steamGame.Game.prototype = {
         if(this.player.state == 'attack') {
             if(this.dummy.hit == false && this.dummy.currentHP > 1) {
                 this.dummy.hit = true;
+                this.dummy.frame = 1;
 
                 this.dummy.currentHP -= 1;
 
-                this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
                     this.dummy.hit = false;
+                    this.dummy.frame = 0;
                 }, this);
             }
             if(this.dummy.hit == false && this.dummy.currentHP == 1) {
@@ -1348,6 +1356,7 @@ steamGame.Game.prototype = {
                 this.player.hasStunBaton = 1;
                 this.player.hasSteamShield = 1;
                 this.player.hasHook = 1;
+                this.player.hasHammer = 1;
                 this.player.hasBoomerang = 1;
                 this.player.hasGreekFire = 1;
                 this.ASGroup.curPos = 5;
@@ -1436,10 +1445,8 @@ steamGame.Game.prototype = {
         this.playerData.hasBoomerang = this.player.hasBoomerang;
         this.playerData.hasGreekFire = this.player.hasGreekFire;
         this.playerData.hasStunBaton = this.player.hasStunBaton;
+        this.playerData.hasHammer = this.player.hasHammer;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];;
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
-    },
-    animateTile: function() {
-
     }
 };
