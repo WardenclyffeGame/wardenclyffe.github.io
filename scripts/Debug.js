@@ -147,6 +147,11 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
 
+        this.HPSign = this.game.add.sprite(this.game.world.centerX + (400 * this.scalingFactor), this.game.world.centerY + (100 * this.scalingFactor), 'signSheets');
+        this.game.physics.arcade.enable(this.HPSign);
+        this.HPSign.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2)
+        this.HPSign.frame = 3;
+
         this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 1135, this.game.world.centerY, 'KronaG');
         this.game.physics.arcade.enable(this.kronaTestG);
         this.kronaTestG.value = 60;
