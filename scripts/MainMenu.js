@@ -298,18 +298,6 @@ steamGame.MainMenu.prototype = {
                         maxEnergy: 50,
                         //currentEnergy: ,
                         currency: 0,
-                        ability: '',
-                        hasBoots: true,
-                        hasExoArm: true,
-                        hasWinan: true,
-                        hasHook: true,
-                        hasSteamShield: true,
-                        hasBoomerang: true,
-                        hasGreekFire: true,
-                        hadLightRod: true,
-                        hasTaserSword: true,
-                        curAbil: 'Winan',
-                        //add more things in the future
                     };
                     this.game.state.start('Debug');
                 }
@@ -323,9 +311,6 @@ steamGame.MainMenu.prototype = {
                         maxEnergy: 50,
                         //currentEnergy: ,
                         currency: 0,
-                        ability: '',
-                        hasboots: false,
-                        //add more things in the future
                     };
                     this.game.state.start('Debug');
                 }

@@ -125,6 +125,7 @@ steamGame.Game.prototype = {
         this.player.hasBoomerang = this.playerData.hasBoomerang || 0;
         this.player.hasGreekFire = this.playerData.hasGreekFire || 0;
         this.player.hasStunBaton = this.playerData.hasStunBaton || 0;
+        this.player.hasHammer = this.playerData.hasHammer || 0;
         this.player.curAbil = this.playerData.curAbil || null;
 
         this.player.timer = 75;
@@ -612,6 +613,9 @@ steamGame.Game.prototype = {
 
             /***************************************** Player Steam Handler **********************************************************************************************/
             if (this.player.currentSteam < this.player.maxSteam) {
+                if (this.player.currentSteam <= 0) {
+                    this.player.currentSteam = 0.01;
+                }
                 this.diffSteam = this.player.currentSteam / this.player.maxSteam;
                 this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * (0.65 * this.diffSteam));
                 this.steamLevel.y += this.diffSteam * this.scalingFactor * 0.65
@@ -621,6 +625,9 @@ steamGame.Game.prototype = {
 
             /***************************************** Player Electricity Handler **********************************************************************************************/
             if (this.player.currentEnergy < this.player.maxEnergy) {
+                if (this.player.currentEnergy <= 0) {
+                    this.player.currentEnergy = 0.01;
+                }
                 this.diffEnergy = this.player.currentEnergy / this.player.maxEnergy;
                 this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * (0.65 * this.diffEnergy));
                 this.elecLevel.y += this.diffEnergy * this.scalingFactor * 0.65
@@ -919,11 +926,6 @@ steamGame.Game.prototype = {
                 this.ASGroup.pos = 'down';
             }
 
-            if (this.player.hasBomb == 1) {
-                this.ASBomb.frame = 0;
-                this.ASGroup.selPos.pos9 = 'Bomb';
-                this.hasItems = true;
-            }
             if (this.player.hasWinan == 1) {
                 this.ASWinan.frame = 0;
                 this.ASGroup.selPos.pos1 = 'Winan';
@@ -944,6 +946,11 @@ steamGame.Game.prototype = {
                 this.ASGroup.selPos.pos4 = 'LightRod';
                 this.hasItems = true;
             }
+            if (this.player.hasStunBaton == 1) {
+                this.ASStunBaton.frame = 0;
+                this.ASGroup.selPos.pos5 = 'StunBaton';
+                this.hasItems = true;
+            }
             if (this.player.hasBoomerang == 1) {
                 this.ASBoomerang.frame = 0;
                 this.ASGroup.selPos.pos6 = 'Boomerang';
@@ -954,14 +961,14 @@ steamGame.Game.prototype = {
                 this.ASGroup.selPos.pos7 = 'GreekFire';
                 this.hasItems = true;
             }
-            if (this.player.hasStunBaton == 1) {
-                this.ASStunBaton.frame = 0;
-                this.ASGroup.selPos.pos5 = 'StunBaton';
-                this.hasItems = true;
-            }
             if (this.player.hasHammer == 1) {
                 this.ASHammer.frame = 0;
                 this.ASGroup.selPos.pos8 = 'Hammer';
+                this.hasItems = true;
+            }
+            if (this.player.hasBomb == 1) {
+                this.ASBomb.frame = 0;
+                this.ASGroup.selPos.pos9 = 'Bomb';
                 this.hasItems = true;
             }
             if (this.player.hasBoots == 1) {
@@ -1086,11 +1093,13 @@ steamGame.Game.prototype = {
             }
 
             if (this.hasItems == true) {
-                if (this.ASSelector.x != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x) {
-                    this.ASSelector.x = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x;
-                }
-                if (this.ASSelector.y != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y) {
-                    this.ASSelector.y = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y;
+                if (this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x != null) {
+                    if (this.ASSelector.x != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x) {
+                        this.ASSelector.x = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x;
+                    }
+                    if (this.ASSelector.y != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y) {
+                        this.ASSelector.y = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y;
+                    }
                 }
             }
 
