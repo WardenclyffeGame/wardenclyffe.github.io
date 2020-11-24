@@ -105,6 +105,14 @@ steamGame.MainMenu.prototype = {
         downKey = this.game.input.keyboard.addKey(83);
         enterKey = this.game.input.keyboard.addKey(13);
         skipKey = this.game.input.keyboard.addKey(48); //debug key
+
+        //default data
+        this.defaultData ={
+            maxHP: 6,
+            maxSteam: 100,
+            maxEnergy: 50,
+            currency: 0,
+        };
     },
 
     update: function() {
@@ -122,18 +130,7 @@ steamGame.MainMenu.prototype = {
         }
         //debugkey handler
         if (skipKey.isDown) {
-            this.game.state.states['Debug'].playerData = {
-                maxHP: 6,
-                //currentHP: ,
-                maxSteam: 100,
-                //currentSteam: ,
-                maxEnergy: 50,
-                //currentEnergy: ,
-                currency: 0,
-                ability: '',
-                hasboots: false,
-                //add more things in the future
-            };
+            this.game.state.states['Debug'].playerData = this.defaultData;
             this.game.state.start('Debug');
         }
 
@@ -290,42 +287,28 @@ steamGame.MainMenu.prototype = {
                 this.menuPointer.y = this.menuText2.y
                 if (enterKey.isDown) {
                     //enter default save state loading later, for now just start game
-                    this.game.state.states['Debug'].playerData = {
-                        maxHP: 6,
-                        //currentHP: ,
-                        maxSteam: 100,
-                        //currentSteam: ,
-                        maxEnergy: 50,
-                        //currentEnergy: ,
-                        currency: 0,
-                    };
+                    this.game.state.states['Debug'].playerData = this.defaultData
                     this.game.state.start('Debug');
                 }
                 if (space.isDown) {
                     //enter default save state loading later, for now just start game
-                    this.game.state.states['Debug'].playerData = {
-                        maxHP: 6,
-                        //currentHP: ,
-                        maxSteam: 100,
-                        //currentSteam: ,
-                        maxEnergy: 50,
-                        //currentEnergy: ,
-                        currency: 0,
-                    };
+                    this.game.state.states['Debug'].playerData = this.defaultData
                     this.game.state.start('Debug');
                 }
             }
             else if (this.pointerPos == 1) {
                 this.menuPointer.y = this.menuText3.y;
-                if (enterKey.isDown) {
-                    //enter default save state loading later, for now just start game
-                    this.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
-                    this.game.state.start('Debug');
-                }
-                if (space.isDown) {
-                    //enter default save state loading later, for now just start game
-                    this.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
-                    this.game.state.start('Debug');
+                if (JSON.parse(window.localStorage.getItem('playerData')) != null) {
+                    if (enterKey.isDown) {
+                        //enter default save state loading later, for now just start game
+                        this.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
+                        this.game.state.start('Debug');
+                    }
+                    if (space.isDown) {
+                        //enter default save state loading later, for now just start game
+                        this.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
+                        this.game.state.start('Debug');
+                    }
                 }
             }
             else if (this.pointerPos == 2) {

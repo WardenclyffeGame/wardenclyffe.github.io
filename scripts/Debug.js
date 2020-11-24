@@ -144,49 +144,49 @@ steamGame.Game.prototype = {
         this.dummy = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY + (100 * this.scalingFactor), 'Dummy');
         this.game.physics.arcade.enable(this.dummy);
         this.dummy.hit = false;
-        this.dummy.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2)
+        this.dummy.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
 
         this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.ESign);
-        this.ESign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
+        this.ESign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ESign.frame = 1;
         this.ESign.body.immovable = true;
 
         this.CSign = this.game.add.sprite(this.game.world.centerX + (300 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.CSign);
-        this.CSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
+        this.CSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.CSign.frame = 0;
         this.CSign.value = 10;
         this.CSign.body.immovable = true;
 
         this.SSign = this.game.add.sprite(this.game.world.centerX + (400 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.SSign);
-        this.SSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
+        this.SSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.SSign.frame = 2;
         this.SSign.body.immovable = true;
 
         this.HPSign = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.HPSign);
-        this.HPSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
+        this.HPSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.HPSign.frame = 3;
         this.HPSign.body.immovable = true;
 
-        this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 1135, this.game.world.centerY, 'KronaG');
+        this.kronaTestG = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width), this.game.world.centerY, 'KronaG');
         this.game.physics.arcade.enable(this.kronaTestG);
         this.kronaTestG.value = 60;
-        this.kronaTestG.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1)
+        this.kronaTestG.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
 
-        this.kronaTestS = this.game.add.sprite(this.game.world.centerX - 1205, this.game.world.centerY, 'KronaS');
+        this.kronaTestS = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width - 70), this.game.world.centerY, 'KronaS');
         this.game.physics.arcade.enable(this.kronaTestS);
         this.kronaTestS.value = 36;
-        this.kronaTestS.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1)
+        this.kronaTestS.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
 
-        this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - 1275, this.game.world.centerY, 'KronaZ');
+        this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width - 140), this.game.world.centerY, 'KronaZ');
         this.game.physics.arcade.enable(this.kronaTestZ);
         this.kronaTestZ.value = 12;
-        this.kronaTestZ.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1)
+        this.kronaTestZ.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
 
 
         /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
