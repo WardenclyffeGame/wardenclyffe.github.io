@@ -57,7 +57,7 @@ steamGame.Game.prototype = {
         this.decFloor.setScale(this.scalingFactor);
         
         //this.wall.debug = true;
-        this.map.setCollisionBetween(4, 17, true, 'wall');
+        this.map.setCollisionBetween(4, 25, true, 'wall');
         this.water.resizeWorld();
 
         //set scene boundary
@@ -147,10 +147,25 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
 
-        this.HPSign = this.game.add.sprite(this.game.world.centerX + (400 * this.scalingFactor), this.game.world.centerY + (100 * this.scalingFactor), 'signSheets');
+        this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY + (200 * this.scalingFactor) - 1350, 'signSheets');
+        this.game.physics.arcade.enable(this.ESign);
+        this.ESign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
+        this.ESign.frame = 1;
+
+        this.ESign = this.game.add.sprite(this.game.world.centerX + (300 * this.scalingFactor), this.game.world.centerY + (200 * this.scalingFactor) - 1350, 'signSheets');
+        this.game.physics.arcade.enable(this.ESign);
+        this.ESign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
+        this.ESign.frame = 2;
+
+        this.SSign = this.game.add.sprite(this.game.world.centerX + (400 * this.scalingFactor), this.game.world.centerY + (200 * this.scalingFactor) - 1350, 'signSheets');
+        this.game.physics.arcade.enable(this.SSign);
+        this.SSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
+        this.SSign.frame = 3;
+
+        this.HPSign = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY + (200 * this.scalingFactor) - 1350, 'signSheets');
         this.game.physics.arcade.enable(this.HPSign);
         this.HPSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
-        this.HPSign.frame = 3;
+        this.HPSign.frame = 4;
 
         this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 1135, this.game.world.centerY, 'KronaG');
         this.game.physics.arcade.enable(this.kronaTestG);
