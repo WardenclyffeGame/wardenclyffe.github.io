@@ -119,6 +119,7 @@ steamGame.Game.prototype = {
         this.player.hasLightRod = this.playerData.hasLightRod || 0;
         this.player.hasBoomerang = this.playerData.hasBoomerang || 0;
         this.player.hasGreekFire = this.playerData.hasGreekFire || 0;
+        this.player.hasStunBaton = this.playerData.hasStunBaton || 0;
         this.player.curAbil = this.playerData.curAbil || null;
 
         this.player.timer = 75;
@@ -267,12 +268,12 @@ steamGame.Game.prototype = {
         this.ASGroup.add(this.ASLightRod);
         
         //ROW 2
-        //bomb 
-        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Bomb');
-        this.ASBomb.anchor.setTo(0.5, 0.5);
-        this.ASBomb.frame = 1;
-        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBomb);
+        //Baton
+        this.ASStunBaton = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'StunBaton');
+        this.ASStunBaton.anchor.setTo(0.5, 0.5);
+        this.ASStunBaton.frame = 1;
+        this.ASStunBaton.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASStunBaton);
         //boomerang
         this.ASBoomerang = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * 0 * 32), 'Boomerang');
         this.ASBoomerang.anchor.setTo(0.5, 0.5);
@@ -293,12 +294,12 @@ steamGame.Game.prototype = {
         this.ASGroup.add(this.ASBoots);
 
         //ROW 3
-        //boots 
-        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
-        this.ASBoots.anchor.setTo(0.5, 0.5);
-        this.ASBoots.frame = 1;
-        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBoots);
+        //bomb 
+        this.ASBomb = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 32), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Bomb');
+        this.ASBomb.anchor.setTo(0.5, 0.5);
+        this.ASBomb.frame = 1;
+        this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASBomb);
         //blank 
         this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
         this.ASBoots.anchor.setTo(0.5, 0.5);
@@ -362,8 +363,16 @@ steamGame.Game.prototype = {
             this.ASGroup.curPos = 3;
         } else if (this.player.curAbil == 'LightRod') {
             this.ASGroup.curPos = 4;
-        } else if (this.player.curAbil == 'Bomb') {
+        } else if (this.player.curAbil == 'StunBaton') {
             this.ASGroup.curPos = 5;
+        } else if (this.player.curAbil == 'Boomerang') {
+            this.ASGroup.curPos = 6;
+        } else if (this.player.curAbil == 'GreekFire') {
+            this.ASGroup.curPos = 7;
+        } else if (this.player.curAbil == 'Hammer') {
+            this.ASGroup.curPos = 8;
+        } else if (this.player.curAbil == 'Bomb') {
+            this.ASGroup.curPos = 9;
         }
         this.ASGroup.curAbil = this.player.curAbil;
         //map screen to the right
@@ -435,7 +444,7 @@ steamGame.Game.prototype = {
     update: function(){
         /***************************************** Collision handler for player vs. layers and debug text ***************************************************************/
         
-        if (debugKey.isDown) {
+        /*if (debugKey.isDown) {
             this.debugText = this.debugText || {};
             this.playerData1_2 = window.localStorage.getItem('playerData');
             this.playerData2 = JSON.parse(this.playerData1_2);
@@ -457,12 +466,12 @@ steamGame.Game.prototype = {
             this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             this.debugText.DB = this.game.debug.body(this.dummy);
             
-            /*if (this.player.currency < 9990) {
+            if (this.player.currency < 9990) {
                 this.player.newC += 10;
             } else if (this.player.currency >= 9990 && this.player.currency < 9999){
                 this.player.newC += 1;
-            }*/
-        }
+            }
+        }*/
         /*if (debugKey.isUp) {
             this.debugText.destroy();
         }*/
@@ -627,7 +636,7 @@ steamGame.Game.prototype = {
                 }
             }
             if(spaceKey.duration < 1 && spaceKey.isDown && this.player.combo < 3) {
-                if (this.player.state == 'walk' || this.player.combo > 0) {
+                if (this.player.state != 'attack') {
                     this.player.body.velocity.x = 0;
                     this.player.body.velocity.y = 0;
                     this.player.swipe.body.velocity.x = 0;
@@ -647,12 +656,12 @@ steamGame.Game.prototype = {
                             this.animationName = 'swipeSide';
                         }
                         this.player.combo = 1;
-                        this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                        this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
                             this.player.state = 'walk';
                             this.game.time.events.remove(this.idleTimer1);
                             this.idling = false;
-                            this.player.combo = 0;
                         }, this);
+                        this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.player.combo = 0; }, this);
                     }
                     else if (this.player.combo == 1) {
                         if(this.direction == 'up') {
@@ -679,12 +688,12 @@ steamGame.Game.prototype = {
                         this.player.combo = 2;
                         this.game.time.events.remove(this.comboTimer1);
                         this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
-                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                        this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
                             this.player.state = 'walk';
                             this.game.time.events.remove(this.idleTimer1);
                             this.idling = false;
-                            this.player.combo = 0;
                         }, this);
+                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.player.combo = 0; }, this);
                     }
                     else if (this.player.combo == 2) {
                         if(this.direction == 'up') {
@@ -711,12 +720,13 @@ steamGame.Game.prototype = {
                         this.player.combo = 3;
                         this.game.time.events.remove(this.comboTimer2);
                         this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
-                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                        this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
                             this.player.state = 'walk';
                             this.game.time.events.remove(this.idleTimer1);
                             this.idling = false;
                             this.player.combo = 0;
                         }, this);
+                        
                     }
                     this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){
                         spaceKey.duration = 0;
@@ -873,7 +883,7 @@ steamGame.Game.prototype = {
 
             if (this.player.hasBomb == 1) {
                 this.ASBomb.frame = 0;
-                this.ASGroup.selPos.pos5 = 'Bomb';
+                this.ASGroup.selPos.pos9 = 'Bomb';
                 this.hasItems = true;
             }
             if (this.player.hasWinan == 1) {
@@ -906,6 +916,16 @@ steamGame.Game.prototype = {
                 this.ASGroup.selPos.pos7 = 'GreekFire';
                 this.hasItems = true;
             }
+            if (this.player.hasStunBaton == 1) {
+                this.ASStunBaton.frame = 0;
+                this.ASGroup.selPos.pos5 = 'StunBaton';
+                this.hasItems = true;
+            }
+            /*if (this.player.hasHammer == 1) {
+                this.ASHammer.frame = 0;
+                this.ASGroup.selPos.pos8 = 'Hammer';
+                this.hasItems = true;
+            }*/
             if (this.player.hasBoots == 1) {
                 this.ASBoots.frame = 0;
                 //this.ASGroup.selPos.pos13 = 'Boots';
@@ -1325,10 +1345,13 @@ steamGame.Game.prototype = {
                 this.player.hasBomb = 1;
                 this.player.hasWinan = 1;
                 this.player.hasLightRod = 1;
-                //this.player.hasSteamShield = 1;
-                //this.player.hasHook = 1;
-                this.ASGroup.curPos = 1;
-                this.ASGroup.curAbil = 'Winan';
+                this.player.hasStunBaton = 1;
+                this.player.hasSteamShield = 1;
+                this.player.hasHook = 1;
+                this.player.hasBoomerang = 1;
+                this.player.hasGreekFire = 1;
+                this.ASGroup.curPos = 5;
+                this.ASGroup.curAbil = 'StunBaton';
                 this.player.state = 'hurt';
                 if (this.direction == 'right') {
                     this.player.body.velocity.x = -this.player.speed * 3;
@@ -1412,6 +1435,7 @@ steamGame.Game.prototype = {
         this.playerData.hasLightRod = this.player.hasLightRod;
         this.playerData.hasBoomerang = this.player.hasBoomerang;
         this.playerData.hasGreekFire = this.player.hasGreekFire;
+        this.playerData.hasStunBaton = this.player.hasStunBaton;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];;
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
     },
