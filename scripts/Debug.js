@@ -147,17 +147,20 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
 
-        this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 100, this.game.world.centerY, 'KronaG');
+        this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 1135, this.game.world.centerY, 'KronaG');
         this.game.physics.arcade.enable(this.kronaTestG);
         this.kronaTestG.value = 60;
+        this.kronaTestG.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1)
 
-        this.kronaTestS = this.game.add.sprite(this.game.world.centerX - 120, this.game.world.centerY, 'KronaS');
+        this.kronaTestS = this.game.add.sprite(this.game.world.centerX - 1205, this.game.world.centerY, 'KronaS');
         this.game.physics.arcade.enable(this.kronaTestS);
         this.kronaTestS.value = 36;
+        this.kronaTestS.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1)
 
-        this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - 140, this.game.world.centerY, 'KronaZ');
+        this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - 1275, this.game.world.centerY, 'KronaZ');
         this.game.physics.arcade.enable(this.kronaTestZ);
         this.kronaTestZ.value = 12;
+        this.kronaTestZ.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1)
 
 
         /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
