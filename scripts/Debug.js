@@ -147,25 +147,30 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
 
-        this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY + (200 * this.scalingFactor) - 1350, 'signSheets');
+        this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.ESign);
         this.ESign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
         this.ESign.frame = 1;
+        this.ESign.body.immovable = true;
 
-        this.ESign = this.game.add.sprite(this.game.world.centerX + (300 * this.scalingFactor), this.game.world.centerY + (200 * this.scalingFactor) - 1350, 'signSheets');
-        this.game.physics.arcade.enable(this.ESign);
-        this.ESign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
-        this.ESign.frame = 2;
+        this.CSign = this.game.add.sprite(this.game.world.centerX + (300 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
+        this.game.physics.arcade.enable(this.CSign);
+        this.CSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
+        this.CSign.frame = 0;
+        this.CSign.value = 10;
+        this.CSign.body.immovable = true;
 
-        this.SSign = this.game.add.sprite(this.game.world.centerX + (400 * this.scalingFactor), this.game.world.centerY + (200 * this.scalingFactor) - 1350, 'signSheets');
+        this.SSign = this.game.add.sprite(this.game.world.centerX + (400 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.SSign);
         this.SSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
-        this.SSign.frame = 3;
+        this.SSign.frame = 2;
+        this.SSign.body.immovable = true;
 
-        this.HPSign = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY + (200 * this.scalingFactor) - 1350, 'signSheets');
+        this.HPSign = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.HPSign);
         this.HPSign.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3)
-        this.HPSign.frame = 4;
+        this.HPSign.frame = 3;
+        this.HPSign.body.immovable = true;
 
         this.kronaTestG = this.game.add.sprite(this.game.world.centerX - 1135, this.game.world.centerY, 'KronaG');
         this.game.physics.arcade.enable(this.kronaTestG);
@@ -511,6 +516,10 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
+        this.game.physics.arcade.collide(this.player, this.CSign, this.collect, null, this);
+        this.game.physics.arcade.collide(this.player, this.ESign, this.debugElec, null, this);
+        this.game.physics.arcade.collide(this.player, this.SSign, this.debugSteam, null, this);
+        this.game.physics.arcade.collide(this.player, this.HPSign, this.debugHurt, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
         if (this.menuState == 'none') {
             /***************************************** Player HP manager ******************************************************************************************/
@@ -657,11 +666,11 @@ steamGame.Game.prototype = {
                     this.player.swipe.body.velocity.y = this.player.speed * 0.9;
                 }
                 if (rightKey.isDown || rightArrow.isDown) {
-                    this.player.body.velocity.x = this.player.speed * 1.2;
-                    this.player.swipe.body.velocity.x = this.player.speed * 1.2;
+                    this.player.body.velocity.x = this.player.speed;
+                    this.player.swipe.body.velocity.x = this.player.speed;
                 } else if (leftKey.isDown || leftArrow.isDown) {
-                    this.player.body.velocity.x = -this.player.speed * 1.2;
-                    this.player.swipe.body.velocity.x = -this.player.speed * 1.2;
+                    this.player.body.velocity.x = -this.player.speed;
+                    this.player.swipe.body.velocity.x = -this.player.speed;
                 }
             }
             if(spaceKey.duration < 1 && spaceKey.isDown && this.player.combo < 3) {
@@ -1411,7 +1420,9 @@ steamGame.Game.prototype = {
         } else {
             player.newC = 9999;
         }
-        coin.destroy();
+        if (coin != this.CSign) {
+            coin.destroy();
+        }
     },
     abilityTrans: function() {
         if (this.ASGroup.stationary == true) {
