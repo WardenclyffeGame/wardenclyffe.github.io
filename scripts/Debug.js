@@ -49,6 +49,7 @@ steamGame.Game.prototype = {
         this.wall = this.map.createLayer('wall');
         this.wall.setScale(this.scalingFactor);
         this.wall.hit = false;
+        this.map.forEach(this.animateTile, this, 0, 0, 36, 36, this.wall);
         this.game.physics.arcade.enable(this.wall);
         //this.wall.debug = true;
         this.map.setCollisionBetween(4, 17, true, 'wall');
@@ -1413,5 +1414,8 @@ steamGame.Game.prototype = {
         this.playerData.hasGreekFire = this.player.hasGreekFire;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];;
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
+    },
+    animateTile: function() {
+
     }
 };
