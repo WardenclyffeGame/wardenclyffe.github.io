@@ -106,6 +106,9 @@ steamGame.Game.prototype = {
         //player object stuff declaration
         this.player.maxHP = this.playerData.maxHP || 6;
         this.player.currentHP = this.playerData.currentHP || this.player.maxHP;
+        if (this.playerData.currentHP == 0) {
+            this.player.currentHP = 0;
+        }
         this.player.maxSteam = this.playerData.maxSteam || 100;
         this.player.currentSteam = this.playerData.currentSteam || this.player.maxSteam;
         this.player.maxEnergy = this.playerData.maxEnergy || 50;
@@ -479,16 +482,16 @@ steamGame.Game.prototype = {
     update: function(){
         /***************************************** Collision handler for player vs. layers and debug text ***************************************************************/
         
-        /*if (debugKey.isDown) {
+        if (debugKey.isDown) {
             this.debugText = this.debugText || {};
-            this.playerData1_2 = window.localStorage.getItem('playerData');
-            this.playerData2 = JSON.parse(this.playerData1_2);
-            this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData1_2, this.game.world.centerX - 1900, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
-            //this.debugText.HP = this.game.debug.text('True health: ' + this.player.currentHP, this.game.world.centerX - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            //this.playerData1_2 = window.localStorage.getItem('playerData');
+            //this.playerData2 = JSON.parse(this.playerData1_2);
+            //this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData1_2, this.game.world.centerX - 1900, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('True health: ' + this.player.currentHP, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
-            this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
+            //this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.dummy.currentHP, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.playerData.currentHP, this.game.camera.width - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
@@ -506,7 +509,7 @@ steamGame.Game.prototype = {
             } else if (this.player.currency >= 9990 && this.player.currency < 9999){
                 this.player.newC += 1;
             }
-        }*/
+        }
         /*if (debugKey.isUp) {
             this.debugText.destroy();
         }*/
