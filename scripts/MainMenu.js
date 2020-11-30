@@ -112,7 +112,9 @@ steamGame.MainMenu.prototype = {
             maxSteam: 100,
             maxEnergy: 50,
             currency: 0,
+            map: "Debug",
         };
+        this.playerData = JSON.parse(window.localStorage.getItem('playerData'));
     },
 
     update: function() {
@@ -130,8 +132,8 @@ steamGame.MainMenu.prototype = {
         }
         //debugkey handler
         if (skipKey.isDown) {
-            this.game.state.states['Debug'].playerData = this.defaultData;
-            this.game.state.start('Debug');
+            this.game.state.states[this.defaultData.map].playerData = this.defaultData;
+            this.game.state.start(this.defaultData.map);
         }
 
         if (this.starting != true) {
@@ -287,27 +289,30 @@ steamGame.MainMenu.prototype = {
                 this.menuPointer.y = this.menuText2.y
                 if (enterKey.isDown) {
                     //enter default save state loading later, for now just start game
-                    this.game.state.states['Debug'].playerData = this.defaultData
-                    this.game.state.start('Debug');
+                    this.game.state.states[this.defaultData.map].playerData = this.defaultData
+                    this.game.state.start(this.defaultData.map);
                 }
                 if (space.isDown) {
                     //enter default save state loading later, for now just start game
-                    this.game.state.states['Debug'].playerData = this.defaultData
-                    this.game.state.start('Debug');
+                    this.game.state.states[this.defaultData.map].playerData = this.defaultData
+                    this.game.state.start(this.defaultData.map);
                 }
             }
             else if (this.pointerPos == 1) {
                 this.menuPointer.y = this.menuText3.y;
-                if (JSON.parse(window.localStorage.getItem('playerData')) != null) {
+                if (this.playerData != null) {
+                    if (this.playerData.map == null) {
+                        this.playerData.map = this.defaultData.map;
+                    }
                     if (enterKey.isDown) {
                         //enter default save state loading later, for now just start game
-                        this.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
-                        this.game.state.start('Debug');
+                        this.game.state.states[this.playerData.map].playerData = this.playerData;
+                        this.game.state.start(this.playerData.map);
                     }
                     if (space.isDown) {
                         //enter default save state loading later, for now just start game
-                        this.game.state.states['Debug'].playerData = JSON.parse(window.localStorage.getItem('playerData'));
-                        this.game.state.start('Debug');
+                        this.game.state.states[this.playerData.map].playerData = this.playerData;
+                        this.game.state.start(this.playerData.map);
                     }
                 }
             }

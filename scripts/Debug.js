@@ -1492,7 +1492,8 @@ steamGame.Game.prototype = {
         this.playerData.hasGreekFire = this.player.hasGreekFire;
         this.playerData.hasStunBaton = this.player.hasStunBaton;
         this.playerData.hasHammer = this.player.hasHammer;
-        this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];;
+        this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
+        this.playerData.map = "Debug";
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
     }
 };
