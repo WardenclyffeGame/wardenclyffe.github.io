@@ -46,7 +46,7 @@ Sunday:
         
         
         
-Coding tools setup:
+Coding environment setup:
     Download VS Code from their site:
     - run the setup, check every box, its a microsoft program, there's no addons or viruses
     Download git from their site:
