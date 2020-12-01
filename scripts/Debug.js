@@ -485,8 +485,9 @@ steamGame.Game.prototype = {
     },
     update: function(){
         /***************************************** Collision handler for player vs. layers and debug text ***************************************************************/
-        if (this.fade.alpha == 1) {
+        if (this.fade.alpha == 1 && this.intro == null) {
             this.game.add.tween(this.fade).to({alpha: 0}, 500, null, true);
+            this.intro = true;
         }
         if (debugKey.isDown) {
             this.debugText = this.debugText || {};
@@ -615,8 +616,10 @@ steamGame.Game.prototype = {
                         this['heart' + (this.highestHeart - 9).toString()].frame = 2;
                     }
                 }
-                if (this.diffHP == this.maxHP) {
-                    //game over script
+                if (this.player.currentHP <= 0) {
+                    if (this.fade.alpha == 0) {
+                        this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                    }
                 }
             }
 
@@ -1210,7 +1213,10 @@ steamGame.Game.prototype = {
                     this.pause(this);
                 } else if (this.pausePointer.pos == 3) {
                     this.save(this);
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.35, function(){window.location.href = "http://wardenclyffegame.github.io";}, this);
+                    if (this.fade.alpha == 0) {
+                        this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){window.location.href = "http://wardenclyffegame.github.io";}, this);
                 }
             }
 
