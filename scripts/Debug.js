@@ -413,7 +413,7 @@ steamGame.Game.prototype = {
             this.ASGroup.curPos = 9;
         }
         this.ASGroup.curAbil = this.player.curAbil;
-        //map screen to the right
+        //map screen to the bottom
         this.mapOverworld = this.game.add.sprite(0, 0, 'mapOverworld');
         this.mapOverworld.anchor.setTo(0.5, 0.5);
         this.mapOverworld.width = this.game.camera.width / 1.5;
