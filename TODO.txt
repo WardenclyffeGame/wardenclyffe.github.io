@@ -1,0 +1,40 @@
+From this point forward, this will be our place to timestamp and schedule progress to be made,
+as well as completed segments.
+For the sake of simplicity I won't go back through everything that's already done, 
+we'll just start here and now.
+
+WEEK OF 11/30:
+
+Monday:
+    -I'm still tired, Beau's reading the code, and Ryan is busy. nothing today but this list
+
+Tuesday:
+    -11 new milutin frames for sitting and standing
+    -work out the code for controls override while still standing up (should be easy)
+
+Wednesday:
+    -11 new milutin frames for trip and stand
+    -code for trip and stand (one timer and animation as well as a counter similar to comboTimer, simple)
+
+Thursday:
+    -detection of q as input and creating conditionals for curAbil, first winan
+    -create winan projectiles and shooting frames
+    -code projectile movement and collision detection with dummy, as well as destruction on collision
+        +query: should the bullet dissipate if it doesn't collide within a certain distance?
+
+Friday:
+    -spawn hp pot collectible on map somewhere, adds 1 hp
+        +add heart container on map somewhere that changes max health? should we worry about that yet? that won't be for a while
+    -make boots version of the walk cycle (going to basically double the file size :/)
+
+Saturday:
+    -make bomb script, does damage in a radius after a timer to any object, player or scarecrow
+    -create explosion/ destruction frames
+    -add directional knockback for milutin
+
+Sunday:
+    -add dash function if boots
+    -make dash frames, only like 6 for each side, 2 to start, 2 during, 2 to end (kickoff, flight, landing)
+    -make fade in and out of black for smooth transitions (tiled black scales across the screen that tween between alpha 0 and 1)
+    -add game over frames (probably only to the side for dramatic effect) then fade to black
+    -make fade in for map loading so the first time the update function loads it overrides all motion and fades out of black (0.5 seconds)
