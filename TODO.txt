@@ -41,3 +41,52 @@ Sunday:
     -add game over frames (probably only to the side for dramatic effect) then fade to black
     *-make fade in for map loading so the first time the update function loads it overrides all motion and fades out of black (0.5 seconds)*
         -finished ^
+        
+        
+        
+        
+        
+Coding tools setup:
+    Download VS Code from their site:
+    - run the setup, check every box, its a microsoft program, there's no addons or viruses
+    Download git from their site:
+    - run the setup, one specific page has a whole bunch of folder options and stuff, don't even look at it just click next, 
+      you basically don't have to click anything on the git setup
+      
+    Open VS code:
+    - under file at the top left, hit open new folder, and select the documents folder of the computer
+    - press *ctrl + shift + p*
+    - in the search bar type terminal and find "terminal: select default shell"
+    - click it, and click git bash terminal in the drop down menu it creates
+    
+    -now click the x and warning sign in the bottom left corner of the screen, this will pull up a bottom bar of "problems", "output", "terminal", and "debug"
+    click terminal if you aren't already there
+    - type "git clone https://github.com/WardenclyffeGame/wardenclyffegame.github.io"
+    
+    - while that's pulling, go to the left sidebar of the screen and hit the symbol with the 3 blocks and one to the side (extensions)
+    - type "live serve" and install the plugin the comes up "live server" it has a purple radio signal as its page logo
+    - if you want it, type "fold unfold" and install the plugin called "fold/ unfold icone" I know it's misspelled, but it just adds a handy function at the bottom
+    
+    -adding your github account to vs code:
+        - *git config --global user.name ""*
+        - *git config --global user.email ""*
+
+    -now, hit file and open new folder again, this time open the folder you cloned, wardenclyffegame.github.io
+    -you are now ready to work
+    
+To open a live server:
+    - open the index.html file in vs code, and hit "go live" in the bottom right of the screen, it will automatically open a live tab in your default browser
+    
+To push any changes made:
+    - make sure every file is saved (ctrl + s), 
+      you can tell if a file is saved because if there are unsaved changes there will be a white dot next to the name of the file at the top
+      
+    - *git add -A*
+    - *git commit -m ""* 
+      (you have to enter a message or it won't commit for you, let's try to stay real with our messages, 
+         but i understand if you're frustrated and just want to type some screams) 
+    - *git push*
+    
+    note: if this is your first time pushing on this computer, it will show a pop up to bring you to your browser and sign in officially
+          this should only happen once per computer however so no worries. and if it says it cannot redirect you when you sign in, don't worry about it
+          VS code doesn't care about the school restrictions and so long as you confirm your account it will push.
