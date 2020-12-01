@@ -477,11 +477,17 @@ steamGame.Game.prototype = {
         this.pausePointer.pos = 1;
         this.pauseGroup.add(this.pausePointer);
         
+        /*********************************************fade to black tiles***********************************************************/
+        this.fade = this.game.add.tileSprite(this.game.camera.x, this.game.camera.y, this.game.camera.width, this.game.camera.height, 'black');
+        this.fade.fixedToCamera = true;
+        this.fade.alpha = 1;
 
     },
     update: function(){
         /***************************************** Collision handler for player vs. layers and debug text ***************************************************************/
-        
+        if (this.fade.alpha == 1) {
+            this.game.add.tween(this.fade).to({alpha: 0}, 500, null, true);
+        }
         if (debugKey.isDown) {
             this.debugText = this.debugText || {};
             //this.playerData1_2 = window.localStorage.getItem('playerData');

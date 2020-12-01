@@ -36,6 +36,8 @@ Saturday:
 Sunday:
     -add dash function if boots
     -make dash frames, only like 6 for each side, 2 to start, 2 during, 2 to end (kickoff, flight, landing)
-    -make fade in and out of black for smooth transitions (tiled black scales across the screen that tween between alpha 0 and 1)
+    *-make fade in and out of black for smooth transitions (tiled black scales across the screen that tween between alpha 0 and 1)*
+        -finished ^
     -add game over frames (probably only to the side for dramatic effect) then fade to black
-    -make fade in for map loading so the first time the update function loads it overrides all motion and fades out of black (0.5 seconds)
+    *-make fade in for map loading so the first time the update function loads it overrides all motion and fades out of black (0.5 seconds)*
+        -finished ^

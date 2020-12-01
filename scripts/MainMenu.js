@@ -115,6 +115,10 @@ steamGame.MainMenu.prototype = {
             map: "Debug",
         };
         this.playerData = JSON.parse(window.localStorage.getItem('playerData'));
+
+        this.fade = this.game.add.tileSprite(this.game.camera.x, this.game.camera.y, this.game.camera.width, this.game.camera.height, 'black');
+        this.fade.fixedToCamera = true;
+        this.fade.alpha = 0;
     },
 
     update: function() {
@@ -131,9 +135,14 @@ steamGame.MainMenu.prototype = {
           //}
         }
         //debugkey handler
-        if (skipKey.isDown) {
-            this.game.state.states[this.defaultData.map].playerData = this.defaultData;
-            this.game.state.start(this.defaultData.map);
+        if (skipKey.isDown && this.next == null) {
+            if (this.fade.alpha == 0) {
+                this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+            }
+            this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
+                this.game.state.states[this.defaultData.map].playerData = this.defaultData;
+                this.game.state.start(this.defaultData.map);
+            }, this)
         }
 
         if (this.starting != true) {
@@ -287,15 +296,25 @@ steamGame.MainMenu.prototype = {
             }
             if (this.pointerPos == 0) {
                 this.menuPointer.y = this.menuText2.y
-                if (enterKey.isDown) {
+                if (enterKey.isDown && this.next == null) {
                     //enter default save state loading later, for now just start game
-                    this.game.state.states[this.defaultData.map].playerData = this.defaultData
-                    this.game.state.start(this.defaultData.map);
+                    if (this.fade.alpha == 0) {
+                        this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                    }
+                    this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
+                        this.game.state.states[this.defaultData.map].playerData = this.defaultData
+                        this.game.state.start(this.defaultData.map);
+                    }, this)
                 }
-                if (space.isDown) {
+                if (space.isDown && this.next == null) {
                     //enter default save state loading later, for now just start game
-                    this.game.state.states[this.defaultData.map].playerData = this.defaultData
-                    this.game.state.start(this.defaultData.map);
+                    if (this.fade.alpha == 0) {
+                        this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                    }
+                    this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
+                        this.game.state.states[this.defaultData.map].playerData = this.defaultData
+                        this.game.state.start(this.defaultData.map);
+                    }, this)
                 }
             }
             else if (this.pointerPos == 1) {
@@ -304,15 +323,25 @@ steamGame.MainMenu.prototype = {
                     if (this.playerData.map == null) {
                         this.playerData.map = this.defaultData.map;
                     }
-                    if (enterKey.isDown) {
+                    if (enterKey.isDown && this.next == null) {
                         //enter default save state loading later, for now just start game
-                        this.game.state.states[this.playerData.map].playerData = this.playerData;
-                        this.game.state.start(this.playerData.map);
+                        if (this.fade.alpha == 0) {
+                            this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                        }
+                        this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
+                            this.game.state.states[this.playerData.map].playerData = this.playerData;
+                            this.game.state.start(this.playerData.map);
+                        }, this)
                     }
-                    if (space.isDown) {
+                    if (space.isDown && this.next == null) {
                         //enter default save state loading later, for now just start game
-                        this.game.state.states[this.playerData.map].playerData = this.playerData;
-                        this.game.state.start(this.playerData.map);
+                        if (this.fade.alpha == 0) {
+                            this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                        }
+                        this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
+                            this.game.state.states[this.playerData.map].playerData = this.playerData;
+                            this.game.state.start(this.playerData.map);
+                        }, this)
                     }
                 }
             }
