@@ -25,7 +25,8 @@ Thursday:
 Friday:
     -spawn hp pot collectible on map somewhere, adds 1 hp
         +add heart container on map somewhere that changes max health? should we worry about that yet? that won't be for a while
-    -make boots version of the walk cycle (going to basically double the file size :/)
+    *-make boots version of the walk cycle (going to basically double the file size :/)*
+        --reconsider ^^
 
 Saturday:
     -make bomb script, does damage in a radius after a timer to any object, player or scarecrow
