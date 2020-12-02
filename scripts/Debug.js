@@ -86,6 +86,9 @@ steamGame.Game.prototype = {
         this.player.animations.add('swipeUp3', [69, 70, 71, 72], 12, true);
         this.player.animations.add('swipeDown3', [73, 74, 75, 76], 12, true);
         this.player.animations.add('swipeSide3', [77, 78, 79, 80], 12, true);
+        this.player.animations.add('sit', [42, 84, 85, 86, 87, 88, 89, 90], 12, false);
+        this.player.animations.add('seated', [90, 90, 90, 90, 90, 91, 91, 91, 92, 92, 92, 92, 90], 4, true);
+        this.player.animations.add('stand', [90, 89, 88, 87, 86, 85, 84, 42], 12, false);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
         this.player.speed = (this.scalingFactor * 320) / 3.2;
@@ -672,7 +675,7 @@ steamGame.Game.prototype = {
                 }
             }
             if (this.player.state == 'walk') {
-                this.game.time.events.remove(this.knockbackTimer)
+                this.game.time.events.remove(this.knockbackTimer);
                 this.player.body.velocity.x = 0;
                 this.player.body.velocity.y = 0;
                 this.player.swipe.body.velocity.x = 0;
@@ -795,9 +798,37 @@ steamGame.Game.prototype = {
             this.direction = this.direction || 'down';
             if (this.player.state == 'walk') {
                 if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0 && this.idling == false) {
-                    //this.idleTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * 20, function(){ this.animationName = 'runLeft' }, this);
+                    this.idleTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * 20, function(){ this.animationName = 'sit'; this.idling = "seated"; this.direction = "right"; }, this);
+                    this.game.time.events.remove(this.standTimer);
+                    this.game.time.events.remove(this.sitTimer);
                     this.animationName = "stopped";
                     this.idling = true;
+                }
+
+                if (this.idling == "seated") {
+                    this.direction = "right";
+                    if (this.player.scale.x < 0) {
+                        this.player.scale.x = -this.player.scale.x
+                    }
+                    this.player.body.velocity.x = 0;
+                    this.player.body.velocity.y = 0;
+                    this.player.swipe.body.velocity.x = 0;
+                    this.player.swipe.body.velocity.y = 0;
+                    if (this.player.animations.name == "sit" && this.sitTiming != true) {
+                        this.sitTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.66, function () { this.sitTimed = true; this.sitTiming = false; this.animationName = "seated"; }, this);
+                        this.sitTiming = true;
+                    }
+                    if (this.sitTimed == true) {
+                        this.animationName = "seated";
+                    }
+
+                    if (upKey.isDown || upArrow.isDown || downKey.isDown || downArrow.isDown || leftKey.isDown || leftArrow.isDown || rightKey.isDown || rightArrow.isDown) {
+                        if (this.player.animations.name == "seated") {
+                            this.standTimer = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function() { this.idling = false; }, this);
+                            this.animationName = 'stand';
+                            this.sitTimed = false;
+                        }
+                    }
                 }
                 
                 if (this.player.body.velocity.x < 0) {
@@ -863,7 +894,7 @@ steamGame.Game.prototype = {
             }
             //change current animation
             if (this.player.animations.name !== this.animationName && this.animationName !== 'stopped') {
-                this.player.animations.play(this.animationName, 12, true);
+                this.player.animations.play(this.animationName);
             } else if (this.animationName == 'stopped') {
                 if (this.direction == 'down') {
                     this.player.animations.play('idleDown', 4, true);

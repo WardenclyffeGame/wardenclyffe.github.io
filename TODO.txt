@@ -5,12 +5,15 @@ we'll just start here and now.
 
 WEEK OF 11/30:
 
-Monday:
+Monday: success
     -I'm still tired, Beau's reading the code, and Ryan is busy. nothing today but this list
+        - finished ^
 
-Tuesday:
+Tuesday: success
     -11 new milutin frames for sitting and standing
+        -actually did come out to about 11, finished ^
     -work out the code for controls override while still standing up (should be easy)
+        -was not easy, null let me down but good to know: remove() does not null a var finished ^
 
 Wednesday:
     -11 new milutin frames for trip and stand
