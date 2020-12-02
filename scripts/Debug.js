@@ -1253,6 +1253,10 @@ steamGame.Game.prototype = {
                     this.save(this);
                     if (this.fade.alpha == 0) {
                         this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                        if (this.frameAbil != null) {
+                            this.frameAbil.name == "none";
+                            this.frameAbil.destroy();
+                        }
                     }
                     this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){window.location.href = "http://wardenclyffegame.github.io";}, this);
                 }
