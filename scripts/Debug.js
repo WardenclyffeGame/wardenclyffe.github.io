@@ -622,6 +622,10 @@ steamGame.Game.prototype = {
                 if (this.player.currentHP <= 0) {
                     if (this.fade.alpha == 0) {
                         this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                        if (this.frameAbil != null) {
+                            this.frameAbil.name == "none";
+                            this.frameAbil.destroy();
+                        }
                     }
                 }
             }
@@ -1133,6 +1137,9 @@ steamGame.Game.prototype = {
                 this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
                 this.frameAbil.name = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
                 this.ASGroup.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
+            }
+            else if (this.frameAbil.name == "none") {
+                this.frameAbil.destroy();
             }
 
             if (this.hasItems == true) {
