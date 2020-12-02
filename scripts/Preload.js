@@ -21,7 +21,6 @@ steamGame.Preload.prototype = {
         //load actual sprites and spritesheets (placeholder stock images for now)
         this.load.atlasJSONHash('menuBlimp', 'sprites/images/blimp.png', 'sprites/images/blimp.json');
             this.load.atlasJSONHash('menuBall1', 'sprites/images/hotairballoon.png', 'sprites/images/hotairballoon.json');
-        //this.load.atlasJSONHash('title', 'sprites/load/Title.png', 'sprites/load/Title.json');
         this.load.image('title', 'sprites/images/TitleSplash.png');
             this.load.atlasJSONHash('menuBall2', 'sprites/images/hotairballoon2.png', 'sprites/images/hotairballoon2.json');
         this.load.atlasJSONHash('clouds', 'sprites/images/clouds.png', 'sprites/images/clouds.json');
