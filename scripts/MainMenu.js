@@ -8,7 +8,7 @@ steamGame.MainMenu.prototype = {
 
         this.game.stage.backgroundColor = '#75a1a0';
 
-        this.backBlimp = this.game.add.sprite(this.game.world.centerX + 192, (this.game.world.centerY / 2), 'menuBlimp');
+        this.backBlimp = this.game.add.sprite(this.game.world.width * 0.75, (this.game.world.centerY / 2), 'menuBlimp');
         this.backBlimp.anchor.setTo(0, 0.5);
         this.backBlimp.scale.setTo(0.5, 0.5);
         this.backBlimp.animations.add('float');
@@ -41,29 +41,9 @@ steamGame.MainMenu.prototype = {
         this.backBall1.animations.add('float', [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         this.backBall1.animations.play('float', 6, true);
 
-        this.titlePart0 = this.game.add.sprite(this.game.world.centerX - 520, (this.game.world.centerY / 2) - 32, 'title');
-        this.titlePart1 = this.game.add.sprite(this.titlePart0.x + this.titlePart0.width - 16, this.titlePart0.y, 'title');
-            this.titlePart1.frame = 1;
-        this.titlePart2 = this.game.add.sprite(this.titlePart1.x + this.titlePart1.width - 24, this.titlePart0.y, 'title');
-            this.titlePart2.frame = 2;
-        this.titlePart3 = this.game.add.sprite(this.titlePart2.x + this.titlePart2.width - 16, this.titlePart0.y, 'title');
-            this.titlePart3.frame = 3;
-        this.titlePart4 = this.game.add.sprite(this.titlePart3.x + this.titlePart3.width - 24, this.titlePart0.y, 'title');
-            this.titlePart4.frame = 4;
-        this.titlePart5 = this.game.add.sprite(this.titlePart4.x + this.titlePart4.width - 16, this.titlePart0.y, 'title');
-            this.titlePart5.frame = 5;
-        this.titlePart6 = this.game.add.sprite(this.titlePart3.x + this.titlePart3.width, this.titlePart3.y + this.titlePart3.height, 'title');
-            this.titlePart6.frame = 6;
-        this.titlePart7 = this.game.add.sprite(this.titlePart6.x + this.titlePart6.width - 20, this.titlePart3.y + this.titlePart3.height, 'title');
-            this.titlePart7.frame = 7;
-        this.titlePart8 = this.game.add.sprite(this.titlePart7.x + this.titlePart7.width - 16, this.titlePart3.y + this.titlePart3.height, 'title');
-            this.titlePart8.frame = 8;
-        this.titlePart9 = this.game.add.sprite(this.titlePart8.x + this.titlePart8.width, this.titlePart3.y + this.titlePart3.height, 'title');
-            this.titlePart9.frame = 9;
-        this.titlePart10 = this.game.add.sprite(this.titlePart9.x + this.titlePart9.width - 16, this.titlePart3.y + this.titlePart3.height, 'title');
-            this.titlePart10.frame = 10;
-        this.titlePart11 = this.game.add.sprite(this.titlePart10.x + this.titlePart8.width - 24, this.titlePart3.y + this.titlePart3.height, 'title');
-            this.titlePart11.frame = 11;
+        this.title = this.game.add.sprite(this.game.world.centerX, this.game.camera.height / 2.5, 'title');
+        this.title.anchor.setTo(0.5, 0.5);
+        this.title.scale.setTo((this.game.camera.width * 0.6) / this.title.width, (this.game.camera.width * 0.6) / this.title.width);
 
         this.menuBGround2 = this.game.add.sprite(this.game.world.width + 2, this.game.world.height * 2, 'menuBG2');
         this.menuBGround2.anchor.setTo(1, 1);
@@ -77,7 +57,7 @@ steamGame.MainMenu.prototype = {
         this.menuBack.scale.setTo(this.menuSizingVarX, this.menuSizingVarY);
 
         //this.game.load.bitmapFont('pixelFont', 'sprites/pixelFont.png', 'sprites/pixelFont.fnt');
-        this.startText = this.game.add.bitmapText(this.game.world.centerX, this.game.world.height * 0.75, 'pixelFont', 'Press space to begin.', 48);
+        this.startText = this.game.add.bitmapText(this.game.world.centerX, this.game.world.height * 0.85, 'pixelFont', 'Press space to begin.', 48);
         this.startText.anchor.setTo(0.5, 0.5);
 
         this.menuText1 = this.game.add.bitmapText(this.game.world.centerX, this.game.world.height * 1.2, 'pixelFont', 'Wardenclyffe', 80);
@@ -225,32 +205,10 @@ steamGame.MainMenu.prototype = {
             if(this.startText.alive == true) {
                 this.startText.destroy();
             }
-            if(this.titlePart0.y + 600 > 0) {
-                this.titlePart0.y -= 2.5;
-                this.titlePart1.y -= 2.5;
-                this.titlePart2.y -= 2.5;
-                this.titlePart3.y -= 2.5;
-                this.titlePart4.y -= 2.5;
-                this.titlePart5.y -= 2.5;
-                this.titlePart6.y -= 2.5;
-                this.titlePart7.y -= 2.5;
-                this.titlePart8.y -= 2.5;
-                this.titlePart9.y -= 2.5;
-                this.titlePart10.y -= 2.5;
-                this.titlePart11.y -= 2.5;
+            if(this.title.y + 600 > 0) {
+                this.title.y -= 3;
             } else {
-                this.titlePart0.destroy();
-                this.titlePart1.destroy();
-                this.titlePart2.destroy();
-                this.titlePart3.destroy();
-                this.titlePart4.destroy();
-                this.titlePart5.destroy();
-                this.titlePart6.destroy();
-                this.titlePart7.destroy();
-                this.titlePart8.destroy();
-                this.titlePart9.destroy();
-                this.titlePart10.destroy();
-                this.titlePart11.destroy();
+                this.title.destroy();
             }
         }
 
