@@ -890,6 +890,7 @@ steamGame.Game.prototype = {
                                     if (this.direction == "down") {
                                         this.animationName = "idleDown";
                                     }
+                                    this.usingTiming = false;
                                 }, this);
                                 this.usingTiming = true;
                             }
@@ -929,6 +930,7 @@ steamGame.Game.prototype = {
                                     if (this.direction == "down") {
                                         this.animationName = "idleDown";
                                     }
+                                    this.usingTiming = false;
                                 }, this);
                                 this.usingTiming = true;
                             }
