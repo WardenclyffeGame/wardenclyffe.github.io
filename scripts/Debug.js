@@ -623,6 +623,10 @@ steamGame.Game.prototype = {
                 if (this.player.currentHP <= 0) {
                     if (this.fade.alpha == 0) {
                         this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                        if (this.frameAbil != null) {
+                            this.frameAbil.name == "none";
+                            this.frameAbil.destroy();
+                        }
                     }
                 }
             }
@@ -961,7 +965,9 @@ steamGame.Game.prototype = {
             }
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
-            this.animationName = "stopped";
+            if (this.animationName != "seated") {
+                this.animationName = "stopped";
+            }
             if (this.ASGroup.cameraOffset.y < this.ASGroup.maxH + (this.game.camera.height * 1.5)) {
                 this.ASGroup.cameraOffset.y += this.game.camera.height / 40;
                 this.ASGroup.stationary = false;
@@ -1135,6 +1141,9 @@ steamGame.Game.prototype = {
                 this.frameAbil.name = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
                 this.ASGroup.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
             }
+            else if (this.frameAbil.name == "none") {
+                this.frameAbil.destroy();
+            }
 
             if (this.hasItems == true) {
                 if (this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x != null) {
@@ -1180,7 +1189,9 @@ steamGame.Game.prototype = {
             }
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
-            this.animationName = "stopped";
+            if (this.animationName != "seated") {
+                this.animationName = "stopped";
+            }
             if (this.mapGroup.cameraOffset.y > this.game.camera.height / 2) {
                 this.mapGroup.cameraOffset.y -= this.game.camera.height / 40;
                 this.mapGroup.stationary = false;
@@ -1231,7 +1242,9 @@ steamGame.Game.prototype = {
             }
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
-            this.animationName = "stopped";
+            if (this.animationName != "seated") {
+                this.animationName = "stopped";
+            }
             if (this.pauseGroup.pos == 'gone') {
                 this.pauseGroup.alpha = 1;
                 this.pauseGroup.pos = 'there';
@@ -1247,6 +1260,10 @@ steamGame.Game.prototype = {
                     this.save(this);
                     if (this.fade.alpha == 0) {
                         this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                        if (this.frameAbil != null) {
+                            this.frameAbil.name == "none";
+                            this.frameAbil.destroy();
+                        }
                     }
                     this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){window.location.href = "http://wardenclyffegame.github.io";}, this);
                 }
