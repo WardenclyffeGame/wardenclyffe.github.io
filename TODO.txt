@@ -24,6 +24,7 @@ Wednesday: massive success
 Thursday:
     -detection of q as input and creating conditionals for curAbil, first winan
     -create winan projectiles and shooting frames
+        -finished early ^
     -code projectile movement and collision detection with dummy, as well as destruction on collision
         +query: should the bullet dissipate if it doesn't collide within a certain distance?
 
