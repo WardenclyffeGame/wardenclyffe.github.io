@@ -142,7 +142,7 @@ steamGame.Game.prototype = {
         this.player.combo = 0;
         this.idling = false;
         this.tripCount = 0;
-        this.tripping = true;
+        this.usingAbil = "none";
 
         this.debugText = {};
 
@@ -495,7 +495,7 @@ steamGame.Game.prototype = {
             this.game.add.tween(this.fade).to({alpha: 0}, 500, null, true);
             this.intro = true;
         }
-        /*if (debugKey.isDown) {
+        if (debugKey.isDown) {
             this.debugText = this.debugText || {};
             //this.playerData1_2 = window.localStorage.getItem('playerData');
             //this.playerData2 = JSON.parse(this.playerData1_2);
@@ -508,7 +508,7 @@ steamGame.Game.prototype = {
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.debugText.TC = this.game.debug.text('TripCount:' + this.tripCount, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -523,7 +523,7 @@ steamGame.Game.prototype = {
             } else if (this.player.currency >= 9990 && this.player.currency < 9999){
                 this.player.newC += 1;
             }
-        }*/
+        }
         /*if (debugKey.isUp) {
             this.debugText.destroy();
         }*/
@@ -940,6 +940,28 @@ steamGame.Game.prototype = {
                 }
                 if (this.direction == 'left') {
                     this.player.animations.play('idleLeft', 4, true);
+                }
+            }
+
+            if (this.hasItems == true) {
+                if (abilityKey.isDown && abilityKey.duration < 2) {
+                    if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "none") {
+                        this.usingAbil = "Winan";
+                        //this.animationName = "winanSide";
+                        //this.animationName = "winanDown";
+                        //this.animationName = "winanUp";
+                        if (this.usingTiming != true) {
+                            this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.usingAbil = "none"; abilityKey.duration = 0; this.usingTiming = false; }, this);
+                            this.usingTiming = true;
+                        }
+                    }
+                }
+
+                if (this.usingAbil == "Winan") {
+                    this.player.body.velocity.x = 0;
+                    this.player.body.velocity.y = 0;
+                    this.player.swipe.body.velocity.x = 0;
+                    this.player.swipe.body.velocity.y = 0;
                 }
             }
 
