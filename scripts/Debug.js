@@ -1528,21 +1528,14 @@ steamGame.Game.prototype = {
         }
     },
     debugSteam: function(player, walls) {
-        /*if (player.currentSteam < player.maxSteam) {
+        if (player.currentSteam < player.maxSteam) {
             player.newSLevel += 0.1;
             if (player.newSLevel >= 1) {
                 player.currentSteam ++;
                 player.newSLevel = 0;
             }
-        }*/
-        if (player.currentSteam > 0) {
-            player.newSLevel -= 0.1;
-            if (player.newSLevel <= -1) {
-                player.currentSteam --;
-                player.newSLevel = 0;
-            }
         }
-        /*if (player.currentSteam > 0 && walls == 'attacked') {
+        /*if (player.currentSteam > 0) {
             player.newSLevel -= 0.1;
             if (player.newSLevel <= -1) {
                 player.currentSteam --;
