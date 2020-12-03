@@ -90,6 +90,12 @@ steamGame.Game.prototype = {
         this.player.animations.add('seated', [90, 90, 90, 90, 90, 91, 91, 91, 92, 92, 92, 92, 90], 4, true);
         this.player.animations.add('stand', [90, 89, 88, 87, 86, 85, 84, 42], 12, false);
         this.player.animations.add('trip', [93, 94, 95, 96, 97, 98, 98, 98, 98, 98, 98, 100, 100, 100, 101, 101, 102, 103], 12, false);
+        this.player.animations.add('winanSide', [104, 105, 106, 107], 12, false);
+        this.player.animations.add('winanUp', [108, 109, 110, 111], 12, false);
+        this.player.animations.add('winanDown', [112, 113, 114, 115], 12, false);
+        this.player.animations.add('winanSide2', [106, 106, 106, 107], 12, true);
+        this.player.animations.add('winanUp2', [110, 110, 110, 111], 12, true);
+        this.player.animations.add('winanDown2', [114, 114, 114, 115], 12, true);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
         this.player.speed = (this.scalingFactor * 320) / 3.2;
@@ -851,6 +857,85 @@ steamGame.Game.prototype = {
                         this.tripoverride = this.game.time.events.add(Phaser.Timer.SECOND * 1.5, function() { this.player.state = "walk"; this.tripTiming = false; this.tripCount = 0; }, this);
                     }
                 }
+
+                if (this.hasItems == true) {
+                    if (abilityKey.isDown && abilityKey.duration < 2) {
+                        if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "none") {
+                            this.usingAbil = "Winan";
+                            if (this.direction == "left" || this.direction == "right") {
+                                this.animationName = "winanSide";
+                            } else if (this.direction == "up") {
+                                this.animationName = "winanUp";
+                            } else if (this.direction == "down") {
+                                this.animationName = "winanDown";
+                            }
+                            if (this.usingTiming != true) {
+                                this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                                    this.usingAbil = "none"; 
+                                    abilityKey.duration = 0; 
+                                    this.usingTiming = false; 
+                                    if (this.direction == "left") {
+                                        this.animationName = "idleLeft";
+                                    }
+                                    if (this.direction == "right") {
+                                       this.animationName = "idleRight";
+                                    }
+                                    if (this.direction == "up") {
+                                        this.animationName = "idleUp";
+                                    }
+                                    if (this.direction == "down") {
+                                        this.animationName = "idleDown";
+                                    }
+                                }, this);
+                                this.usingTiming = true;
+                            }
+                            this.idling = true;
+                        }
+                    }
+                    if (abilityKey.duration > 330 && abilityKey.isDown) {
+                        if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "Winan") {
+                            this.usingAbil = "Winan2";
+                            this.game.time.events.remove(this.usingTimer);
+                            this.game.time.events.remove(this.usingTimer2);
+                            this.usingTiming = false;
+                            if (this.direction == "left" || this.direction == "right") {
+                                this.animationName = "winanSide2";
+                            } else if (this.direction == "up") {
+                                this.animationName = "winanUp2";
+                            } else if (this.direction == "down") {
+                                this.animationName = "winanDown2";
+                            }
+                            if (this.usingTiming != true) {
+                                this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.usingAbil = "Winan"; this.usingTiming = false; }, this);
+                                this.usingTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 0.35, function(){
+                                    this.usingAbil = "none"; 
+                                    abilityKey.duration = 0; 
+                                    this.usingTiming = false; 
+                                    if (this.direction == "left") {
+                                        this.animationName = "idleLeft";
+                                    }
+                                    if (this.direction == "right") {
+                                       this.animationName = "idleRight";
+                                    }
+                                    if (this.direction == "up") {
+                                        this.animationName = "idleUp";
+                                    }
+                                    if (this.direction == "down") {
+                                        this.animationName = "idleDown";
+                                    }
+                                }, this);
+                                this.usingTiming = true;
+                            }
+                            this.idling = true;
+                        }
+                    }
+                    if (this.usingAbil == "Winan" || this.usingAbil == "Winan2") {
+                        this.player.body.velocity.x = 0;
+                        this.player.body.velocity.y = 0;
+                        this.player.swipe.body.velocity.x = 0;
+                        this.player.swipe.body.velocity.y = 0;
+                    }
+                }
                 
                 if (this.player.body.velocity.x < 0) {
                     this.animationName = 'runLeft';
@@ -940,28 +1025,6 @@ steamGame.Game.prototype = {
                 }
                 if (this.direction == 'left') {
                     this.player.animations.play('idleLeft', 4, true);
-                }
-            }
-
-            if (this.hasItems == true) {
-                if (abilityKey.isDown && abilityKey.duration < 2) {
-                    if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "none") {
-                        this.usingAbil = "Winan";
-                        //this.animationName = "winanSide";
-                        //this.animationName = "winanDown";
-                        //this.animationName = "winanUp";
-                        if (this.usingTiming != true) {
-                            this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.usingAbil = "none"; abilityKey.duration = 0; this.usingTiming = false; }, this);
-                            this.usingTiming = true;
-                        }
-                    }
-                }
-
-                if (this.usingAbil == "Winan") {
-                    this.player.body.velocity.x = 0;
-                    this.player.body.velocity.y = 0;
-                    this.player.swipe.body.velocity.x = 0;
-                    this.player.swipe.body.velocity.y = 0;
                 }
             }
 
