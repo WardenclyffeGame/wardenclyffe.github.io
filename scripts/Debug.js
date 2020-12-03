@@ -142,6 +142,7 @@ steamGame.Game.prototype = {
         this.player.combo = 0;
         this.idling = false;
         this.tripCount = 0;
+        this.tripping = true;
 
         this.debugText = {};
 
