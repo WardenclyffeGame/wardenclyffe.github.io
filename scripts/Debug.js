@@ -141,6 +141,7 @@ steamGame.Game.prototype = {
         this.player.state = 'walk';
         this.player.combo = 0;
         this.idling = false;
+        this.tripCount = 0;
 
         this.debugText = {};
 
@@ -505,7 +506,8 @@ steamGame.Game.prototype = {
             this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.playerData.currentHP, this.game.camera.width - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.debugText.TC = this.game.debug.text('TripCount:' + this.tripCount, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -835,6 +837,19 @@ steamGame.Game.prototype = {
                         }
                     }
                 }
+
+                if (this.tripCount >= 20) {
+                    this.player.body.velocity.x = 0;
+                    this.player.body.velocity.y = 0;
+                    this.player.swipe.body.velocity.x = 0;
+                    this.player.swipe.body.velocity.y = 0;
+                    this.player.state = "trip";
+                    this.animationName = "trip";
+                    if (this.tripTiming != true) {
+                        this.tripTiming = true;
+                        this.tripoverride = this.game.time.events.add(Phaser.Timer.SECOND * 1.5, function() { this.player.state = "walk"; this.tripTiming = false; this.tripCount = 0; }, this);
+                    }
+                }
                 
                 if (this.player.body.velocity.x < 0) {
                     this.animationName = 'runLeft';
@@ -846,6 +861,9 @@ steamGame.Game.prototype = {
                     this.player.swipe.height = this.player.body.height;
                     if (this.player.scale.x < 0) {
                         this.player.scale.x = this.player.scale.x * -1;
+                        this.tripCount += 1;
+                        this.game.time.events.remove(this.tripTimer);
+                        this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
                     }
                     this.game.time.events.remove(this.idleTimer1);
                     this.idling = false;
@@ -860,6 +878,9 @@ steamGame.Game.prototype = {
                     this.player.swipe.height = this.player.body.height;
                     if (this.player.scale.x > 0) {
                         this.player.scale.x = this.player.scale.x * -1;
+                        this.tripCount += 1;
+                        this.game.time.events.remove(this.tripTimer);
+                        this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
                     }
                     this.game.time.events.remove(this.idleTimer1);
                     this.idling = false;
