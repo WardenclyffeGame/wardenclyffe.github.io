@@ -897,6 +897,7 @@ steamGame.Game.prototype = {
                                 this.usingTiming = true;
                             }
                             this.idling = true;
+                            this.game.time.events.remove(this.idleTimer1);
                         }
                     }
                     if (abilityKey.duration > 490 && abilityKey.isDown) {
@@ -938,6 +939,7 @@ steamGame.Game.prototype = {
                                 this.usingTiming = true;
                             }
                             this.idling = true;
+                            this.game.time.events.remove(this.idleTimer1);
                         }
                     }
                     if (this.usingAbil == "Winan" || this.usingAbil == "Winan2") {
