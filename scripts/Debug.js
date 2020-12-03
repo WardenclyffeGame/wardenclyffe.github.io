@@ -89,6 +89,7 @@ steamGame.Game.prototype = {
         this.player.animations.add('sit', [42, 84, 85, 86, 87, 88, 89, 90], 12, false);
         this.player.animations.add('seated', [90, 90, 90, 90, 90, 91, 91, 91, 92, 92, 92, 92, 90], 4, true);
         this.player.animations.add('stand', [90, 89, 88, 87, 86, 85, 84, 42], 12, false);
+        this.player.animations.add('trip', [93, 94, 95, 96, 97, 98, 98, 98, 98, 98, 98, 100, 100, 100, 101, 101, 102, 103], 12, false);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
         this.player.speed = (this.scalingFactor * 320) / 3.2;
