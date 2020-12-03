@@ -840,27 +840,15 @@ steamGame.Game.prototype = {
                 }
 
                 if (this.tripCount >= 20) {
-                    if (this.tripping == true) {
-                        if (this.direction == "right") {
-                            this.player.body.velocity.x = this.playerSpeed * 1.7;
-                            this.player.swipe.body.velocity.x = this.playerSpeed * 1.7;
-                        }
-                        if (this.direction == "left") {
-                            this.player.body.velocity.x = this.playerSpeed * -1.7;
-                            this.player.swipe.body.velocity.x = this.playerSpeed * -1.7;
-                        }
-                    } else {
-                        this.player.body.velocity.x = 0;
-                        this.player.swipe.body.velocity.x = 0;
-                    }
+                    this.player.state = "trip";
+                    this.player.body.velocity.x = 0;
+                    this.player.swipe.body.velocity.x = 0;
                     this.player.body.velocity.y = 0;
                     this.player.swipe.body.velocity.y = 0;
-                    this.player.state = "trip";
                     this.animationName = "trip";
                     if (this.tripTiming != true) {
                         this.tripTiming = true;
                         this.tripoverride = this.game.time.events.add(Phaser.Timer.SECOND * 1.5, function() { this.player.state = "walk"; this.tripTiming = false; this.tripCount = 0; }, this);
-                        this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function() { this.tripping = false; }, this);
                     }
                 }
                 
@@ -876,7 +864,6 @@ steamGame.Game.prototype = {
                         this.player.scale.x = this.player.scale.x * -1;
                         this.tripCount += 1;
                         this.game.time.events.remove(this.tripTimer);
-                        this.tripping = true;
                         this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
                     }
                     this.game.time.events.remove(this.idleTimer1);
@@ -894,7 +881,6 @@ steamGame.Game.prototype = {
                         this.player.scale.x = this.player.scale.x * -1;
                         this.tripCount += 1;
                         this.game.time.events.remove(this.tripTimer);
-                        this.tripping = true;
                         this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
                     }
                     this.game.time.events.remove(this.idleTimer1);
