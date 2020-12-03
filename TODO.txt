@@ -15,9 +15,11 @@ Tuesday: success
     -work out the code for controls override while still standing up (should be easy)
         -was not easy, null let me down but good to know: remove() does not null a var finished ^
 
-Wednesday:
+Wednesday: massive success
     -11 new milutin frames for trip and stand
+        -finished and glorious, broke 100 frames ^^
     -code for trip and stand (one timer and animation as well as a counter similar to comboTimer, simple)
+        -finished and even more glorious ^^
 
 Thursday:
     -detection of q as input and creating conditionals for curAbil, first winan
