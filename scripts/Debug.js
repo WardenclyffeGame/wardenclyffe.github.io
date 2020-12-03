@@ -718,6 +718,7 @@ steamGame.Game.prototype = {
                     this.player.body.velocity.y = 0;
                     this.player.swipe.body.velocity.x = 0;
                     this.player.swipe.body.velocity.y = 0;
+                    this.sitTimed = false;
                     if (this.player.combo == 0) {
                         if(this.direction == 'up') {
                             this.player.state = 'attack';
@@ -864,6 +865,7 @@ steamGame.Game.prototype = {
                 if (this.hasItems == true) {
                     if (abilityKey.isDown && abilityKey.duration < 2) {
                         if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "none") {
+                            this.sitTimed = false;
                             this.usingAbil = "Winan";
                             if (this.direction == "left" || this.direction == "right") {
                                 this.animationName = "winanSide";
@@ -899,6 +901,7 @@ steamGame.Game.prototype = {
                     }
                     if (abilityKey.duration > 490 && abilityKey.isDown) {
                         if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "Winan") {
+                            this.sitTimed = false;
                             this.usingAbil = "Winan2";
                             this.game.time.events.remove(this.usingTimer);
                             this.game.time.events.remove(this.usingTimer2);
@@ -1096,6 +1099,8 @@ steamGame.Game.prototype = {
             }
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
+            this.player.swipe.body.velocity.x = 0;
+            this.player.swipe.body.velocity.y = 0;
             if (this.animationName != "seated") {
                 this.animationName = "stopped";
             }
@@ -1320,6 +1325,8 @@ steamGame.Game.prototype = {
             }
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
+            this.player.swipe.body.velocity.x = 0;
+            this.player.swipe.body.velocity.y = 0;
             if (this.animationName != "seated") {
                 this.animationName = "stopped";
             }
@@ -1373,6 +1380,8 @@ steamGame.Game.prototype = {
             }
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
+            this.player.swipe.body.velocity.x = 0;
+            this.player.swipe.body.velocity.y = 0;
             if (this.animationName != "seated") {
                 this.animationName = "stopped";
             }
