@@ -93,9 +93,9 @@ steamGame.Game.prototype = {
         this.player.animations.add('winanSide', [104, 105, 106, 107], 12, false);
         this.player.animations.add('winanUp', [108, 109, 110, 111], 12, false);
         this.player.animations.add('winanDown', [112, 113, 114, 115], 12, false);
-        this.player.animations.add('winanSide2', [106, 106, 106, 107], 12, true);
-        this.player.animations.add('winanUp2', [110, 110, 110, 111], 12, true);
-        this.player.animations.add('winanDown2', [114, 114, 114, 115], 12, true);
+        this.player.animations.add('winanSide2', [106, 106, 106, 106, 106, 106, 106, 107], 12, true);
+        this.player.animations.add('winanUp2', [110, 110, 110, 110, 110, 110, 110, 111], 12, true);
+        this.player.animations.add('winanDown2', [114, 114, 114, 114, 114, 114, 114, 115], 12, true);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
         this.player.speed = (this.scalingFactor * 320) / 3.2;
@@ -423,6 +423,9 @@ steamGame.Game.prototype = {
             this.ASGroup.curPos = 8;
         } else if (this.player.curAbil == 'Bomb') {
             this.ASGroup.curPos = 9;
+        }
+        if (this.player.curAbil != null) {
+            this.hasItems = true;
         }
         this.ASGroup.curAbil = this.player.curAbil;
         //map screen to the bottom
@@ -870,10 +873,11 @@ steamGame.Game.prototype = {
                                 this.animationName = "winanDown";
                             }
                             if (this.usingTiming != true) {
-                                this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                                this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
                                     this.usingAbil = "none"; 
                                     abilityKey.duration = 0; 
                                     this.usingTiming = false; 
+                                    this.refuel = false;
                                     if (this.direction == "left") {
                                         this.animationName = "idleLeft";
                                     }
@@ -892,7 +896,7 @@ steamGame.Game.prototype = {
                             this.idling = true;
                         }
                     }
-                    if (abilityKey.duration > 330 && abilityKey.isDown) {
+                    if (abilityKey.duration > 490 && abilityKey.isDown) {
                         if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "Winan") {
                             this.usingAbil = "Winan2";
                             this.game.time.events.remove(this.usingTimer);
@@ -906,11 +910,13 @@ steamGame.Game.prototype = {
                                 this.animationName = "winanDown2";
                             }
                             if (this.usingTiming != true) {
-                                this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.usingAbil = "Winan"; this.usingTiming = false; }, this);
-                                this.usingTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 0.35, function(){
+                                this.refuel = false;
+                                this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.usingAbil = "Winan"; this.usingTiming = false; this.refuel = false; }, this);
+                                this.usingTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 0.7, function(){
                                     this.usingAbil = "none"; 
                                     abilityKey.duration = 0; 
                                     this.usingTiming = false; 
+                                    this.refuel = false;
                                     if (this.direction == "left") {
                                         this.animationName = "idleLeft";
                                     }
@@ -934,6 +940,22 @@ steamGame.Game.prototype = {
                         this.player.body.velocity.y = 0;
                         this.player.swipe.body.velocity.x = 0;
                         this.player.swipe.body.velocity.y = 0;
+                        if (this.refuel != true) {
+                            if (this.usingAbil == "Winan") {
+                                this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/4), function(){ 
+                                    if (this.player.currentSteam >= 10) {
+                                        this.player.currentSteam -= 10;
+                                    }
+                                }, this);
+                            } else if (this.usingAbil == "Winan2") {
+                                this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (7/12), function(){ 
+                                    if (this.player.currentSteam >= 10) {
+                                        this.player.currentSteam -= 10;
+                                    }
+                                }, this);
+                            }
+                            this.refuel = true;
+                        }
                     }
                 }
                 

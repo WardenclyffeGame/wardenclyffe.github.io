@@ -121,6 +121,8 @@ steamGame.MainMenu.prototype = {
             }
             this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
                 this.game.state.states[this.defaultData.map].playerData = this.defaultData;
+                this.game.state.states[this.defaultData.map].playerData.hasWinan = 1;
+                this.game.state.states[this.defaultData.map].playerData.curAbil = 'Winan';
                 this.game.state.start(this.defaultData.map);
             }, this)
         }
