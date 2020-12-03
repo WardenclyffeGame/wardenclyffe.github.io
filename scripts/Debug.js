@@ -504,7 +504,7 @@ steamGame.Game.prototype = {
             this.game.add.tween(this.fade).to({alpha: 0}, 500, null, true);
             this.intro = true;
         }
-        if (debugKey.isDown) {
+        /*if (debugKey.isDown) {
             this.debugText = this.debugText || {};
             //this.playerData1_2 = window.localStorage.getItem('playerData');
             //this.playerData2 = JSON.parse(this.playerData1_2);
@@ -532,7 +532,7 @@ steamGame.Game.prototype = {
             } else if (this.player.currency >= 9990 && this.player.currency < 9999){
                 this.player.newC += 1;
             }
-        }
+        }*/
         /*if (debugKey.isUp) {
             this.debugText.destroy();
         }*/
