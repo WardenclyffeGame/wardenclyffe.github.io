@@ -133,7 +133,7 @@ steamGame.Game.prototype = {
         this.player.hasTaserSword = this.playerData.hasTaserSword || 0;
         this.player.hasWinan = this.playerData.hasWinan || 0;
         this.player.hasHook = this.playerData.hasHook || 0;
-        this.player.hasSteamShield = this.playerData.hasSteamShield || 0;
+        this.player.hasSteamShield = this.playerData.hasSteamShield || 1;
         this.player.hasLightRod = this.playerData.hasLightRod || 0;
         this.player.hasBoomerang = this.playerData.hasBoomerang || 0;
         this.player.hasGreekFire = this.playerData.hasGreekFire || 0;
@@ -874,7 +874,7 @@ steamGame.Game.prototype = {
                         this.tripoverride = this.game.time.events.add(Phaser.Timer.SECOND * 1.5, function() { this.player.state = "walk"; this.tripTiming = false; this.tripCount = 0; }, this);
                     }
                 }
-
+            //WINAN USAGE
                 if (this.hasItems == true) {
                     if (abilityKey.isDown && abilityKey.duration < 2) {
                         if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "none") {
@@ -1004,6 +1004,97 @@ steamGame.Game.prototype = {
                         abilityKey.duration = 0; 
                         this.usingTiming = false; 
                         this.refuel = false;
+                        if (this.direction == "left") {
+                            this.animationName = "idleLeft";
+                        }
+                        if (this.direction == "right") {
+                            this.animationName = "idleRight";
+                        }
+                        if (this.direction == "up") {
+                            this.animationName = "idleUp";
+                        }
+                        if (this.direction == "down") {
+                            this.animationName = "idleDown";
+                        }
+                        this.usingTiming = false;
+                        this.game.time.events.remove(this.usingTimer);
+                        this.game.time.events.remove(this.usingTimer2);
+                        this.game.time.events.remove(this.shootTimer);
+
+                    }
+                }
+                //SHIELD USAGE
+                if (this.hasItems == true) {
+                    if (abilityKey.isDown && abilityKey.duration < 2) {
+                        if (this.ASGroup.curAbil == "SteamShield" && this.usingAbil == "none") {
+                            this.sitTimed = false;
+                            this.usingAbil = "SteamShield";
+                            if (this.direction == "left" || this.direction == "right") {
+                                this.animationName = "winanSide";
+                                if (this.usingTiming != true) {
+                                    this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
+                                        this.usingAbil = "none"; 
+                                        this.duration = 0; 
+                                        this.usingTiming = false; 
+                                            if (this.direction == "left") {
+                                            this.animationName = "idleLeft";
+                                            }
+                                            if (this.direction == "right") {
+                                            this.animationName = "idleRight";
+                                            }
+                                            if (this.direction == "up") {
+                                            this.animationName = "idleUp";
+                                            }
+                                            if (this.direction == "down") {
+                                            this.animationName = "idleDown";
+                                            }
+                                    this.usingTiming = false;
+                                    }, this);
+                                    this.usingTiming = true;
+                                }
+                            this.idling = true;
+                            this.game.time.events.remove(this.idleTimer1);
+                            }
+                        }
+                    }
+                    
+                    if (abilityKey.duration > 490 && abilityKey.isDown) {
+                        if (this.ASGroup.curAbil == "SteamShield" && this.usingAbil == "SteamShield") {
+                            this.sitTimed = false;
+                            this.usingAbil = "SteamShield";
+                            this.game.time.events.remove(this.usingTimer);
+                            this.game.time.events.remove(this.usingTimer2);
+                            this.usingTiming = false;
+                            if (this.direction == "left" || this.direction == "right") {
+                                this.animationName = "winanSide2";
+                            } else if (this.direction == "up") {
+                                this.animationName = "winanUp2";
+                            } else if (this.direction == "down") {
+                                this.animationName = "winanDown2";
+                            }
+                            this.idling = true;
+                            this.game.time.events.remove(this.idleTimer1);
+                        }
+                    }
+
+                    if (this.usingAbil == "SteamShield") {
+                        this.player.body.velocity.x = 0;
+                        this.player.body.velocity.y = 0;
+                        this.player.swipe.body.velocity.x = 0;
+                        this.player.swipe.body.velocity.y = 0;
+                            if (this.usingAbil == "SteamShield") {
+                                this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/4), function(){ 
+                                    if (this.player.currentSteam >= 0.5) {
+                                        this.player.currentSteam -= 0.5;
+                                    }
+                                }, this);
+                        }
+                    }
+
+                    if (abilityKey.isUp && this.usingAbil == 'SteamShield') {
+                        this.usingAbil = "none"; 
+                        abilityKey.duration = 0; 
+                        this.usingTiming = false; 
                         if (this.direction == "left") {
                             this.animationName = "idleLeft";
                         }
