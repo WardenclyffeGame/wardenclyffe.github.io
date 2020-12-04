@@ -162,6 +162,7 @@ steamGame.Game.prototype = {
         this.dummy.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
+        this.dummy.body.immovable = true;
 
         this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.ESign);
@@ -203,6 +204,17 @@ steamGame.Game.prototype = {
         this.kronaTestZ.value = 12;
         this.kronaTestZ.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
 
+        this.winanWeapon = this.add.weapon(20, 'steamBullet');
+        this.winanWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        this.winanWeapon.bulletAngleOffset = 180;
+        this.winanWeapon.bulletSpeed = this.player.speed * 0.025;
+        this.winanWeapon.addBulletAnimation('spin', [0, 1, 2, 3], 12, true);
+        this.winanWeapon.bullets.forEach((b) => {
+            b.scale.setTo(this.scalingFactor * 1.5, this.scalingFactor * 1.5);
+            b.body.updateBounds();
+        }, this);
+        this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
+        
 
         /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
         //Heart declaration
@@ -548,6 +560,7 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.SSign, this.debugSteam, null, this);
         this.game.physics.arcade.collide(this.player, this.HPSign, this.debugHurt, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
+        this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
         if (this.menuState == 'none') {
             /***************************************** Player HP manager ******************************************************************************************/
             if (this.player.currentHP < this.player.maxHP) {
@@ -869,10 +882,27 @@ steamGame.Game.prototype = {
                             this.usingAbil = "Winan";
                             if (this.direction == "left" || this.direction == "right") {
                                 this.animationName = "winanSide";
+                                if (this.direction == "left") {
+                                    this.winanWeapon.fireAngle = 180;
+                                    this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                                    //this.winanWeapon.bulletAngleOffset =
+                                    this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * -3.5);
+                                }
+                                if (this.direction == "right") {
+                                    this.winanWeapon.fireAngle = 0;
+                                    this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                                    this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
+                                }
                             } else if (this.direction == "up") {
                                 this.animationName = "winanUp";
+                                this.winanWeapon.fireAngle = 270;
+                                this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                                this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 5, (this.player.width / 32) * -15);
                             } else if (this.direction == "down") {
                                 this.animationName = "winanDown";
+                                this.winanWeapon.fireAngle = 90;
+                                this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                                this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
                             }
                             if (this.usingTiming != true) {
                                 this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
@@ -900,6 +930,7 @@ steamGame.Game.prototype = {
                             this.game.time.events.remove(this.idleTimer1);
                         }
                     }
+                    
                     if (abilityKey.duration > 490 && abilityKey.isDown) {
                         if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "Winan") {
                             this.sitTimed = false;
@@ -942,6 +973,7 @@ steamGame.Game.prototype = {
                             this.game.time.events.remove(this.idleTimer1);
                         }
                     }
+
                     if (this.usingAbil == "Winan" || this.usingAbil == "Winan2") {
                         this.player.body.velocity.x = 0;
                         this.player.body.velocity.y = 0;
@@ -951,18 +983,44 @@ steamGame.Game.prototype = {
                             if (this.usingAbil == "Winan") {
                                 this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/4), function(){ 
                                     if (this.player.currentSteam >= 10) {
+                                        this.winanWeapon.fire();
                                         this.player.currentSteam -= 10;
                                     }
                                 }, this);
                             } else if (this.usingAbil == "Winan2") {
                                 this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (7/12), function(){ 
                                     if (this.player.currentSteam >= 10) {
+                                        this.winanWeapon.fire();
                                         this.player.currentSteam -= 10;
                                     }
                                 }, this);
                             }
                             this.refuel = true;
                         }
+                    }
+
+                    if (abilityKey.isUp && this.usingAbil == 'Winan2') {
+                        this.usingAbil = "none"; 
+                        abilityKey.duration = 0; 
+                        this.usingTiming = false; 
+                        this.refuel = false;
+                        if (this.direction == "left") {
+                            this.animationName = "idleLeft";
+                        }
+                        if (this.direction == "right") {
+                            this.animationName = "idleRight";
+                        }
+                        if (this.direction == "up") {
+                            this.animationName = "idleUp";
+                        }
+                        if (this.direction == "down") {
+                            this.animationName = "idleDown";
+                        }
+                        this.usingTiming = false;
+                        this.game.time.events.remove(this.usingTimer);
+                        this.game.time.events.remove(this.usingTimer2);
+                        this.game.time.events.remove(this.shootTimer);
+
                     }
                 }
                 
@@ -1010,6 +1068,9 @@ steamGame.Game.prototype = {
                     this.player.swipe.height = 34 * this.scalingFactor;
                     this.game.time.events.remove(this.idleTimer1);
                     this.idling = false;
+                    if (this.player.scale.x < 0 && this.player.body.velocity.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
                 }
                 if (this.player.body.velocity.y > 0) {
                     this.animationName = 'runDown';
@@ -1021,6 +1082,9 @@ steamGame.Game.prototype = {
                     this.player.swipe.height = 42 * this.scalingFactor;
                     this.game.time.events.remove(this.idleTimer1);
                     this.idling = false;
+                    if (this.player.scale.x < 0 && this.player.body.velocity.x < 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                    }
                 }
             }
             if (this.direction == 'left') {
@@ -1572,7 +1636,7 @@ steamGame.Game.prototype = {
             }
         }
     },
-    debugSwipe: function(){
+    debugSwipe: function(enemy, weapon){
         if(this.player.state == 'attack') {
             if(this.dummy.hit == false && this.dummy.currentHP > 1) {
                 this.dummy.hit = true;
@@ -1618,8 +1682,28 @@ steamGame.Game.prototype = {
                     this.player.body.velocity.y = -this.player.speed * 3;
                     this.player.swipe.body.velocity.y = -this.player.speed * 3;
                 }
-                //this.player.body.velocity.x = -500; // dont forget to add direction conditionals
             }
+        } else {
+            if(this.dummy.hit == false && this.dummy.currentHP > 1) {
+                this.dummy.hit = true;
+                this.dummy.frame = 1;
+                weapon.destroy();
+
+                this.dummy.currentHP -= 2;
+
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    this.dummy.hit = false;
+                    this.dummy.frame = 0;
+                }, this);
+            }
+            if(this.dummy.hit == false && this.dummy.currentHP == 1) {
+                this.dummy.currentHP = 0;
+                weapon.destroy();
+                this.dummy.value = 100;
+                this.dummy.destroy();
+                this.collect(this.player, this.dummy);
+            }
+            weapon.destroy();
         }
     },
     collect: function(player, coin) {
