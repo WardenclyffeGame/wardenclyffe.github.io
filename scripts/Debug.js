@@ -885,15 +885,9 @@ steamGame.Game.prototype = {
                                 if (this.direction == "left") {
                                     this.winanWeapon.fireAngle = 180;
                                     this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
-                                    //this.winanWeapon.bulletAngleOffset =
                                     this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * -3.5);
                                 }
                                 if (this.direction == "right") {
-                                    this.winanWeapon.fireAngle = 0;
-                                    this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
-                                    this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
-                                }
-                                if (this.idling == "seated") {
                                     this.winanWeapon.fireAngle = 0;
                                     this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
                                     this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
@@ -908,6 +902,12 @@ steamGame.Game.prototype = {
                                 this.winanWeapon.fireAngle = 90;
                                 this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
                                 this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
+                            }
+                            if (this.idling == "seated") {
+                                this.animationName = "winanSide";
+                                this.winanWeapon.fireAngle = 0;
+                                this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                                this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 11, (this.player.width / 32) * -3.5);
                             }
                             if (this.usingTiming != true) {
                                 this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
