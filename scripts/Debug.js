@@ -1009,6 +1009,7 @@ steamGame.Game.prototype = {
                         abilityKey.duration = 0; 
                         this.usingTiming = false; 
                         this.refuel = false;
+                        this.idling = true;
                         if (this.direction == "left") {
                             this.animationName = "idleLeft";
                         }
