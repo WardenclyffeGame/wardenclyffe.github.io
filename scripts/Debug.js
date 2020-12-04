@@ -1774,7 +1774,7 @@ steamGame.Game.prototype = {
                     this.player.swipe.body.velocity.y = -this.player.speed * 3;
                 }
             }
-        } else {
+        } else if (enemy == this.winanWeapon.bullets){
             if(this.dummy.hit == false && this.dummy.currentHP > 1) {
                 this.dummy.hit = true;
                 this.dummy.frame = 1;
