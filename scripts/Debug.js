@@ -1344,7 +1344,6 @@ steamGame.Game.prototype = {
                     this.sitTimed = false;
                     this.usingAbil = "Winan";
                     if (this.direction == "up") {
-                        this.direction = "left"
                         this.animationName = "winanUp";
                         this.winanWeapon.fireAngle = 270;
                         this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
