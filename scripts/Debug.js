@@ -548,707 +548,24 @@ steamGame.Game.prototype = {
         /*if (debugKey.isUp) {
             this.debugText.destroy();
         }*/
-
-        this.game.physics.arcade.collide(this.player, this.wall);
-        //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
-        //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt, null, this);
-        this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
-        this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
-        this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
-        this.game.physics.arcade.collide(this.player, this.CSign, this.collect, null, this);
-        this.game.physics.arcade.collide(this.player, this.ESign, this.debugElec, null, this);
-        this.game.physics.arcade.collide(this.player, this.SSign, this.debugSteam, null, this);
-        this.game.physics.arcade.collide(this.player, this.HPSign, this.debugHurt, null, this);
-        this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
-        this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
+        this.collisionHandler(this);
+        
         if (this.menuState == 'none') {
-            /***************************************** Player HP manager ******************************************************************************************/
-            if (this.player.currentHP < this.player.maxHP) {
-                this.player.diffHP = this.player.maxHP - this.player.currentHP;
-                if(this.player.diffHP > 0) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + this.highestHeart.toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 1) {
-                        this['heart' + this.highestHeart.toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 2) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 1).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 3) {
-                        this['heart' + (this.highestHeart - 1).toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 4) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 2).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 5) {
-                        this['heart' + (this.highestHeart - 2).toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 6 && this['heart' + (this.highestHeart - 3).toString()] != null) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 3).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 7) {
-                        this['heart' + (this.highestHeart - 3).toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 8 && this['heart' + (this.highestHeart - 4).toString()] != null) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 4).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 9) {
-                        this['heart' + (this.highestHeart - 4).toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 10 && this['heart' + (this.highestHeart - 5).toString()] != null) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 5).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 11) {
-                        this['heart' + (this.highestHeart - 5).toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 12 && this['heart' + (this.highestHeart - 6).toString()] != null) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 6).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 13) {
-                        this['heart' + (this.highestHeart - 6).toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 14 && this['heart' + (this.highestHeart - 7).toString()] != null) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 7).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 15) {
-                        this['heart' + (this.highestHeart - 7).toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 16 && this['heart' + (this.highestHeart - 8).toString()] != null) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 8).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 17) {
-                        this['heart' + (this.highestHeart - 8).toString()].frame = 2;
-                    }
-                }
-                if(this.player.diffHP > 18 && this['heart' + (this.highestHeart - 9).toString()] != null) {
-                    if(this.player.diffHP % 2 != 0) {
-                        this['heart' + (this.highestHeart - 9).toString()].frame = 1;
-                    }
-                    if(this.player.diffHP % 2 == 0 || this.player.diffHP > 19) {
-                        this['heart' + (this.highestHeart - 9).toString()].frame = 2;
-                    }
-                }
-                if (this.player.currentHP <= 0) {
-                    if (this.fade.alpha == 0) {
-                        this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
-                        if (this.frameAbil != null) {
-                            this.frameAbil.name == "none";
-                            this.frameAbil.destroy();
-                        }
-                    }
-                }
-            }
-
-            /***************************************** Player Steam Handler **********************************************************************************************/
-            if (this.player.currentSteam < this.player.maxSteam) {
-                if (this.player.currentSteam <= 0) {
-                    this.player.currentSteam = 0.01;
-                }
-                this.diffSteam = this.player.currentSteam / this.player.maxSteam;
-                this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * (0.65 * this.diffSteam));
-                this.steamLevel.y += this.diffSteam * this.scalingFactor * 0.65
-            } else {
-                this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
-            }
-
-            /***************************************** Player Electricity Handler **********************************************************************************************/
-            if (this.player.currentEnergy < this.player.maxEnergy) {
-                if (this.player.currentEnergy <= 0) {
-                    this.player.currentEnergy = 0.01;
-                }
-                this.diffEnergy = this.player.currentEnergy / this.player.maxEnergy;
-                this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * (0.65 * this.diffEnergy));
-                this.elecLevel.y += this.diffEnergy * this.scalingFactor * 0.65
-            } else {
-                this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
-            }
+            this.playerHPManager(this);
+            
+            this.playerMeterManager(this);
+            
 
             /***************************************** Player Movement Handling ******************************************************************************************/
-            if (this.player.state == 'hurt' && this.knockbackTimer == null) {
-                this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.15, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
-                this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(){ this.player.state = 'walk'; }, this);
-            } if (this.player.state == 'hurt') {
-                if (this.direction == 'right') {
-                    this.player.frame = 83;
-                    if (this.player.scale.x < 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                    }
-                }
-                if (this.direction == 'left') {
-                    this.player.frame = 83;
-                    if (this.player.scale.x > 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                    }
-                }
-                if (this.direction == 'up') {
-                    this.player.frame = 81;
-                }
-                if (this.direction == 'down') {
-                    this.player.frame = 82;
-                }
-            }
-            if (this.player.state == 'walk') {
-                this.game.time.events.remove(this.knockbackTimer);
-                this.player.body.velocity.x = 0;
-                this.player.body.velocity.y = 0;
-                this.player.swipe.body.velocity.x = 0;
-                this.player.swipe.body.velocity.y = 0;
-                if (upKey.isDown || upArrow.isDown) {
-                    this.player.body.velocity.y = -this.player.speed * 0.9;
-                    this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
-                } else if (downKey.isDown || downArrow.isDown) {
-                    this.player.body.velocity.y = this.player.speed * 0.9;
-                    this.player.swipe.body.velocity.y = this.player.speed * 0.9;
-                }
-                if (rightKey.isDown || rightArrow.isDown) {
-                    this.player.body.velocity.x = this.player.speed;
-                    this.player.swipe.body.velocity.x = this.player.speed;
-                } else if (leftKey.isDown || leftArrow.isDown) {
-                    this.player.body.velocity.x = -this.player.speed;
-                    this.player.swipe.body.velocity.x = -this.player.speed;
-                }
-            }
-            if(spaceKey.duration < 1 && spaceKey.isDown && this.player.combo < 3) {
-                if (this.player.state != 'attack') {
-                    this.player.body.velocity.x = 0;
-                    this.player.body.velocity.y = 0;
-                    this.player.swipe.body.velocity.x = 0;
-                    this.player.swipe.body.velocity.y = 0;
-                    this.sitTimed = false;
-                    if (this.player.combo == 0) {
-                        if(this.direction == 'up') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeUp';
-                        } else if(this.direction == 'down') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeDown';
-                        } else if(this.direction == 'left') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeSide';
-                        } else if(this.direction == 'right') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeSide';
-                        }
-                        this.player.combo = 1;
-                        this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
-                            this.player.state = 'walk';
-                            this.game.time.events.remove(this.idleTimer1);
-                            this.idling = false;
-                        }, this);
-                        this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.player.combo = 0; }, this);
-                    }
-                    else if (this.player.combo == 1) {
-                        if(this.direction == 'up') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeUp2';
-                            this.player.body.velocity.y = -this.player.speed * 1.5;
-                            this.player.swipe.body.velocity.y = -this.player.speed * 1.5;
-                        } else if(this.direction == 'down') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeDown2';
-                            this.player.body.velocity.y = this.player.speed * 1.5;
-                            this.player.swipe.body.velocity.y = this.player.speed * 1.5;
-                        } else if(this.direction == 'left') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeSide2';
-                            this.player.body.velocity.x = -this.player.speed * 1.5;
-                            this.player.swipe.body.velocity.x = -this.player.speed * 1.5;
-                        } else if(this.direction == 'right') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeSide2';
-                            this.player.body.velocity.x = this.player.speed * 1.5;
-                            this.player.swipe.body.velocity.x = this.player.speed * 1.5;
-                        }
-                        this.player.combo = 2;
-                        this.game.time.events.remove(this.comboTimer1);
-                        this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
-                        this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
-                            this.player.state = 'walk';
-                            this.game.time.events.remove(this.idleTimer1);
-                            this.idling = false;
-                        }, this);
-                        this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.player.combo = 0; }, this);
-                    }
-                    else if (this.player.combo == 2) {
-                        if(this.direction == 'up') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeUp3';
-                            this.player.body.velocity.y = -this.player.speed * 2;
-                            this.player.swipe.body.velocity.y = -this.player.speed * 2;
-                        } else if(this.direction == 'down') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeDown3';
-                            this.player.body.velocity.y = this.player.speed * 2;
-                            this.player.swipe.body.velocity.y = this.player.speed * 2;
-                        } else if(this.direction == 'left') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeSide3';
-                            this.player.body.velocity.x = -this.player.speed * 2;
-                            this.player.swipe.body.velocity.x = -this.player.speed * 2;
-                        } else if(this.direction == 'right') {
-                            this.player.state = 'attack';
-                            this.animationName = 'swipeSide3';
-                            this.player.body.velocity.x = this.player.speed * 2;
-                            this.player.swipe.body.velocity.x = this.player.speed * 2;
-                        }
-                        this.player.combo = 3;
-                        this.game.time.events.remove(this.comboTimer2);
-                        this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
-                        this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
-                            this.player.state = 'walk';
-                            this.game.time.events.remove(this.idleTimer1);
-                            this.idling = false;
-                            this.player.combo = 0;
-                        }, this);
-                        
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){
-                        spaceKey.duration = 0;
-                    }, this);
-                }
-            }
+            this.playerKnockbackHandler(this);
+            
+            this.playerMovement(this);
 
-            /************************************** Animation Controller for Player movement *****************************************************************************/
-            this.direction = this.direction || 'down';
-            if (this.player.state == 'walk') {
-                if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0 && this.idling == false) {
-                    this.idleTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * 20, function(){ this.animationName = 'sit'; this.idling = "seated"; this.direction = "right"; }, this);
-                    this.game.time.events.remove(this.standTimer);
-                    this.game.time.events.remove(this.sitTimer);
-                    this.animationName = "stopped";
-                    this.idling = true;
-                }
-
-                if (this.idling == "seated") {
-                    this.direction = "right";
-                    if (this.player.scale.x < 0) {
-                        this.player.scale.x = -this.player.scale.x
-                    }
-                    this.player.body.velocity.x = 0;
-                    this.player.body.velocity.y = 0;
-                    this.player.swipe.body.velocity.x = 0;
-                    this.player.swipe.body.velocity.y = 0;
-                    if (this.player.animations.name == "sit" && this.sitTiming != true) {
-                        this.sitTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.66, function () { this.sitTimed = true; this.sitTiming = false; this.animationName = "seated"; }, this);
-                        this.sitTiming = true;
-                    }
-                    if (this.sitTimed == true) {
-                        this.animationName = "seated";
-                    }
-
-                    if (upKey.isDown || upArrow.isDown || downKey.isDown || downArrow.isDown || leftKey.isDown || leftArrow.isDown || rightKey.isDown || rightArrow.isDown) {
-                        if (this.player.animations.name == "seated") {
-                            this.standTimer = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function() { this.idling = false; }, this);
-                            this.animationName = 'stand';
-                            this.sitTimed = false;
-                        }
-                    }
-                }
-
-                if (this.tripCount >= 20) {
-                    this.player.state = "trip";
-                    this.player.body.velocity.x = 0;
-                    this.player.swipe.body.velocity.x = 0;
-                    this.player.body.velocity.y = 0;
-                    this.player.swipe.body.velocity.y = 0;
-                    this.animationName = "trip";
-                    if (this.tripTiming != true) {
-                        this.tripTiming = true;
-                        this.tripoverride = this.game.time.events.add(Phaser.Timer.SECOND * 1.5, function() { this.player.state = "walk"; this.tripTiming = false; this.tripCount = 0; }, this);
-                    }
-                }
-            //WINAN USAGE
-                if (this.hasItems == true) {
-                    if (abilityKey.isDown && abilityKey.duration < 2) {
-                        if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "none") {
-                            this.sitTimed = false;
-                            this.usingAbil = "Winan";
-                            if (this.direction == "left" || this.direction == "right") {
-                                this.animationName = "winanSide";
-                                if (this.direction == "left") {
-                                    this.winanWeapon.fireAngle = 180;
-                                    this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
-                                    this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * -3.5);
-                                }
-                                if (this.direction == "right") {
-                                    this.winanWeapon.fireAngle = 0;
-                                    this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
-                                    this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
-                                }
-                            } else if (this.direction == "up") {
-                                this.animationName = "winanUp";
-                                this.winanWeapon.fireAngle = 270;
-                                this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
-                                this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 5, (this.player.width / 32) * -15);
-                            } else if (this.direction == "down") {
-                                this.animationName = "winanDown";
-                                this.winanWeapon.fireAngle = 90;
-                                this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
-                                this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
-                            }
-                            if (this.idling == "seated") {
-                                this.animationName = "winanSide";
-                                this.winanWeapon.fireAngle = 0;
-                                this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
-                                this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 11, (this.player.width / 32) * -3.5);
-                            }
-                            if (this.usingTiming != true) {
-                                this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
-                                    this.usingAbil = "none"; 
-                                    abilityKey.duration = 0; 
-                                    this.usingTiming = false; 
-                                    this.refuel = false;
-                                    if (this.direction == "left") {
-                                        this.animationName = "idleLeft";
-                                    }
-                                    if (this.direction == "right") {
-                                       this.animationName = "idleRight";
-                                    }
-                                    if (this.direction == "up") {
-                                        this.animationName = "idleUp";
-                                    }
-                                    if (this.direction == "down") {
-                                        this.animationName = "idleDown";
-                                    }
-                                    this.usingTiming = false;
-                                }, this);
-                                this.usingTiming = true;
-                            }
-                            this.idling = true;
-                            this.game.time.events.remove(this.idleTimer1);
-                        }
-                    }
-                    
-                    if (abilityKey.duration > 490 && abilityKey.isDown) {
-                        if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "Winan") {
-                            this.sitTimed = false;
-                            this.usingAbil = "Winan2";
-                            this.game.time.events.remove(this.usingTimer);
-                            this.game.time.events.remove(this.usingTimer2);
-                            this.usingTiming = false;
-                            if (this.direction == "left" || this.direction == "right") {
-                                this.animationName = "winanSide2";
-                            } else if (this.direction == "up") {
-                                this.animationName = "winanUp2";
-                            } else if (this.direction == "down") {
-                                this.animationName = "winanDown2";
-                            }
-                            if (this.usingTiming != true) {
-                                this.refuel = false;
-                                this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.usingAbil = "Winan"; this.usingTiming = false; this.refuel = false; }, this);
-                                this.usingTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 0.7, function(){
-                                    this.usingAbil = "none"; 
-                                    abilityKey.duration = 0; 
-                                    this.usingTiming = false; 
-                                    this.refuel = false;
-                                    if (this.direction == "left") {
-                                        this.animationName = "idleLeft";
-                                    }
-                                    if (this.direction == "right") {
-                                       this.animationName = "idleRight";
-                                    }
-                                    if (this.direction == "up") {
-                                        this.animationName = "idleUp";
-                                    }
-                                    if (this.direction == "down") {
-                                        this.animationName = "idleDown";
-                                    }
-                                    this.usingTiming = false;
-                                }, this);
-                                this.usingTiming = true;
-                            }
-                            this.idling = true;
-                            this.game.time.events.remove(this.idleTimer1);
-                        }
-                    }
-
-                    if (this.usingAbil == "Winan" || this.usingAbil == "Winan2") {
-                        this.player.body.velocity.x = 0;
-                        this.player.body.velocity.y = 0;
-                        this.player.swipe.body.velocity.x = 0;
-                        this.player.swipe.body.velocity.y = 0;
-                        if (this.refuel != true) {
-                            if (this.usingAbil == "Winan") {
-                                this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/4), function(){ 
-                                    if (this.player.currentSteam >= 10) {
-                                        this.winanWeapon.fire();
-                                        this.player.currentSteam -= 10;
-                                    }
-                                }, this);
-                            } else if (this.usingAbil == "Winan2") {
-                                this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (7/12), function(){ 
-                                    if (this.player.currentSteam >= 10) {
-                                        this.winanWeapon.fire();
-                                        this.player.currentSteam -= 10;
-                                    }
-                                }, this);
-                            }
-                            this.refuel = true;
-                        }
-                    }
-
-                    if (abilityKey.isUp && this.usingAbil == 'Winan2') {
-                        this.usingAbil = "none"; 
-                        abilityKey.duration = 0; 
-                        this.usingTiming = false; 
-                        this.refuel = false;
-                        this.idling = true;
-                        if (this.direction == "left") {
-                            this.animationName = "idleLeft";
-                        }
-                        if (this.direction == "right") {
-                            this.animationName = "idleRight";
-                        }
-                        if (this.direction == "up") {
-                            this.animationName = "idleUp";
-                        }
-                        if (this.direction == "down") {
-                            this.animationName = "idleDown";
-                        }
-                        this.usingTiming = false;
-                        this.game.time.events.remove(this.usingTimer);
-                        this.game.time.events.remove(this.usingTimer2);
-                        this.game.time.events.remove(this.shootTimer);
-
-                    }
-                }
-                //SHIELD USAGE
-                if (this.hasItems == true) {
-                    if (abilityKey.isDown && abilityKey.duration < 2) {
-                        if (this.ASGroup.curAbil == "SteamShield" && this.usingAbil == "none") {
-                            this.sitTimed = false;
-                            this.usingAbil = "SteamShield";
-                            if (this.direction == "left" || this.direction == "right") {
-                                this.animationName = "winanSide";
-                                if (this.usingTiming != true) {
-                                    this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
-                                        this.usingAbil = "none"; 
-                                        this.duration = 0; 
-                                        this.usingTiming = false; 
-                                            if (this.direction == "left") {
-                                            this.animationName = "idleLeft";
-                                            }
-                                            if (this.direction == "right") {
-                                            this.animationName = "idleRight";
-                                            }
-                                            if (this.direction == "up") {
-                                            this.animationName = "idleUp";
-                                            }
-                                            if (this.direction == "down") {
-                                            this.animationName = "idleDown";
-                                            }
-                                    this.usingTiming = false;
-                                    }, this);
-                                    this.usingTiming = true;
-                                }
-                            this.idling = true;
-                            this.game.time.events.remove(this.idleTimer1);
-                            }
-                        }
-                    }
-                    
-                    if (abilityKey.duration > 490 && abilityKey.isDown) {
-                        if (this.ASGroup.curAbil == "SteamShield" && this.usingAbil == "SteamShield") {
-                            this.sitTimed = false;
-                            this.usingAbil = "SteamShield";
-                            this.game.time.events.remove(this.usingTimer);
-                            this.game.time.events.remove(this.usingTimer2);
-                            this.usingTiming = false;
-                            if (this.direction == "left" || this.direction == "right") {
-                                this.animationName = "winanSide2";
-                            } else if (this.direction == "up") {
-                                this.animationName = "winanUp2";
-                            } else if (this.direction == "down") {
-                                this.animationName = "winanDown2";
-                            }
-                            this.idling = true;
-                            this.game.time.events.remove(this.idleTimer1);
-                        }
-                    }
-
-                    if (this.usingAbil == "SteamShield") {
-                        this.player.body.velocity.x = 0;
-                        this.player.body.velocity.y = 0;
-                        this.player.swipe.body.velocity.x = 0;
-                        this.player.swipe.body.velocity.y = 0;
-                            if (this.usingAbil == "SteamShield") {
-                                this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/4), function(){ 
-                                    if (this.player.currentSteam >= 0.5) {
-                                        this.player.currentSteam -= 0.5;
-                                    }
-                                }, this);
-                        }
-                    }
-
-                    if (abilityKey.isUp && this.usingAbil == 'SteamShield') {
-                        this.usingAbil = "none"; 
-                        abilityKey.duration = 0; 
-                        this.usingTiming = false; 
-                        if (this.direction == "left") {
-                            this.animationName = "idleLeft";
-                        }
-                        if (this.direction == "right") {
-                            this.animationName = "idleRight";
-                        }
-                        if (this.direction == "up") {
-                            this.animationName = "idleUp";
-                        }
-                        if (this.direction == "down") {
-                            this.animationName = "idleDown";
-                        }
-                        this.usingTiming = false;
-                        this.game.time.events.remove(this.usingTimer);
-                        this.game.time.events.remove(this.usingTimer2);
-                        this.game.time.events.remove(this.shootTimer);
-
-                    }
-                }
-                
-                if (this.player.body.velocity.x < 0) {
-                    this.animationName = 'runLeft';
-                    this.direction = 'left';
-                    this.player.swipe.x = this.player.x - (this.player.body.width / 2);
-                    this.player.swipe.y = this.player.y + (this.player.height / 2);
-                    this.player.swipe.anchor.setTo(1, 1.35);
-                    this.player.swipe.width = 18 * this.scalingFactor;
-                    this.player.swipe.height = this.player.body.height;
-                    if (this.player.scale.x < 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                        this.tripCount += 1;
-                        this.game.time.events.remove(this.tripTimer);
-                        this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
-                    }
-                    this.game.time.events.remove(this.idleTimer1);
-                    this.idling = false;
-                }
-                if (this.player.body.velocity.x > 0) {
-                    this.animationName = 'runRight';
-                    this.direction = 'right';
-                    this.player.swipe.x = this.player.x + (this.player.body.width / 2);
-                    this.player.swipe.y = this.player.y + (this.player.height / 2);
-                    this.player.swipe.anchor.setTo(0, 1.35);
-                    this.player.swipe.width = 18 * this.scalingFactor;
-                    this.player.swipe.height = this.player.body.height;
-                    if (this.player.scale.x > 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                        this.tripCount += 1;
-                        this.game.time.events.remove(this.tripTimer);
-                        this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
-                    }
-                    this.game.time.events.remove(this.idleTimer1);
-                    this.idling = false;
-                }
-                if (this.player.body.velocity.y < 0) {
-                    this.animationName = 'runUp';
-                    this.direction = 'up';
-                    this.player.swipe.x = this.player.body.x - (this.player.body.width * 0.25);
-                    this.player.swipe.y = this.player.body.y;
-                    this.player.swipe.anchor.setTo(0, 0.6);
-                    this.player.swipe.width = this.player.body.width * 1.5;
-                    this.player.swipe.height = 34 * this.scalingFactor;
-                    this.game.time.events.remove(this.idleTimer1);
-                    this.idling = false;
-                    if (this.player.scale.x < 0 && this.player.body.velocity.x < 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                    }
-                }
-                if (this.player.body.velocity.y > 0) {
-                    this.animationName = 'runDown';
-                    this.direction = 'down';
-                    this.player.swipe.x = this.player.body.x - (this.player.body.width * 0.25);
-                    this.player.swipe.y = this.player.body.y + this.player.body.height;
-                    this.player.swipe.anchor.setTo(0, 0.8);
-                    this.player.swipe.width = this.player.body.width * 1.5;
-                    this.player.swipe.height = 42 * this.scalingFactor;
-                    this.game.time.events.remove(this.idleTimer1);
-                    this.idling = false;
-                    if (this.player.scale.x < 0 && this.player.body.velocity.x < 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                    }
-                }
-            }
-            if (this.direction == 'left') {
-                if (this.player.scale.x < 0) {
-                    this.player.scale.x = this.player.scale.x * -1;
-                }
-            }
-            if (this.direction == 'right') {
-                if (this.player.scale.x > 0) {
-                    this.player.scale.x = this.player.scale.x * -1;
-                }
-            }
-            //change current animation
-            if (this.player.animations.name !== this.animationName && this.animationName !== 'stopped') {
-                this.player.animations.play(this.animationName);
-            } else if (this.animationName == 'stopped') {
-                if (this.direction == 'down') {
-                    this.player.animations.play('idleDown', 4, true);
-                    if (this.player.scale.x < 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                    }
-                }
-                if (this.direction == 'right') {
-                    this.player.animations.play('idleRight', 4, true);
-                }
-                if (this.direction == 'up') {
-                    this.player.animations.play('idleUp', 4, true);
-                    if (this.player.scale.x < 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                    }
-                }
-                if (this.direction == 'left') {
-                    this.player.animations.play('idleLeft', 4, true);
-                }
-            }
-
-            if (this.frameAbil.name != this.ASGroup.curAbil) {
-                this.frameAbil.destroy();
-                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), this.ASGroup.curAbil);
-                this.frameAbil.anchor.setTo(1,0);
-                this.frameAbil.fixedToCamera = true;
-                this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
-                this.frameAbil.name = this.ASGroup.curAbil;
-            }
-            //moving any and all menus away
-            if (this.ASGroup.pos == 'down') {
-                if (this.ASGroup.cameraOffset.y > this.ASGroup.maxH + (this.game.camera.height * 0.5)) {
-                    this.ASGroup.cameraOffset.y -= this.game.camera.height / 40;
-                    this.ASGroup.stationary = false;
-                } else {
-                    this.ASGroup.stationary = true;
-                    this.ASGroup.pos = 'up';
-                }
-            }
-            if (this.mapGroup.pos == 'up') {
-                if (this.mapGroup.cameraOffset.y < this.mapGroup.maxH) {
-                    this.mapGroup.cameraOffset.y += this.game.camera.height / 40;
-                    this.mapGroup.stationary = false;
-                } else {
-                    this.mapGroup.stationary = true;
-                    this.mapGroup.pos = 'down';
-                }
-            }
-            if (this.pauseGroup.pos == 'there') {
-                this.pauseGroup.alpha = 0;
-                this.pauseGroup.pos = 'gone';
-            }
+            this.playerAnimation(this);
+            
+            this.playerAttack(this);
+            
+            this.menuPosResets(this);
         }
         if (this.menuState == 'ability') {
             if (this.mapGroup.pos == 'up') {
@@ -1274,207 +591,10 @@ steamGame.Game.prototype = {
                 this.ASGroup.stationary = true;
                 this.ASGroup.pos = 'down';
             }
-
-            if (this.player.hasWinan == 1) {
-                this.ASWinan.frame = 0;
-                this.ASGroup.selPos.pos1 = 'Winan';
-                this.hasItems = true;
-            }
-            if (this.player.hasHook == 1) {
-                this.ASHook.frame = 0;
-                this.ASGroup.selPos.pos2 = 'Hook';
-                this.hasItems = true;
-            }
-            if (this.player.hasSteamShield == 1) {
-                this.ASSteamShield.frame = 0;
-                this.ASGroup.selPos.pos3 = 'SteamShield';
-                this.hasItems = true;
-            }
-            if (this.player.hasLightRod == 1) {
-                this.ASLightRod.frame = 0;
-                this.ASGroup.selPos.pos4 = 'LightRod';
-                this.hasItems = true;
-            }
-            if (this.player.hasStunBaton == 1) {
-                this.ASStunBaton.frame = 0;
-                this.ASGroup.selPos.pos5 = 'StunBaton';
-                this.hasItems = true;
-            }
-            if (this.player.hasBoomerang == 1) {
-                this.ASBoomerang.frame = 0;
-                this.ASGroup.selPos.pos6 = 'Boomerang';
-                this.hasItems = true;
-            }
-            if (this.player.hasGreekFire == 1) {
-                this.ASGreekFire.frame = 0;
-                this.ASGroup.selPos.pos7 = 'GreekFire';
-                this.hasItems = true;
-            }
-            if (this.player.hasHammer == 1) {
-                this.ASHammer.frame = 0;
-                this.ASGroup.selPos.pos8 = 'Hammer';
-                this.hasItems = true;
-            }
-            if (this.player.hasBomb == 1) {
-                this.ASBomb.frame = 0;
-                this.ASGroup.selPos.pos9 = 'Bomb';
-                this.hasItems = true;
-            }
-            if (this.player.hasBoots == 1) {
-                this.ASBoots.frame = 0;
-                //this.ASGroup.selPos.pos13 = 'Boots';
-                //this.hasItems = true;
-            }
-            if (this.player.hasExoArm == 1) {
-                this.ASArm.frame = 0;
-                //this.ASGroup.selPos.pos14 = 'ExoArm';
-                //this.hasItems = true;
-            }
-            if (this.player.hasTaserSword == 1) {
-                this.ASSword.frame = 1;
-                //this.ASGroup.selPos.pos14 = 'ExoArm';
-                //this.hasItems = true;
-            }
             
+            this.ASManager(this);
 
-            if (upKey.isDown || upArrow.isDown) {
-                if (upKey.isDown && upKey.duration < 2) {
-                    if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 4)]]) {
-                        this.ASGroup.curPos -= 4;
-                    } else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 8)]]) {
-                        this.ASGroup.curPos -= 8;
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                        upKey.duration = 0;
-                    }, this);
-                }
-                if (upArrow.isDown && upArrow.duration < 2) {
-                    if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 4)]]) {
-                        this.ASGroup.curPos -= 4;
-                    } else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 8)]]) {
-                        this.ASGroup.curPos -= 8;
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                        upArrow.duration = 0;
-                    }, this);
-                }
-            } else if (downKey.isDown || downArrow.isDown) {
-                if (downKey.isDown && downKey.duration < 2) {
-                    if (this.ASGroup.curPos != null && this.ASGroup.curPos + 4 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 4)]]) {
-                        this.ASGroup.curPos += 4;
-                    } else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 8 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 8)]]) {
-                        this.ASGroup.curPos += 8;
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                        downKey.duration = 0;
-                    }, this);
-                }
-                if (downArrow.isDown && downArrow.duration < 2) {
-                    if (this.ASGroup.curPos != null && this.ASGroup.curPos + 4 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 4)]]) {
-                        this.ASGroup.curPos += 4;
-                    } else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 8 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 8)]]) {
-                        this.ASGroup.curPos += 8;
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                        downArrow.duration = 0;
-                    }, this);
-                }
-            } else if (rightKey.isDown || rightArrow.isDown) {
-                if (rightKey.isDown && rightKey.duration < 2) {
-                    if (this.ASGroup.curPos != null && this.ASGroup.curPos + 1 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 1)]]) {
-                        this.ASGroup.curPos += 1;
-                    }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 2 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 2)]]) {
-                        this.ASGroup.curPos += 2;
-                    }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 3 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 3)]]) {
-                        this.ASGroup.curPos += 3;
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                        rightKey.duration = 0;
-                    }, this);
-                }
-                if (rightArrow.isDown && rightArrow.duration < 2) {
-                    if (this.ASGroup.curPos != null && this.ASGroup.curPos + 1 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 1)]]) {
-                        this.ASGroup.curPos += 1;
-                    }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 2 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 2)]]) {
-                        this.ASGroup.curPos += 2;
-                    }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 3 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 3)]]) {
-                        this.ASGroup.curPos += 3;
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                        rightArrow.duration = 0;
-                    }, this);
-                }
-            } else if (leftKey.isDown || leftArrow.isDown) {
-                if (leftKey.isDown && leftKey.duration < 2) {
-                    if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 1)]]) {
-                        this.ASGroup.curPos -= 1;
-                    }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 2)]]) {
-                        this.ASGroup.curPos -= 2;
-                    }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 3)]]) {
-                        this.ASGroup.curPos -= 3;
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                        leftKey.duration = 0;
-                    }, this);
-                }
-                if (leftArrow.isDown && leftArrow.duration < 2) {
-                    if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 1)]]) {
-                        this.ASGroup.curPos -= 1;
-                    }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 2)]]) {
-                        this.ASGroup.curPos -= 2;
-                    }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 3)]]) {
-                        this.ASGroup.curPos -= 3;
-                    }
-                    this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                        leftArrow.duration = 0;
-                    }, this);
-                }
-            }
-
-            if (this.frameAbil.name != this.ASGroup.selPos['pos' + this.ASGroup.curPos] && this.frameAbil.name != 'none') {
-                this.frameAbil.destroy();
-                this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), this.ASGroup.selPos['pos' + this.ASGroup.curPos]);
-                this.frameAbil.anchor.setTo(1,0);
-                this.frameAbil.fixedToCamera = true;
-                this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
-                this.frameAbil.name = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
-                this.ASGroup.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
-            }
-            else if (this.frameAbil.name == "none") {
-                this.frameAbil.destroy();
-            }
-
-            if (this.hasItems == true) {
-                if (this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x != null) {
-                    if (this.ASSelector.x != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x) {
-                        this.ASSelector.x = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x;
-                    }
-                    if (this.ASSelector.y != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y) {
-                        this.ASSelector.y = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y;
-                    }
-                }
-            }
-
-            if (this.animationName == 'stopped') {
-                if (this.direction == 'down') {
-                    this.player.animations.play('idleDown', 4, true);
-                    if (this.player.scale.x < 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                    }
-                }
-                if (this.direction == 'right') {
-                    this.player.animations.play('idleRight', 4, true);
-                }
-                if (this.direction == 'up') {
-                    this.player.animations.play('idleUp', 4, true);
-                    if (this.player.scale.x < 0) {
-                        this.player.scale.x = this.player.scale.x * -1;
-                    }
-                }
-                if (this.direction == 'left') {
-                    this.player.animations.play('idleLeft', 4, true);
-                }
-            }
+            this.playerAnimation(this);
         }
         if (this.menuState == 'map') {
             if (this.ASGroup.pos == 'down') {
@@ -1651,48 +771,8 @@ steamGame.Game.prototype = {
                 }
             }
         }
-        /***************************************** Currency tracker **************************************************************************************************/
-        if (this.player.newC != this.player.currency) {
-            this.player.currency = this.player.newC;
-            //this.changeTicker(this.player.currency, this.ticker, this.player.currencyData);
-            this.player.currencyData.digit1 = Math.floor(this.player.currency / 1000);
-            this.player.currencyData.digit2 = Math.floor(this.player.currency / 100) - (this.player.currencyData.digit1 * 10);
-            this.player.currencyData.digit3 = Math.floor(this.player.currency / 10) - (this.player.currencyData.digit1 * 100) - (this.player.currencyData.digit2 * 10);
-            this.player.currencyData.digit4 = this.player.currency - (this.player.currencyData.digit1 * 1000) - (this.player.currencyData.digit2 * 100) - (this.player.currencyData.digit3 * 10);
-            this.ticker.plate1.animations.play('flip', 12, false);
-            this.ticker.plate2.animations.play('flip', 12, false);
-            this.ticker.plate3.animations.play('flip', 12, false);
-            this.ticker.plate4.animations.play('flip', 12, false);
-        }
-
-        if(this.ticker.plate1.animations.isPlaying != true) {
-            if (this.ticker.plate1.frame >= 15 && this.ticker.plate1.frame != this.player.currencyData.digit1) {
-                this.ticker.plate1.frame = this.player.currencyData.digit1;
-            } else if(this.ticker.plate1.frame == 15) {
-                this.ticker.plate1.frame = this.player.currencyData.digit1;
-            }
-        }
-        if(this.ticker.plate2.animations.isPlaying != true) {
-            if (this.ticker.plate2.frame >= 15 && this.ticker.plate2.frame != this.player.currencyData.digit2) {
-                this.ticker.plate2.frame = this.player.currencyData.digit2;
-            } else if(this.ticker.plate2.frame == 15) {
-                this.ticker.plate2.frame = this.player.currencyData.digit2;
-            }
-        }
-        if(this.ticker.plate3.animations.isPlaying != true) {
-            if (this.ticker.plate3.frame >= 15 && this.ticker.plate3.frame != this.player.currencyData.digit3) {
-                this.ticker.plate3.frame = this.player.currencyData.digit3;
-            } else if(this.ticker.plate3.frame == 15) {
-                this.ticker.plate3.frame = this.player.currencyData.digit3;
-            }
-        }
-        if(this.ticker.plate4.animations.isPlaying != true) {
-            if (this.ticker.plate4.frame >= 15 && this.ticker.plate4.frame != this.player.currencyData.digit4) {
-                this.ticker.plate4.frame = this.player.currencyData.digit4;
-            } else if(this.ticker.plate4.frame == 15) {
-                this.ticker.plate4.frame = this.player.currencyData.digit4;
-            }
-        }
+        this.tickerHandler(this);
+        
     },
     debugHurt: function(player, walls) {
         player.timer += 1;
@@ -1811,6 +891,949 @@ steamGame.Game.prototype = {
         }
         if (coin != this.CSign) {
             coin.destroy();
+        }
+    },
+    collisionHandler: function() {
+        this.game.physics.arcade.collide(this.player, this.wall);
+        //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
+        //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt, null, this);
+        this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
+        this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
+        this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
+        this.game.physics.arcade.collide(this.player, this.CSign, this.collect, null, this);
+        this.game.physics.arcade.collide(this.player, this.ESign, this.debugElec, null, this);
+        this.game.physics.arcade.collide(this.player, this.SSign, this.debugSteam, null, this);
+        this.game.physics.arcade.collide(this.player, this.HPSign, this.debugHurt, null, this);
+        this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
+        this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
+    },
+    playerHPManager: function() {
+        if (this.player.currentHP < this.player.maxHP) {
+            this.player.diffHP = this.player.maxHP - this.player.currentHP;
+            if(this.player.diffHP > 0) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + this.highestHeart.toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 1) {
+                    this['heart' + this.highestHeart.toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 2) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 1).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 3) {
+                    this['heart' + (this.highestHeart - 1).toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 4) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 2).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 5) {
+                    this['heart' + (this.highestHeart - 2).toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 6 && this['heart' + (this.highestHeart - 3).toString()] != null) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 3).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 7) {
+                    this['heart' + (this.highestHeart - 3).toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 8 && this['heart' + (this.highestHeart - 4).toString()] != null) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 4).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 9) {
+                    this['heart' + (this.highestHeart - 4).toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 10 && this['heart' + (this.highestHeart - 5).toString()] != null) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 5).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 11) {
+                    this['heart' + (this.highestHeart - 5).toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 12 && this['heart' + (this.highestHeart - 6).toString()] != null) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 6).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 13) {
+                    this['heart' + (this.highestHeart - 6).toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 14 && this['heart' + (this.highestHeart - 7).toString()] != null) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 7).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 15) {
+                    this['heart' + (this.highestHeart - 7).toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 16 && this['heart' + (this.highestHeart - 8).toString()] != null) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 8).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 17) {
+                    this['heart' + (this.highestHeart - 8).toString()].frame = 2;
+                }
+            }
+            if(this.player.diffHP > 18 && this['heart' + (this.highestHeart - 9).toString()] != null) {
+                if(this.player.diffHP % 2 != 0) {
+                    this['heart' + (this.highestHeart - 9).toString()].frame = 1;
+                }
+                if(this.player.diffHP % 2 == 0 || this.player.diffHP > 19) {
+                    this['heart' + (this.highestHeart - 9).toString()].frame = 2;
+                }
+            }
+            if (this.player.currentHP <= 0) {
+                if (this.fade.alpha == 0) {
+                    this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                    if (this.frameAbil != null) {
+                        this.frameAbil.name == "none";
+                        this.frameAbil.destroy();
+                    }
+                }
+            }
+        }
+    },
+    playerMeterManager: function() {
+        if (this.player.currentSteam < this.player.maxSteam) {
+            if (this.player.currentSteam <= 0) {
+                this.player.currentSteam = 0.01;
+            }
+            this.diffSteam = this.player.currentSteam / this.player.maxSteam;
+            this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * (0.65 * this.diffSteam));
+            this.steamLevel.y += this.diffSteam * this.scalingFactor * 0.65
+        } else {
+            this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+        }
+
+        /***************************************** Player Electricity Handler **********************************************************************************************/
+        if (this.player.currentEnergy < this.player.maxEnergy) {
+            if (this.player.currentEnergy <= 0) {
+                this.player.currentEnergy = 0.01;
+            }
+            this.diffEnergy = this.player.currentEnergy / this.player.maxEnergy;
+            this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * (0.65 * this.diffEnergy));
+            this.elecLevel.y += this.diffEnergy * this.scalingFactor * 0.65
+        } else {
+            this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+        }
+    },
+    playerKnockbackHandler: function() {
+        if (this.player.state == 'hurt' && this.knockbackTimer == null) {
+            this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.15, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
+            this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(){ this.player.state = 'walk'; }, this);
+        } 
+        if (this.player.state == 'hurt') {
+            if (this.direction == 'right') {
+                this.player.frame = 83;
+                if (this.player.scale.x < 0) {
+                    this.player.scale.x = this.player.scale.x * -1;
+                }
+            }
+            if (this.direction == 'left') {
+                this.player.frame = 83;
+                if (this.player.scale.x > 0) {
+                    this.player.scale.x = this.player.scale.x * -1;
+                }
+            }
+            if (this.direction == 'up') {
+                this.player.frame = 81;
+            }
+            if (this.direction == 'down') {
+                this.player.frame = 82;
+            }
+        }
+    },
+    playerMovement: function() {
+        if (this.player.state == 'walk') {
+            this.game.time.events.remove(this.knockbackTimer);
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            this.player.swipe.body.velocity.x = 0;
+            this.player.swipe.body.velocity.y = 0;
+            if (upKey.isDown || upArrow.isDown) {
+                this.player.body.velocity.y = -this.player.speed * 0.9;
+                this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
+            } else if (downKey.isDown || downArrow.isDown) {
+                this.player.body.velocity.y = this.player.speed * 0.9;
+                this.player.swipe.body.velocity.y = this.player.speed * 0.9;
+            }
+            if (rightKey.isDown || rightArrow.isDown) {
+                this.player.body.velocity.x = this.player.speed;
+                this.player.swipe.body.velocity.x = this.player.speed;
+            } else if (leftKey.isDown || leftArrow.isDown) {
+                this.player.body.velocity.x = -this.player.speed;
+                this.player.swipe.body.velocity.x = -this.player.speed;
+            }
+
+            this.playerUseAbil(this);
+        }
+
+        
+
+        if (this.frameAbil.name != this.ASGroup.curAbil) {
+            this.frameAbil.destroy();
+            this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), this.ASGroup.curAbil);
+            this.frameAbil.anchor.setTo(1,0);
+            this.frameAbil.fixedToCamera = true;
+            this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+            this.frameAbil.name = this.ASGroup.curAbil;
+        }
+    },
+    playerAnimation: function() {
+        /************************************** Animation Controller for Player movement *****************************************************************************/
+        this.direction = this.direction || 'down';
+        if (this.player.state == 'walk') {
+            if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0 && this.idling == false) {
+                this.idleTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * 20, function(){ this.animationName = 'sit'; this.idling = "seated"; this.direction = "right"; }, this);
+                this.game.time.events.remove(this.standTimer);
+                this.game.time.events.remove(this.sitTimer);
+                this.animationName = "stopped";
+                this.idling = true;
+            }
+
+            if (this.idling == "seated") {
+                this.direction = "right";
+                if (this.player.scale.x < 0) {
+                    this.player.scale.x = -this.player.scale.x
+                }
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+                this.player.swipe.body.velocity.x = 0;
+                this.player.swipe.body.velocity.y = 0;
+                if (this.player.animations.name == "sit" && this.sitTiming != true) {
+                    this.sitTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.66, function () { this.sitTimed = true; this.sitTiming = false; this.animationName = "seated"; }, this);
+                    this.sitTiming = true;
+                }
+                if (this.sitTimed == true) {
+                    this.animationName = "seated";
+                }
+
+                if (upKey.isDown || upArrow.isDown || downKey.isDown || downArrow.isDown || leftKey.isDown || leftArrow.isDown || rightKey.isDown || rightArrow.isDown) {
+                    if (this.player.animations.name == "seated") {
+                        this.standTimer = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function() { this.idling = false; }, this);
+                        this.animationName = 'stand';
+                        this.sitTimed = false;
+                    }
+                }
+            }
+
+            if (this.tripCount >= 20) {
+                this.player.state = "trip";
+                this.player.body.velocity.x = 0;
+                this.player.swipe.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+                this.player.swipe.body.velocity.y = 0;
+                this.animationName = "trip";
+                if (this.tripTiming != true) {
+                    this.tripTiming = true;
+                    this.tripoverride = this.game.time.events.add(Phaser.Timer.SECOND * 1.5, function() { this.player.state = "walk"; this.tripTiming = false; this.tripCount = 0; }, this);
+                }
+            }
+            
+            if (this.player.body.velocity.x < 0) {
+                this.animationName = 'runLeft';
+                this.direction = 'left';
+                this.player.swipe.x = this.player.x - (this.player.body.width / 2);
+                this.player.swipe.y = this.player.y + (this.player.height / 2);
+                this.player.swipe.anchor.setTo(1, 1.35);
+                this.player.swipe.width = 18 * this.scalingFactor;
+                this.player.swipe.height = this.player.body.height;
+                if (this.player.scale.x < 0) {
+                    this.player.scale.x = this.player.scale.x * -1;
+                    this.tripCount += 1;
+                    this.game.time.events.remove(this.tripTimer);
+                    this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
+                }
+                this.game.time.events.remove(this.idleTimer1);
+                this.idling = false;
+            }
+            if (this.player.body.velocity.x > 0) {
+                this.animationName = 'runRight';
+                this.direction = 'right';
+                this.player.swipe.x = this.player.x + (this.player.body.width / 2);
+                this.player.swipe.y = this.player.y + (this.player.height / 2);
+                this.player.swipe.anchor.setTo(0, 1.35);
+                this.player.swipe.width = 18 * this.scalingFactor;
+                this.player.swipe.height = this.player.body.height;
+                if (this.player.scale.x > 0) {
+                    this.player.scale.x = this.player.scale.x * -1;
+                    this.tripCount += 1;
+                    this.game.time.events.remove(this.tripTimer);
+                    this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
+                }
+                this.game.time.events.remove(this.idleTimer1);
+                this.idling = false;
+            }
+            if (this.player.body.velocity.y < 0) {
+                this.animationName = 'runUp';
+                this.direction = 'up';
+                this.player.swipe.x = this.player.body.x - (this.player.body.width * 0.25);
+                this.player.swipe.y = this.player.body.y;
+                this.player.swipe.anchor.setTo(0, 0.6);
+                this.player.swipe.width = this.player.body.width * 1.5;
+                this.player.swipe.height = 34 * this.scalingFactor;
+                this.game.time.events.remove(this.idleTimer1);
+                this.idling = false;
+                if (this.player.scale.x < 0 && this.player.body.velocity.x < 0) {
+                    this.player.scale.x = this.player.scale.x * -1;
+                }
+            }
+            if (this.player.body.velocity.y > 0) {
+                this.animationName = 'runDown';
+                this.direction = 'down';
+                this.player.swipe.x = this.player.body.x - (this.player.body.width * 0.25);
+                this.player.swipe.y = this.player.body.y + this.player.body.height;
+                this.player.swipe.anchor.setTo(0, 0.8);
+                this.player.swipe.width = this.player.body.width * 1.5;
+                this.player.swipe.height = 42 * this.scalingFactor;
+                this.game.time.events.remove(this.idleTimer1);
+                this.idling = false;
+                if (this.player.scale.x < 0 && this.player.body.velocity.x < 0) {
+                    this.player.scale.x = this.player.scale.x * -1;
+                }
+            }
+        }
+        if (this.direction == 'left') {
+            if (this.player.scale.x < 0) {
+                this.player.scale.x = this.player.scale.x * -1;
+            }
+        }
+        if (this.direction == 'right') {
+            if (this.player.scale.x > 0) {
+                this.player.scale.x = this.player.scale.x * -1;
+            }
+        }
+        //change current animation
+        if (this.player.animations.name !== this.animationName && this.animationName !== 'stopped') {
+            this.player.animations.play(this.animationName);
+        } else if (this.animationName == 'stopped') {
+            if (this.direction == 'down') {
+                this.player.animations.play('idleDown', 4, true);
+                if (this.player.scale.x < 0) {
+                    this.player.scale.x = this.player.scale.x * -1;
+                }
+            }
+            if (this.direction == 'right') {
+                this.player.animations.play('idleRight', 4, true);
+            }
+            if (this.direction == 'up') {
+                this.player.animations.play('idleUp', 4, true);
+                if (this.player.scale.x < 0) {
+                    this.player.scale.x = this.player.scale.x * -1;
+                }
+            }
+            if (this.direction == 'left') {
+                this.player.animations.play('idleLeft', 4, true);
+            }
+        }
+    },
+    playerAttack: function() {
+        if(spaceKey.duration < 1 && spaceKey.isDown && this.player.combo < 3) {
+            if (this.player.state != 'attack') {
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+                this.player.swipe.body.velocity.x = 0;
+                this.player.swipe.body.velocity.y = 0;
+                this.sitTimed = false;
+                if (this.player.combo == 0) {
+                    if(this.direction == 'up') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeUp';
+                    } else if(this.direction == 'down') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeDown';
+                    } else if(this.direction == 'left') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeSide';
+                    } else if(this.direction == 'right') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeSide';
+                    }
+                    this.player.combo = 1;
+                    this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                        this.player.state = 'walk';
+                        this.game.time.events.remove(this.idleTimer1);
+                        this.idling = false;
+                    }, this);
+                    this.comboTimer1 = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.player.combo = 0; }, this);
+                }
+                else if (this.player.combo == 1) {
+                    if(this.direction == 'up') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeUp2';
+                        this.player.body.velocity.y = -this.player.speed * 1.5;
+                        this.player.swipe.body.velocity.y = -this.player.speed * 1.5;
+                    } else if(this.direction == 'down') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeDown2';
+                        this.player.body.velocity.y = this.player.speed * 1.5;
+                        this.player.swipe.body.velocity.y = this.player.speed * 1.5;
+                    } else if(this.direction == 'left') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeSide2';
+                        this.player.body.velocity.x = -this.player.speed * 1.5;
+                        this.player.swipe.body.velocity.x = -this.player.speed * 1.5;
+                    } else if(this.direction == 'right') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeSide2';
+                        this.player.body.velocity.x = this.player.speed * 1.5;
+                        this.player.swipe.body.velocity.x = this.player.speed * 1.5;
+                    }
+                    this.player.combo = 2;
+                    this.game.time.events.remove(this.comboTimer1);
+                    this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
+                    this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                        this.player.state = 'walk';
+                        this.game.time.events.remove(this.idleTimer1);
+                        this.idling = false;
+                    }, this);
+                    this.comboTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.player.combo = 0; }, this);
+                }
+                else if (this.player.combo == 2) {
+                    if(this.direction == 'up') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeUp3';
+                        this.player.body.velocity.y = -this.player.speed * 2;
+                        this.player.swipe.body.velocity.y = -this.player.speed * 2;
+                    } else if(this.direction == 'down') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeDown3';
+                        this.player.body.velocity.y = this.player.speed * 2;
+                        this.player.swipe.body.velocity.y = this.player.speed * 2;
+                    } else if(this.direction == 'left') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeSide3';
+                        this.player.body.velocity.x = -this.player.speed * 2;
+                        this.player.swipe.body.velocity.x = -this.player.speed * 2;
+                    } else if(this.direction == 'right') {
+                        this.player.state = 'attack';
+                        this.animationName = 'swipeSide3';
+                        this.player.body.velocity.x = this.player.speed * 2;
+                        this.player.swipe.body.velocity.x = this.player.speed * 2;
+                    }
+                    this.player.combo = 3;
+                    this.game.time.events.remove(this.comboTimer2);
+                    this.game.time.events.add(Phaser.Timer.SECOND * (0.15), function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
+                    this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){
+                        this.player.state = 'walk';
+                        this.game.time.events.remove(this.idleTimer1);
+                        this.idling = false;
+                        this.player.combo = 0;
+                    }, this);
+                    
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){
+                    spaceKey.duration = 0;
+                }, this);
+            }
+        }
+    },
+    playerUseAbil: function() {
+        //WINAN USAGE
+        if (this.hasItems == true) {
+            if (abilityKey.isDown && abilityKey.duration < 2) {
+                if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "none") {
+                    this.sitTimed = false;
+                    this.usingAbil = "Winan";
+                    if (this.direction == "up") {
+                        this.direction = "left"
+                        this.animationName = "winanUp";
+                        this.winanWeapon.fireAngle = 270;
+                        this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                        this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 5, (this.player.width / 32) * -15);
+                    } else if (this.direction == "down") {
+                        this.animationName = "winanDown";
+                        this.winanWeapon.fireAngle = 90;
+                        this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                        this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
+                    } else if (this.direction == "left" || this.direction == "right") {
+                        this.animationName = "winanSide";
+                        if (this.direction == "left") {
+                            this.winanWeapon.fireAngle = 180;
+                            this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                            this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * -3.5);
+                        }
+                        if (this.direction == "right") {
+                            this.winanWeapon.fireAngle = 0;
+                            this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                            this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
+                        }
+                    }
+                    if (this.idling == "seated") {
+                        this.animationName = "winanSide";
+                        this.winanWeapon.fireAngle = 0;
+                        this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                        this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 11, (this.player.width / 32) * -3.5);
+                    }
+                    if (this.usingTiming != true) {
+                        this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
+                            this.usingAbil = "none"; 
+                            abilityKey.duration = 0; 
+                            this.usingTiming = false; 
+                            this.refuel = false;
+                            if (this.direction == "left") {
+                                this.animationName = "idleLeft";
+                            }
+                            if (this.direction == "right") {
+                               this.animationName = "idleRight";
+                            }
+                            if (this.direction == "up") {
+                                this.animationName = "idleUp";
+                            }
+                            if (this.direction == "down") {
+                                this.animationName = "idleDown";
+                            }
+                            this.usingTiming = false;
+                        }, this);
+                        this.usingTiming = true;
+                    }
+                    this.idling = true;
+                    this.game.time.events.remove(this.idleTimer1);
+                }
+            }
+            
+            if (abilityKey.duration > 490 && abilityKey.isDown) {
+                if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "Winan") {
+                    this.sitTimed = false;
+                    this.usingAbil = "Winan2";
+                    this.game.time.events.remove(this.usingTimer);
+                    this.game.time.events.remove(this.usingTimer2);
+                    this.usingTiming = false;
+                    if (this.direction == "left" || this.direction == "right") {
+                        this.animationName = "winanSide2";
+                    } else if (this.direction == "up") {
+                        this.animationName = "winanUp2";
+                    } else if (this.direction == "down") {
+                        this.animationName = "winanDown2";
+                    }
+                    if (this.usingTiming != true) {
+                        this.refuel = false;
+                        this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (2/3), function(){ this.usingAbil = "Winan"; this.usingTiming = false; this.refuel = false; }, this);
+                        this.usingTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 0.7, function(){
+                            this.usingAbil = "none"; 
+                            abilityKey.duration = 0; 
+                            this.usingTiming = false; 
+                            this.refuel = false;
+                            if (this.direction == "left") {
+                                this.animationName = "idleLeft";
+                            }
+                            if (this.direction == "right") {
+                               this.animationName = "idleRight";
+                            }
+                            if (this.direction == "up") {
+                                this.animationName = "idleUp";
+                            }
+                            if (this.direction == "down") {
+                                this.animationName = "idleDown";
+                            }
+                            this.usingTiming = false;
+                        }, this);
+                        this.usingTiming = true;
+                    }
+                    this.idling = true;
+                    this.game.time.events.remove(this.idleTimer1);
+                }
+            }
+
+            if (this.usingAbil == "Winan" || this.usingAbil == "Winan2") {
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+                this.player.swipe.body.velocity.x = 0;
+                this.player.swipe.body.velocity.y = 0;
+                if (this.refuel != true) {
+                    if (this.usingAbil == "Winan") {
+                        this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/4), function(){ 
+                            if (this.player.currentSteam >= 10) {
+                                this.winanWeapon.fire();
+                                this.player.currentSteam -= 10;
+                            }
+                        }, this);
+                    } else if (this.usingAbil == "Winan2") {
+                        this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (7/12), function(){ 
+                            if (this.player.currentSteam >= 10) {
+                                this.winanWeapon.fire();
+                                this.player.currentSteam -= 10;
+                            }
+                        }, this);
+                    }
+                    this.refuel = true;
+                }
+            }
+
+            if (abilityKey.isUp && this.usingAbil == 'Winan2') {
+                this.usingAbil = "none"; 
+                abilityKey.duration = 0; 
+                this.usingTiming = false; 
+                this.refuel = false;
+                this.idling = true;
+                if (this.direction == "left") {
+                    this.animationName = "idleLeft";
+                }
+                if (this.direction == "right") {
+                    this.animationName = "idleRight";
+                }
+                if (this.direction == "up") {
+                    this.animationName = "idleUp";
+                }
+                if (this.direction == "down") {
+                    this.animationName = "idleDown";
+                }
+                this.usingTiming = false;
+                this.game.time.events.remove(this.usingTimer);
+                this.game.time.events.remove(this.usingTimer2);
+                this.game.time.events.remove(this.shootTimer);
+
+            }
+        }
+        //SHIELD USAGE
+        if (this.hasItems == true) {
+            if (abilityKey.isDown && abilityKey.duration < 2) {
+                if (this.ASGroup.curAbil == "SteamShield" && this.usingAbil == "none") {
+                    this.sitTimed = false;
+                    this.usingAbil = "SteamShield";
+                    if (this.direction == "left" || this.direction == "right") {
+                        this.animationName = "winanSide";
+                        if (this.usingTiming != true) {
+                            this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
+                                this.usingAbil = "none"; 
+                                this.duration = 0; 
+                                this.usingTiming = false; 
+                                    if (this.direction == "left") {
+                                    this.animationName = "idleLeft";
+                                    }
+                                    if (this.direction == "right") {
+                                    this.animationName = "idleRight";
+                                    }
+                                    if (this.direction == "up") {
+                                    this.animationName = "idleUp";
+                                    }
+                                    if (this.direction == "down") {
+                                    this.animationName = "idleDown";
+                                    }
+                            this.usingTiming = false;
+                            }, this);
+                            this.usingTiming = true;
+                        }
+                    this.idling = true;
+                    this.game.time.events.remove(this.idleTimer1);
+                    }
+                }
+            }
+            
+            if (abilityKey.duration > 490 && abilityKey.isDown) {
+                if (this.ASGroup.curAbil == "SteamShield" && this.usingAbil == "SteamShield") {
+                    this.sitTimed = false;
+                    this.usingAbil = "SteamShield";
+                    this.game.time.events.remove(this.usingTimer);
+                    this.game.time.events.remove(this.usingTimer2);
+                    this.usingTiming = false;
+                    if (this.direction == "left" || this.direction == "right") {
+                        this.animationName = "winanSide2";
+                    } else if (this.direction == "up") {
+                        this.animationName = "winanUp2";
+                    } else if (this.direction == "down") {
+                        this.animationName = "winanDown2";
+                    }
+                    this.idling = true;
+                    this.game.time.events.remove(this.idleTimer1);
+                }
+            }
+
+            if (this.usingAbil == "SteamShield") {
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+                this.player.swipe.body.velocity.x = 0;
+                this.player.swipe.body.velocity.y = 0;
+                    if (this.usingAbil == "SteamShield") {
+                        this.shootTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/4), function(){ 
+                            if (this.player.currentSteam >= 0.5) {
+                                this.player.currentSteam -= 0.5;
+                            }
+                        }, this);
+                }
+            }
+
+            if (abilityKey.isUp && this.usingAbil == 'SteamShield') {
+                this.usingAbil = "none"; 
+                abilityKey.duration = 0; 
+                this.usingTiming = false; 
+                if (this.direction == "left") {
+                    this.animationName = "idleLeft";
+                }
+                if (this.direction == "right") {
+                    this.animationName = "idleRight";
+                }
+                if (this.direction == "up") {
+                    this.animationName = "idleUp";
+                }
+                if (this.direction == "down") {
+                    this.animationName = "idleDown";
+                }
+                this.usingTiming = false;
+                this.game.time.events.remove(this.usingTimer);
+                this.game.time.events.remove(this.usingTimer2);
+                this.game.time.events.remove(this.shootTimer);
+
+            }
+        }
+    },
+    tickerHandler: function() {
+        /***************************************** Currency tracker **************************************************************************************************/
+        if (this.player.newC != this.player.currency) {
+            this.player.currency = this.player.newC;
+            //this.changeTicker(this.player.currency, this.ticker, this.player.currencyData);
+            this.player.currencyData.digit1 = Math.floor(this.player.currency / 1000);
+            this.player.currencyData.digit2 = Math.floor(this.player.currency / 100) - (this.player.currencyData.digit1 * 10);
+            this.player.currencyData.digit3 = Math.floor(this.player.currency / 10) - (this.player.currencyData.digit1 * 100) - (this.player.currencyData.digit2 * 10);
+            this.player.currencyData.digit4 = this.player.currency - (this.player.currencyData.digit1 * 1000) - (this.player.currencyData.digit2 * 100) - (this.player.currencyData.digit3 * 10);
+            this.ticker.plate1.animations.play('flip', 12, false);
+            this.ticker.plate2.animations.play('flip', 12, false);
+            this.ticker.plate3.animations.play('flip', 12, false);
+            this.ticker.plate4.animations.play('flip', 12, false);
+        }
+
+        if(this.ticker.plate1.animations.isPlaying != true) {
+            if (this.ticker.plate1.frame >= 15 && this.ticker.plate1.frame != this.player.currencyData.digit1) {
+                this.ticker.plate1.frame = this.player.currencyData.digit1;
+            } else if(this.ticker.plate1.frame == 15) {
+                this.ticker.plate1.frame = this.player.currencyData.digit1;
+            }
+        }
+        if(this.ticker.plate2.animations.isPlaying != true) {
+            if (this.ticker.plate2.frame >= 15 && this.ticker.plate2.frame != this.player.currencyData.digit2) {
+                this.ticker.plate2.frame = this.player.currencyData.digit2;
+            } else if(this.ticker.plate2.frame == 15) {
+                this.ticker.plate2.frame = this.player.currencyData.digit2;
+            }
+        }
+        if(this.ticker.plate3.animations.isPlaying != true) {
+            if (this.ticker.plate3.frame >= 15 && this.ticker.plate3.frame != this.player.currencyData.digit3) {
+                this.ticker.plate3.frame = this.player.currencyData.digit3;
+            } else if(this.ticker.plate3.frame == 15) {
+                this.ticker.plate3.frame = this.player.currencyData.digit3;
+            }
+        }
+        if(this.ticker.plate4.animations.isPlaying != true) {
+            if (this.ticker.plate4.frame >= 15 && this.ticker.plate4.frame != this.player.currencyData.digit4) {
+                this.ticker.plate4.frame = this.player.currencyData.digit4;
+            } else if(this.ticker.plate4.frame == 15) {
+                this.ticker.plate4.frame = this.player.currencyData.digit4;
+            }
+        }
+    },
+    menuPosResets: function() {
+        //moving any and all menus away
+        if (this.ASGroup.pos == 'down') {
+            if (this.ASGroup.cameraOffset.y > this.ASGroup.maxH + (this.game.camera.height * 0.5)) {
+                this.ASGroup.cameraOffset.y -= this.game.camera.height / 40;
+                this.ASGroup.stationary = false;
+            } else {
+                this.ASGroup.stationary = true;
+                this.ASGroup.pos = 'up';
+            }
+        }
+        if (this.mapGroup.pos == 'up') {
+            if (this.mapGroup.cameraOffset.y < this.mapGroup.maxH) {
+                this.mapGroup.cameraOffset.y += this.game.camera.height / 40;
+                this.mapGroup.stationary = false;
+            } else {
+                this.mapGroup.stationary = true;
+                this.mapGroup.pos = 'down';
+            }
+        }
+        if (this.pauseGroup.pos == 'there') {
+            this.pauseGroup.alpha = 0;
+            this.pauseGroup.pos = 'gone';
+        }
+    },
+    ASManager: function() {
+        
+        if (this.player.hasWinan == 1) {
+            this.ASWinan.frame = 0;
+            this.ASGroup.selPos.pos1 = 'Winan';
+            this.hasItems = true;
+        }
+        if (this.player.hasHook == 1) {
+            this.ASHook.frame = 0;
+            this.ASGroup.selPos.pos2 = 'Hook';
+            this.hasItems = true;
+        }
+        if (this.player.hasSteamShield == 1) {
+            this.ASSteamShield.frame = 0;
+            this.ASGroup.selPos.pos3 = 'SteamShield';
+            this.hasItems = true;
+        }
+        if (this.player.hasLightRod == 1) {
+            this.ASLightRod.frame = 0;
+            this.ASGroup.selPos.pos4 = 'LightRod';
+            this.hasItems = true;
+        }
+        if (this.player.hasStunBaton == 1) {
+            this.ASStunBaton.frame = 0;
+            this.ASGroup.selPos.pos5 = 'StunBaton';
+            this.hasItems = true;
+        }
+        if (this.player.hasBoomerang == 1) {
+            this.ASBoomerang.frame = 0;
+            this.ASGroup.selPos.pos6 = 'Boomerang';
+            this.hasItems = true;
+        }
+        if (this.player.hasGreekFire == 1) {
+            this.ASGreekFire.frame = 0;
+            this.ASGroup.selPos.pos7 = 'GreekFire';
+            this.hasItems = true;
+        }
+        if (this.player.hasHammer == 1) {
+            this.ASHammer.frame = 0;
+            this.ASGroup.selPos.pos8 = 'Hammer';
+            this.hasItems = true;
+        }
+        if (this.player.hasBomb == 1) {
+            this.ASBomb.frame = 0;
+            this.ASGroup.selPos.pos9 = 'Bomb';
+            this.hasItems = true;
+        }
+        if (this.player.hasBoots == 1) {
+            this.ASBoots.frame = 0;
+            //this.ASGroup.selPos.pos13 = 'Boots';
+            //this.hasItems = true;
+        }
+        if (this.player.hasExoArm == 1) {
+            this.ASArm.frame = 0;
+            //this.ASGroup.selPos.pos14 = 'ExoArm';
+            //this.hasItems = true;
+        }
+        if (this.player.hasTaserSword == 1) {
+            this.ASSword.frame = 1;
+            //this.ASGroup.selPos.pos14 = 'ExoArm';
+            //this.hasItems = true;
+        }
+        
+
+        if (upKey.isDown || upArrow.isDown) {
+            if (upKey.isDown && upKey.duration < 2) {
+                if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 4)]]) {
+                    this.ASGroup.curPos -= 4;
+                } else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 8)]]) {
+                    this.ASGroup.curPos -= 8;
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    upKey.duration = 0;
+                }, this);
+            }
+            if (upArrow.isDown && upArrow.duration < 2) {
+                if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 4)]]) {
+                    this.ASGroup.curPos -= 4;
+                } else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 8)]]) {
+                    this.ASGroup.curPos -= 8;
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    upArrow.duration = 0;
+                }, this);
+            }
+        } else if (downKey.isDown || downArrow.isDown) {
+            if (downKey.isDown && downKey.duration < 2) {
+                if (this.ASGroup.curPos != null && this.ASGroup.curPos + 4 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 4)]]) {
+                    this.ASGroup.curPos += 4;
+                } else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 8 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 8)]]) {
+                    this.ASGroup.curPos += 8;
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    downKey.duration = 0;
+                }, this);
+            }
+            if (downArrow.isDown && downArrow.duration < 2) {
+                if (this.ASGroup.curPos != null && this.ASGroup.curPos + 4 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 4)]]) {
+                    this.ASGroup.curPos += 4;
+                } else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 8 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 8)]]) {
+                    this.ASGroup.curPos += 8;
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    downArrow.duration = 0;
+                }, this);
+            }
+        } else if (rightKey.isDown || rightArrow.isDown) {
+            if (rightKey.isDown && rightKey.duration < 2) {
+                if (this.ASGroup.curPos != null && this.ASGroup.curPos + 1 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 1)]]) {
+                    this.ASGroup.curPos += 1;
+                }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 2 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 2)]]) {
+                    this.ASGroup.curPos += 2;
+                }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 3 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 3)]]) {
+                    this.ASGroup.curPos += 3;
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    rightKey.duration = 0;
+                }, this);
+            }
+            if (rightArrow.isDown && rightArrow.duration < 2) {
+                if (this.ASGroup.curPos != null && this.ASGroup.curPos + 1 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 1)]]) {
+                    this.ASGroup.curPos += 1;
+                }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 2 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 2)]]) {
+                    this.ASGroup.curPos += 2;
+                }  else if (this.ASGroup.curPos != null && this.ASGroup.curPos + 3 < 13 && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos + 3)]]) {
+                    this.ASGroup.curPos += 3;
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    rightArrow.duration = 0;
+                }, this);
+            }
+        } else if (leftKey.isDown || leftArrow.isDown) {
+            if (leftKey.isDown && leftKey.duration < 2) {
+                if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 1)]]) {
+                    this.ASGroup.curPos -= 1;
+                }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 2)]]) {
+                    this.ASGroup.curPos -= 2;
+                }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 3)]]) {
+                    this.ASGroup.curPos -= 3;
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    leftKey.duration = 0;
+                }, this);
+            }
+            if (leftArrow.isDown && leftArrow.duration < 2) {
+                if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 1)]]) {
+                    this.ASGroup.curPos -= 1;
+                }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 2)]]) {
+                    this.ASGroup.curPos -= 2;
+                }  else if (this.ASGroup.curPos != null && this['AS' + this.ASGroup.selPos['pos' + (this.ASGroup.curPos - 3)]]) {
+                    this.ASGroup.curPos -= 3;
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    leftArrow.duration = 0;
+                }, this);
+            }
+        }
+
+        if (this.frameAbil.name != this.ASGroup.selPos['pos' + this.ASGroup.curPos] && this.frameAbil.name != 'none') {
+            this.frameAbil.destroy();
+            this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.1)) / 2), this.ASGroup.selPos['pos' + this.ASGroup.curPos]);
+            this.frameAbil.anchor.setTo(1,0);
+            this.frameAbil.fixedToCamera = true;
+            this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+            this.frameAbil.name = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
+            this.ASGroup.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
+        }
+        else if (this.frameAbil.name == "none") {
+            this.frameAbil.destroy();
+        }
+
+        if (this.hasItems == true) {
+            if (this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x != null) {
+                if (this.ASSelector.x != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x) {
+                    this.ASSelector.x = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].x;
+                }
+                if (this.ASSelector.y != this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y) {
+                    this.ASSelector.y = this['AS' + this.ASGroup.selPos['pos' + this.ASGroup.curPos]].y;
+                }
+            }
         }
     },
     abilityTrans: function() {
