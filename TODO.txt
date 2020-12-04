@@ -21,12 +21,15 @@ Wednesday: massive success
     -code for trip and stand (one timer and animation as well as a counter similar to comboTimer, simple)
         -finished and even more glorious ^^
 
-Thursday:
+Thursday: massive success
     -detection of q as input and creating conditionals for curAbil, first winan
+        -finished ^
     -create winan projectiles and shooting frames
         -finished early ^
     -code projectile movement and collision detection with dummy, as well as destruction on collision
         +query: should the bullet dissipate if it doesn't collide within a certain distance?
+            -still up in the air ^^
+        - otherwise finished!! ^
 
 Friday:
     -spawn hp pot collectible on map somewhere, adds 1 hp
@@ -34,7 +37,7 @@ Friday:
     *-make boots version of the walk cycle (going to basically double the file size :/)*
         --reconsider ^^
 
-Saturday:
+Saturday: TBD (probably delayed, I'm going to the ren fair on saturday and won't be home until closer to 11)
     -make bomb script, does damage in a radius after a timer to any object, player or scarecrow
     -create explosion/ destruction frames
     -add directional knockback for milutin
