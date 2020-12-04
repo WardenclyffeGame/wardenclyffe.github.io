@@ -893,6 +893,11 @@ steamGame.Game.prototype = {
                                     this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
                                     this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
                                 }
+                                if (this.idling == "seated") {
+                                    this.winanWeapon.fireAngle = 0;
+                                    this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
+                                    this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
+                                }
                             } else if (this.direction == "up") {
                                 this.animationName = "winanUp";
                                 this.winanWeapon.fireAngle = 270;
