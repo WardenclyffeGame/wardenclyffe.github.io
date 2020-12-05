@@ -516,35 +516,30 @@ steamGame.Game.prototype = {
             this.game.add.tween(this.fade).to({alpha: 0}, 500, null, true);
             this.intro = true;
         }
-        /*if (debugKey.isDown) {
+        if (debugKey.isDown) {
             this.debugText = this.debugText || {};
             //this.playerData1_2 = window.localStorage.getItem('playerData');
             //this.playerData2 = JSON.parse(this.playerData1_2);
             //this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData1_2, this.game.world.centerX - 1900, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('True health: ' + this.player.currentHP, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('direction: ' + this.direction, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            this.debugText.HPD = this.game.debug.text('Dummy health: ' + this.playerData.currentHP, this.game.camera.width - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('usingAbil: ' + this.usingAbil, this.game.camera.width - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            //this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('usingTiming:' + this.usingTiming, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
             this.debugText.DIR = this.game.debug.text('Active direction: ' + this.direction, this.game.world.centerX - 150, this.game.camera.height - 45, null, 'rgb(0, 0, 0)');
 
-            this.debugText.PLYR = this.game.debug.body(this.player);
-            this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
-            this.debugText.DB = this.game.debug.body(this.dummy);
-            
-            if (this.player.currency < 9990) {
-                this.player.newC += 10;
-            } else if (this.player.currency >= 9990 && this.player.currency < 9999){
-                this.player.newC += 1;
-            }
-        }*/
+            //this.debugText.PLYR = this.game.debug.body(this.player);
+            //this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
+            //this.debugText.DB = this.game.debug.body(this.dummy);
+        }
         /*if (debugKey.isUp) {
             this.debugText.destroy();
         }*/
@@ -561,10 +556,14 @@ steamGame.Game.prototype = {
             
             this.playerMovement(this);
 
+            if(this.player.state == "walk") {
+                this.playerUseAbil(this);
+            }
+
             this.playerAnimation(this);
             
             this.playerAttack(this);
-            
+
             this.menuPosResets(this);
         }
         if (this.menuState == 'ability') {
@@ -1061,19 +1060,20 @@ steamGame.Game.prototype = {
             if (upKey.isDown || upArrow.isDown) {
                 this.player.body.velocity.y = -this.player.speed * 0.9;
                 this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
-            } else if (downKey.isDown || downArrow.isDown) {
+            } 
+            if (downKey.isDown || downArrow.isDown) {
                 this.player.body.velocity.y = this.player.speed * 0.9;
                 this.player.swipe.body.velocity.y = this.player.speed * 0.9;
             }
             if (rightKey.isDown || rightArrow.isDown) {
                 this.player.body.velocity.x = this.player.speed;
                 this.player.swipe.body.velocity.x = this.player.speed;
-            } else if (leftKey.isDown || leftArrow.isDown) {
+            }
+            if (leftKey.isDown || leftArrow.isDown) {
                 this.player.body.velocity.x = -this.player.speed;
                 this.player.swipe.body.velocity.x = -this.player.speed;
             }
 
-            this.playerUseAbil(this);
         }
 
         
@@ -1147,10 +1147,15 @@ steamGame.Game.prototype = {
                 this.player.swipe.width = 18 * this.scalingFactor;
                 this.player.swipe.height = this.player.body.height;
                 if (this.player.scale.x < 0) {
+                    if (this.player.body.velocity.y == 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                        this.tripCount += 1;
+                        this.game.time.events.remove(this.tripTimer);
+                        this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
+                    }
+                }
+                if (this.player.scale.x < 0 && this.player.body.velocity.y != 0) {
                     this.player.scale.x = this.player.scale.x * -1;
-                    this.tripCount += 1;
-                    this.game.time.events.remove(this.tripTimer);
-                    this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
                 }
                 this.game.time.events.remove(this.idleTimer1);
                 this.idling = false;
@@ -1164,10 +1169,15 @@ steamGame.Game.prototype = {
                 this.player.swipe.width = 18 * this.scalingFactor;
                 this.player.swipe.height = this.player.body.height;
                 if (this.player.scale.x > 0) {
+                    if (this.player.body.velocity.y == 0) {
+                        this.player.scale.x = this.player.scale.x * -1;
+                        this.tripCount += 1;
+                        this.game.time.events.remove(this.tripTimer);
+                        this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
+                    }
+                }
+                if (this.player.scale.x < 0 && this.player.body.velocity.y != 0) {
                     this.player.scale.x = this.player.scale.x * -1;
-                    this.tripCount += 1;
-                    this.game.time.events.remove(this.tripTimer);
-                    this.tripTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/3), function(){ this.tripCount = 0; }, this);
                 }
                 this.game.time.events.remove(this.idleTimer1);
                 this.idling = false;
@@ -1199,16 +1209,6 @@ steamGame.Game.prototype = {
                 if (this.player.scale.x < 0 && this.player.body.velocity.x < 0) {
                     this.player.scale.x = this.player.scale.x * -1;
                 }
-            }
-        }
-        if (this.direction == 'left') {
-            if (this.player.scale.x < 0) {
-                this.player.scale.x = this.player.scale.x * -1;
-            }
-        }
-        if (this.direction == 'right') {
-            if (this.player.scale.x > 0) {
-                this.player.scale.x = this.player.scale.x * -1;
             }
         }
         //change current animation
@@ -1337,39 +1337,42 @@ steamGame.Game.prototype = {
         }
     },
     playerUseAbil: function() {
+        if(this.player.body.velocity.x < 0 && this.player.body.velocity.y < 0) {
+            this.usingAbil = "none"
+            this.direction = "up";
+
+        }
         //WINAN USAGE
         if (this.hasItems == true) {
             if (abilityKey.isDown && abilityKey.duration < 2) {
                 if (this.ASGroup.curAbil == "Winan" && this.usingAbil == "none") {
                     this.sitTimed = false;
                     this.usingAbil = "Winan";
+                    this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
                     if (this.direction == "up") {
                         this.animationName = "winanUp";
                         this.winanWeapon.fireAngle = 270;
-                        this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
                         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 5, (this.player.width / 32) * -15);
-                    } else if (this.direction == "down") {
-                        this.animationName = "winanDown";
-                        this.winanWeapon.fireAngle = 90;
-                        this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
-                        this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
-                    } else if (this.direction == "left" || this.direction == "right") {
+                    } 
+                    else if (this.direction == "left" || this.direction == "right") {
                         this.animationName = "winanSide";
                         if (this.direction == "left") {
                             this.winanWeapon.fireAngle = 180;
-                            this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
                             this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * -3.5);
                         }
                         if (this.direction == "right") {
                             this.winanWeapon.fireAngle = 0;
-                            this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
                             this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
                         }
-                    }
+                    } 
+                    else if (this.direction == "down") {
+                        this.animationName = "winanDown";
+                        this.winanWeapon.fireAngle = 90;
+                        this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
+                    } 
                     if (this.idling == "seated") {
                         this.animationName = "winanSide";
                         this.winanWeapon.fireAngle = 0;
-                        this.winanWeapon.bulletSpeed = this.player.speed * 2.5;
                         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 11, (this.player.width / 32) * -3.5);
                     }
                     if (this.usingTiming != true) {
