@@ -530,7 +530,7 @@ steamGame.Game.prototype = {
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('usingTiming:' + this.usingTiming, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('Q duration:' + abilityKey.duration, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -1057,19 +1057,35 @@ steamGame.Game.prototype = {
             this.player.body.velocity.y = 0;
             this.player.swipe.body.velocity.x = 0;
             this.player.swipe.body.velocity.y = 0;
-            if (upKey.isDown || upArrow.isDown) {
+            if (upKey.isDown) {
                 this.player.body.velocity.y = -this.player.speed * 0.9;
                 this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
             } 
-            if (downKey.isDown || downArrow.isDown) {
+            if (upArrow.isDown) {
+                this.player.body.velocity.y = -this.player.speed * 0.9;
+                this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
+            } 
+            if (downKey.isDown) {
                 this.player.body.velocity.y = this.player.speed * 0.9;
                 this.player.swipe.body.velocity.y = this.player.speed * 0.9;
             }
-            if (rightKey.isDown || rightArrow.isDown) {
+            if (downArrow.isDown) {
+                this.player.body.velocity.y = this.player.speed * 0.9;
+                this.player.swipe.body.velocity.y = this.player.speed * 0.9;
+            }
+            if (rightKey.isDown) {
                 this.player.body.velocity.x = this.player.speed;
                 this.player.swipe.body.velocity.x = this.player.speed;
             }
-            if (leftKey.isDown || leftArrow.isDown) {
+            if (rightArrow.isDown) {
+                this.player.body.velocity.x = this.player.speed;
+                this.player.swipe.body.velocity.x = this.player.speed;
+            }
+            if (leftKey.isDown) {
+                this.player.body.velocity.x = -this.player.speed;
+                this.player.swipe.body.velocity.x = -this.player.speed;
+            }
+            if (leftArrow.isDown) {
                 this.player.body.velocity.x = -this.player.speed;
                 this.player.swipe.body.velocity.x = -this.player.speed;
             }
@@ -1337,11 +1353,6 @@ steamGame.Game.prototype = {
         }
     },
     playerUseAbil: function() {
-        if(this.player.body.velocity.x < 0 && this.player.body.velocity.y < 0) {
-            this.usingAbil = "none"
-            this.direction = "up";
-
-        }
         //WINAN USAGE
         if (this.hasItems == true) {
             if (abilityKey.isDown && abilityKey.duration < 2) {
