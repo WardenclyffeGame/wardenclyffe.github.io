@@ -204,6 +204,10 @@ steamGame.Game.prototype = {
         this.kronaTestZ.value = 12;
         this.kronaTestZ.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
 
+        this.HPPotTest = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width - 300), this.game.world.centerY- (this.game.camera.height - 140), 'HPPot');
+        this.game.physics.arcade.enable(this.HPPotTest);
+        this.kronaTestZ.scale.setTo(this.scalingFactor * 1.2, this.scalingFactor * 1.2);
+
         this.winanWeapon = this.add.weapon(20, 'steamBullet');
         this.winanWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
         this.winanWeapon.bulletAngleOffset = 180;
@@ -521,7 +525,8 @@ steamGame.Game.prototype = {
             //this.playerData1_2 = window.localStorage.getItem('playerData');
             //this.playerData2 = JSON.parse(this.playerData1_2);
             //this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData1_2, this.game.world.centerX - 1900, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('direction: ' + this.direction, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            this.debugText.HP = this.game.debug.text('currentHP: ' + this.player.currentHP, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            //this.game.debug.text('direction: ' + this.direction, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
@@ -539,6 +544,7 @@ steamGame.Game.prototype = {
             //this.debugText.PLYR = this.game.debug.body(this.player);
             //this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             //this.debugText.DB = this.game.debug.body(this.dummy);
+            //this.game.debug.body(this.HPPotTest);
         }
         /*if (debugKey.isUp) {
             this.debugText.destroy();
@@ -892,6 +898,14 @@ steamGame.Game.prototype = {
             coin.destroy();
         }
     },
+    debugHealth: function() {
+        if(this.player.currentHP + 1 <= this.player.maxHP) {
+            this.player.currentHP ++;
+            this.HPPotTest.destroy();
+        } else {
+            this.HPPotTest.destroy();
+        }
+    },
     collisionHandler: function() {
         this.game.physics.arcade.collide(this.player, this.wall);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
@@ -903,12 +917,16 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.ESign, this.debugElec, null, this);
         this.game.physics.arcade.collide(this.player, this.SSign, this.debugSteam, null, this);
         this.game.physics.arcade.collide(this.player, this.HPSign, this.debugHurt, null, this);
+        this.game.physics.arcade.collide(this.player, this.HPPotTest, this.debugHealth, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
         this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
     },
     playerHPManager: function() {
-        if (this.player.currentHP < this.player.maxHP) {
+        if (this.player.currentHP <= this.player.maxHP) {
             this.player.diffHP = this.player.maxHP - this.player.currentHP;
+            if (this.player.diffHP == 0) {
+                this['heart' + this.highestHeart.toString()].frame = 0;
+            }
             if(this.player.diffHP > 0) {
                 if(this.player.diffHP % 2 != 0) {
                     this['heart' + this.highestHeart.toString()].frame = 1;
@@ -1117,9 +1135,6 @@ steamGame.Game.prototype = {
 
             if (this.idling == "seated") {
                 this.direction = "right";
-                if (this.player.scale.x < 0) {
-                    this.player.scale.x = -this.player.scale.x
-                }
                 this.player.body.velocity.x = 0;
                 this.player.body.velocity.y = 0;
                 this.player.swipe.body.velocity.x = 0;
@@ -1382,9 +1397,16 @@ steamGame.Game.prototype = {
                         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
                     } 
                     if (this.idling == "seated") {
-                        this.animationName = "winanSide";
-                        this.winanWeapon.fireAngle = 0;
-                        this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * 11, (this.player.width / 32) * -3.5);
+                        if (this.player.scale.x > 0) {
+                            this.animationName = "winanSide";
+                            this.winanWeapon.fireAngle = 180;
+                            this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * -3.5);
+                        }
+                        if (this.player.scale.x < 0) {
+                            this.animationName = "winanSide";
+                            this.winanWeapon.fireAngle = 0;
+                            this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -11, (this.player.width / 32) * 3.5);
+                        }
                     }
                     if (this.usingTiming != true) {
                         this.usingTimer = this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){

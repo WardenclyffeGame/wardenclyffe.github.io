@@ -64,6 +64,7 @@ steamGame.Preload.prototype = {
         this.load.atlasJSONHash('Hammer', 'sprites/game/Hammer.png', 'sprites/game/jsonKeys/Hammer.json');
             this.load.atlasJSONHash('signSheets', 'sprites/game/signSheets.png', 'sprites/game/jsonKeys/signSheets.json');
         this.load.atlasJSONHash('steamBullet', 'sprites/game/steamBullet.png', 'sprites/game/jsonKeys/steamBullet.json');
+            this.load.image('HPPot', 'sprites/game/HPPot.png');
     },
     create: function() {
         this.state.start('MainMenu');
