@@ -139,6 +139,9 @@ steamGame.Game.prototype = {
         this.player.hasGreekFire = this.playerData.hasGreekFire || 0;
         this.player.hasStunBaton = this.playerData.hasStunBaton || 0;
         this.player.hasHammer = this.playerData.hasHammer || 0;
+        this.player.hasTurbine = this.playerData.hasTurbine || 0;
+        this.player.hasDefib = this.playerData.hasDefib || 0;
+        this.player.hasJar = this.playerData.hasJar || 0;
         this.player.curAbil = this.playerData.curAbil || null;
 
         this.player.timer = 75;
@@ -367,23 +370,23 @@ steamGame.Game.prototype = {
         this.ASBomb.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.ASGroup.add(this.ASBomb);
         //blank 
-        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
-        this.ASBoots.anchor.setTo(0.5, 0.5);
-        this.ASBoots.frame = 1;
-        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBoots);
+        this.ASTurbine = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 18), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Turbine');
+        this.ASTurbine.anchor.setTo(0.5, 0.5);
+        this.ASTurbine.frame = 1;
+        this.ASTurbine.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASTurbine);
         //blank 
-        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 4), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
-        this.ASBoots.anchor.setTo(0.5, 0.5);
-        this.ASBoots.frame = 1;
-        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBoots);
+        this.ASDefib = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * 4), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Defib');
+        this.ASDefib.anchor.setTo(0.5, 0.5);
+        this.ASDefib.frame = 1;
+        this.ASDefib.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASDefib);
         //blank 
-        this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Boots');
-        this.ASBoots.anchor.setTo(0.5, 0.5);
-        this.ASBoots.frame = 1;
-        this.ASBoots.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
-        this.ASGroup.add(this.ASBoots);
+        this.ASJar = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -10), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -2 * 32), 'Jar');
+        this.ASJar.anchor.setTo(0.5, 0.5);
+        this.ASJar.frame = 1;
+        this.ASJar.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
+        this.ASGroup.add(this.ASJar);
 
         //equipment section
         this.ASBoots = this.game.add.sprite((this.game.camera.width / 2) - (this.scalingFactor * 4.8 * -29), this.abilityScreenBack.cameraOffset.y - (this.scalingFactor * -1.6 * 32), 'Boots');
@@ -439,6 +442,13 @@ steamGame.Game.prototype = {
             this.ASGroup.curPos = 8;
         } else if (this.player.curAbil == 'Bomb') {
             this.ASGroup.curPos = 9;
+        } else if (this.player.curAbil == 'Turbine') {
+            this.ASGroup.curPos = 10;
+        } else if (this.player.curAbil == 'Defib') {
+            this.ASGroup.curPos = 11;
+        }
+        else if (this.player.curAbil == 'Jar') {
+            this.ASGroup.curPos = 12;
         }
         if (this.player.curAbil != null) {
             this.hasItems = true;
@@ -843,6 +853,9 @@ steamGame.Game.prototype = {
                 this.player.hasSteamShield = 1;
                 this.player.hasHook = 1;
                 this.player.hasHammer = 1;
+                this.player.hasTurbine = 1;
+                this.player.hasDefib = 1;
+                this.player.hasJar = 'empty';
                 this.player.hasBoomerang = 1;
                 this.player.hasGreekFire = 1;
                 this.ASGroup.curPos = 5;
@@ -1050,13 +1063,13 @@ steamGame.Game.prototype = {
         if (this.player.state == 'hurt') {
             if (this.direction == 'right') {
                 this.player.frame = 83;
-                if (this.player.scale.x < 0) {
+                if (this.player.scale.x > 0) {
                     this.player.scale.x = this.player.scale.x * -1;
                 }
             }
             if (this.direction == 'left') {
                 this.player.frame = 83;
-                if (this.player.scale.x > 0) {
+                if (this.player.scale.x < 0) {
                     this.player.scale.x = this.player.scale.x * -1;
                 }
             }
@@ -1736,6 +1749,32 @@ steamGame.Game.prototype = {
             this.ASGroup.selPos.pos9 = 'Bomb';
             this.hasItems = true;
         }
+        if (this.player.hasTurbine == 1) {
+            this.ASTurbine.frame = 0;
+            this.ASGroup.selPos.pos10 = 'Turbine';
+            this.hasItems = true;
+        }
+        if (this.player.hasDefib == 1) {
+            this.ASDefib.frame = 0;
+            this.ASGroup.selPos.pos11 = 'Defib';
+            this.hasItems = true;
+        }
+        if (this.player.hasJar != 0) {
+            if(this.player.hasJar == "empty") {
+                this.ASJar.frame = 0;
+            }
+            if(this.player.hasJar == "water") {
+                this.ASJar.frame = 2;
+            }
+            if(this.player.hasJar == "acid") {
+                this.ASJar.frame = 3;
+            }
+            if(this.player.hasJar == "HPPot") {
+                this.ASJar.frame = 4;
+            }
+            this.ASGroup.selPos.pos12 = 'Defib';
+            this.hasItems = true;
+        }
         if (this.player.hasBoots == 1) {
             this.ASBoots.frame = 0;
             //this.ASGroup.selPos.pos13 = 'Boots';
@@ -1927,6 +1966,9 @@ steamGame.Game.prototype = {
         this.playerData.hasGreekFire = this.player.hasGreekFire;
         this.playerData.hasStunBaton = this.player.hasStunBaton;
         this.playerData.hasHammer = this.player.hasHammer;
+        this.playerData.hasTurbine = this.player.hasTurbine;
+        this.playerData.hasDefib = this.player.hasDefib;
+        this.playerData.hasJar = this.player.hasJar;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos] || this.player.curAbil;
         this.playerData.map = "Debug";
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));

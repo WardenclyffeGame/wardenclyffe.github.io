@@ -34,8 +34,13 @@ Thursday: massive success
 Friday:
     -spawn hp pot collectible on map somewhere, adds 1 hp
         +add heart container on map somewhere that changes max health? should we worry about that yet? that won't be for a while
+        -decided to wait ^ otherwise finished ^^
     *-make boots version of the walk cycle (going to basically double the file size :/)*
-        --reconsider ^^
+        --reconsider ^^ ultiately decided against
+
+        additional: made final item sprites and code for turbine, defib, and jars, 
+        as well as begin separating functions by purpose to make duplication and calls easier in the future 
+        and to keep the update function clean
 
 Saturday: TBD (probably delayed, I'm going to the ren fair on saturday and won't be home until closer to 11)
     -make bomb script, does damage in a radius after a timer to any object, player or scarecrow
