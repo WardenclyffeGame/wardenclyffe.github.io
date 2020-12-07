@@ -7,25 +7,26 @@ steamGame.Game.prototype = {
     create: function(){
         //begin scene setup
         this.game.stage.backgroundColor = '#acbfbc';
+        this.backgroundGroup = {}
         this.scalingFactor = (this.game.world.width / 19) / 32;
         this.map = this.game.add.tilemap('debugMap');
         this.map.addTilesetImage('DebugTiles', 'debugTiles');
-        this.water = this.map.createLayer('water');
-        this.water.setScale(this.scalingFactor);
-        this.wall = this.map.createLayer('wall');
-        this.wall.setScale(this.scalingFactor);
-        this.wall.hit = false;
-        this.game.physics.arcade.enable(this.wall);
-        this.floor = this.map.createLayer('floor');
-        this.floor.setScale(this.scalingFactor);
-        this.decWall = this.map.createLayer('wall1');
-        this.decWall.setScale(this.scalingFactor);
-        this.decFloor = this.map.createLayer('floor1');
-        this.decFloor.setScale(this.scalingFactor);
+        this.backgroundGroup.water = this.map.createLayer('water');
+        this.backgroundGroup.water.setScale(this.scalingFactor);
+        this.backgroundGroup.wall = this.map.createLayer('wall');
+        this.backgroundGroup.wall.setScale(this.scalingFactor);
+        this.backgroundGroup.wall.hit = false;
+        this.game.physics.arcade.enable(this.backgroundGroup.wall);
+        this.backgroundGroup.floor = this.map.createLayer('floor');
+        this.backgroundGroup.floor.setScale(this.scalingFactor);
+        this.backgroundGroup.decWall = this.map.createLayer('wall1');
+        this.backgroundGroup.decWall.setScale(this.scalingFactor);
+        this.backgroundGroup.decFloor = this.map.createLayer('floor1');
+        this.backgroundGroup.decFloor.setScale(this.scalingFactor);
         
         //this.wall.debug = true;
         this.map.setCollisionBetween(4, 25, true, 'wall');
-        this.water.resizeWorld();
+        this.backgroundGroup.water.resizeWorld();
  
         
         ///////////////////////////////////testing objects//////////////////////////////////////////
@@ -103,12 +104,12 @@ steamGame.Game.prototype = {
             //this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('usingAbil: ' + this.usingAbil, this.game.camera.width - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('dummy center Y: ' + this.dummy.y + (this.player.height * 0.75), this.game.camera.width - 250, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('Q duration:' + abilityKey.duration, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('player bottom:' + this.player.bottom, this.game.camera.width - 250, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -123,6 +124,7 @@ steamGame.Game.prototype = {
             this.debugText.destroy();
         }*/
         this.collisionHandler(this);
+        //this.backgroundGroup.moveDown();
         
         if (this.menuState == 'none') {
             this.playerHPManager(this);
@@ -137,6 +139,11 @@ steamGame.Game.prototype = {
 
             if(this.player.state == "walk") {
                 this.playerUseAbil(this);
+            }
+            if (this.dummy.bottom > this.player.bottom) {
+                this.dummy.moveUp();
+            } else if (this.dummy.bottom < this.player.bottom) {
+                this.dummy.moveDown();
             }
 
             this.playerAnimation(this);
