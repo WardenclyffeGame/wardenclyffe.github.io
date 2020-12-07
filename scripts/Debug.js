@@ -155,6 +155,7 @@ steamGame.Game.prototype = {
             this.player.body.velocity.y = 0;
             this.player.swipe.body.velocity.x = 0;
             this.player.swipe.body.velocity.y = 0;
+            this.game.time.events.remove(this.idleTimer1);
             if (this.animationName != "seated") {
                 this.animationName = "stopped";
             }
@@ -172,6 +173,7 @@ steamGame.Game.prototype = {
             this.player.body.velocity.y = 0;
             this.player.swipe.body.velocity.x = 0;
             this.player.swipe.body.velocity.y = 0;
+            this.game.time.events.remove(this.idleTimer1);
             if (this.animationName != "seated") {
                 this.animationName = "stopped";
             }
@@ -188,6 +190,7 @@ steamGame.Game.prototype = {
             this.player.body.velocity.y = 0;
             this.player.swipe.body.velocity.x = 0;
             this.player.swipe.body.velocity.y = 0;
+            this.game.time.events.remove(this.idleTimer1);
             if (this.animationName != "seated") {
                 this.animationName = "stopped";
             }
