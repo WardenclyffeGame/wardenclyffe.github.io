@@ -446,8 +446,7 @@ steamGame.Game.prototype = {
             this.ASGroup.curPos = 10;
         } else if (this.player.curAbil == 'Defib') {
             this.ASGroup.curPos = 11;
-        }
-        else if (this.player.curAbil == 'Jar') {
+        } else if (this.player.curAbil == 'Jar') {
             this.ASGroup.curPos = 12;
         }
         if (this.player.curAbil != null) {
@@ -1772,7 +1771,7 @@ steamGame.Game.prototype = {
             if(this.player.hasJar == "HPPot") {
                 this.ASJar.frame = 4;
             }
-            this.ASGroup.selPos.pos12 = 'Defib';
+            this.ASGroup.selPos.pos12 = 'Jar';
             this.hasItems = true;
         }
         if (this.player.hasBoots == 1) {
