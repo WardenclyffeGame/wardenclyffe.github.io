@@ -37,7 +37,7 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
         this.dummy.body.immovable = true;
-        this.dummy.post = this.game.add.sprite(this.dummy.centerX + (this.scalingFactor / 16), this.dummy.bottom - (this.scalingFactor / 16), '');
+        this.dummy.post = this.game.add.sprite(this.dummy.centerX + (this.dummy.height / 32), this.dummy.bottom - (this.dummy.height / 4), '');
         this.game.physics.arcade.enable(this.dummy.post);
         this.dummy.post.body.immovable = true;
         this.dummy.post.anchor.setTo(0.5, 1);
@@ -1535,11 +1535,11 @@ steamGame.Game.prototype = {
                 }
             }
             if (this.player.body.velocity.y < 0) {
-                this.player.body.velocity.y = this.player.speed * -3 * 0.9;
+                this.player.body.velocity.y = this.player.speed * -3 * 0.7;
                 this.player.swipe.body.velocity.y = this.player.body.velocity.y;
                 this.animationName = "dashUp";
             } else if (this.player.body.velocity.y > 0) {
-                this.player.body.velocity.y = this.player.speed * 3 * 0.9;
+                this.player.body.velocity.y = this.player.speed * 3 * 0.7;
                 this.player.swipe.body.velocity.y = this.player.body.velocity.y;
                 this.animationName = "dashDown";
             }
