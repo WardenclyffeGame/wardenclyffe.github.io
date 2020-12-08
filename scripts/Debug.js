@@ -7,26 +7,25 @@ steamGame.Game.prototype = {
     create: function(){
         //begin scene setup
         this.game.stage.backgroundColor = '#acbfbc';
-        this.backgroundGroup = {}
         this.scalingFactor = (this.game.world.width / 19) / 32;
         this.map = this.game.add.tilemap('debugMap');
         this.map.addTilesetImage('DebugTiles', 'debugTiles');
-        this.backgroundGroup.water = this.map.createLayer('water');
-        this.backgroundGroup.water.setScale(this.scalingFactor);
-        this.backgroundGroup.wall = this.map.createLayer('wall');
-        this.backgroundGroup.wall.setScale(this.scalingFactor);
-        this.backgroundGroup.wall.hit = false;
-        this.game.physics.arcade.enable(this.backgroundGroup.wall);
-        this.backgroundGroup.floor = this.map.createLayer('floor');
-        this.backgroundGroup.floor.setScale(this.scalingFactor);
-        this.backgroundGroup.decWall = this.map.createLayer('wall1');
-        this.backgroundGroup.decWall.setScale(this.scalingFactor);
-        this.backgroundGroup.decFloor = this.map.createLayer('floor1');
-        this.backgroundGroup.decFloor.setScale(this.scalingFactor);
+        this.water = this.map.createLayer('water');
+        this.water.setScale(this.scalingFactor);
+        this.wall = this.map.createLayer('wall');
+        this.wall.setScale(this.scalingFactor);
+        this.wall.hit = false;
+        this.game.physics.arcade.enable(this.wall);
+        this.floor = this.map.createLayer('floor');
+        this.floor.setScale(this.scalingFactor);
+        this.decWall = this.map.createLayer('wall1');
+        this.decWall.setScale(this.scalingFactor);
+        this.decFloor = this.map.createLayer('floor1');
+        this.decFloor.setScale(this.scalingFactor);
         
         //this.wall.debug = true;
         this.map.setCollisionBetween(4, 25, true, 'wall');
-        this.backgroundGroup.water.resizeWorld();
+        this.water.resizeWorld();
  
         
         ///////////////////////////////////testing objects//////////////////////////////////////////
@@ -124,8 +123,7 @@ steamGame.Game.prototype = {
             this.debugText.destroy();
         }*/
         this.collisionHandler(this);
-        //this.backgroundGroup.moveDown();
-        
+
         if (this.menuState == 'none') {
             this.playerHPManager(this);
             
@@ -793,6 +791,13 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.HPPotTest, this.debugHealth, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
         this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
+
+        //maintain map at absolute background
+        this.decFloor.moveDown();
+        this.decWall.moveDown();
+        this.floor.moveDown();
+        this.wall.moveDown();
+        this.water.moveDown();
     },
     /////////////////////////////////////////////PLAYER FUNCTIONS///////////////////////////////////////////////////////////////
     playerHPManager: function() {
