@@ -123,6 +123,8 @@ steamGame.MainMenu.prototype = {
                 this.game.state.states[this.defaultData.map].playerData = this.defaultData;
                 this.game.state.states[this.defaultData.map].playerData.hasWinan = 1;
                 this.game.state.states[this.defaultData.map].playerData.curAbil = 'Winan';
+                this.game.state.states[this.defaultData.map].playerData.hasBoots = 1;
+                this.game.state.states[this.defaultData.map].playerData.hasSteamShield = 1;
                 this.game.state.start(this.defaultData.map);
             }, this)
         }

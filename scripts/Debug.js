@@ -150,7 +150,7 @@ steamGame.Game.prototype = {
 
             this.menuPosResets(this);
             //////////////////////////////vvvvv ALL UNFINISHED CODE BETWEEN THESE BARS vvvvv/////////////////////////////////////////////////////////////////////////////////////
-
+            
             //////////////////////////////^^^^^ ALL UNFINISHED CODE BETWEEN THESE BARS ^^^^^/////////////////////////////////////////////////////////////////////////////////////
         }
         if (this.menuState == 'ability') {
@@ -273,6 +273,9 @@ steamGame.Game.prototype = {
         this.player.animations.add('winanSide2', [106, 106, 106, 106, 106, 106, 106, 107], 12, true);
         this.player.animations.add('winanUp2', [110, 110, 110, 110, 110, 110, 110, 111], 12, true);
         this.player.animations.add('winanDown2', [114, 114, 114, 114, 114, 114, 114, 115], 12, true);
+        this.player.animations.add('dashSide', [116, 117, 118, 119, 120, 121], 12, false);
+        this.player.animations.add('dashUp', [122, 123, 124, 125, 126, 127], 12, false);
+        this.player.animations.add('dashDown', [128, 129, 130, 131, 132, 133], 12, false);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
         this.player.speed = (this.scalingFactor * 320) / 3.2;
@@ -310,7 +313,7 @@ steamGame.Game.prototype = {
         this.player.hasTaserSword = this.playerData.hasTaserSword || 0;
         this.player.hasWinan = this.playerData.hasWinan || 0;
         this.player.hasHook = this.playerData.hasHook || 0;
-        this.player.hasSteamShield = this.playerData.hasSteamShield || 1;
+        this.player.hasSteamShield = this.playerData.hasSteamShield || 0;
         this.player.hasLightRod = this.playerData.hasLightRod || 0;
         this.player.hasBoomerang = this.playerData.hasBoomerang || 0;
         this.player.hasGreekFire = this.playerData.hasGreekFire || 0;
@@ -716,6 +719,7 @@ steamGame.Game.prototype = {
                 this.player.hasJar = 'empty';
                 this.player.hasBoomerang = 1;
                 this.player.hasGreekFire = 1;
+                this.player.hasBoots = 1;
                 this.ASGroup.curPos = 5;
                 this.ASGroup.curAbil = 'StunBaton';
                 this.player.state = 'hurt';
@@ -737,7 +741,7 @@ steamGame.Game.prototype = {
                 }
             }
         } else if (enemy != this.player.swipe){
-            if(this.dummy.hit == false && this.dummy.currentHP > 1) {
+            if(this.dummy.hit == false && this.dummy.currentHP > 2) {
                 this.dummy.hit = true;
                 this.dummy.frame = 1;
                 weapon.destroy();
@@ -749,7 +753,7 @@ steamGame.Game.prototype = {
                     this.dummy.frame = 0;
                 }, this);
             }
-            if(this.dummy.hit == false && this.dummy.currentHP == 1) {
+            if(this.dummy.hit == false && this.dummy.currentHP == 2) {
                 this.dummy.currentHP = 0;
                 weapon.destroy();
                 this.dummy.value = 100;
@@ -1496,6 +1500,35 @@ steamGame.Game.prototype = {
                 this.game.time.events.remove(this.usingTimer2);
                 this.game.time.events.remove(this.shootTimer);
 
+            }
+        }
+
+        //BOOT USAGE
+        if(dashKey.isDown && dashKey.duration < 2 && this.player.hasBoots == 1 && this.dashCD != true) {
+            this.player.state = "dash";
+            this.dashCD = true;
+            this.dashORTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.4, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; this.player.state = "walk";}, this);
+            this.dashCDTimer = this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){ dashKey.duration = 0; this.dashCD = false;}, this);
+            if (this.player.body.velocity.x < 0) {
+                this.player.body.velocity.x = this.player.speed * -3;
+                this.player.swipe.body.velocity.x = this.player.body.velocity.x;
+                this.animationName = "dashSide";
+            } else if (this.player.body.velocity.x > 0) {
+                this.player.body.velocity.x = this.player.speed * 3;
+                this.player.swipe.body.velocity.x = this.player.body.velocity.x;
+                this.animationName = "dashSide";
+                if (this.player.scale.x > 0) {
+                    this.player.scale.x = -this.player.scale.x;
+                }
+            }
+            if (this.player.body.velocity.y < 0) {
+                this.player.body.velocity.y = this.player.speed * -3 * 0.9;
+                this.player.swipe.body.velocity.y = this.player.body.velocity.y;
+                this.animationName = "dashUp";
+            } else if (this.player.body.velocity.y > 0) {
+                this.player.body.velocity.y = this.player.speed * 3 * 0.9;
+                this.player.swipe.body.velocity.y = this.player.body.velocity.y;
+                this.animationName = "dashDown";
             }
         }
     },
