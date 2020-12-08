@@ -37,7 +37,7 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
         this.dummy.body.immovable = true;
-        this.dummy.post = this.game.add.sprite(this.dummy.centerX, this.dummy.bottom + (100 * this.scalingFactor), '');
+        this.dummy.post = this.game.add.sprite(this.dummy.centerX + (this.scalingFactor / 32), this.dummy.bottom, '');
         this.game.physics.arcade.enable(this.dummy.post);
         this.dummy.post.body.immovable = true;
         this.dummy.post.anchor.setTo(0.5, 1);
@@ -123,7 +123,7 @@ steamGame.Game.prototype = {
             //this.debugText.PLYR = this.game.debug.body(this.player);
             //this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             //this.debugText.DB = this.game.debug.body(this.dummy);
-            this.debugText.DB = this.game.debug.body(this.dummy.post);
+            this.game.debug.body(this.dummy.post);
             //this.game.debug.body(this.HPPotTest);
         }
         /*if (debugKey.isUp) {
