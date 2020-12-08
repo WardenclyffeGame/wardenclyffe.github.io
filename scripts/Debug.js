@@ -37,6 +37,12 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
         this.dummy.body.immovable = true;
+        this.dummy.post = this.game.add.sprite(this.dummy.centerX, this.dummy.bottom + (100 * this.scalingFactor), '');
+        this.game.physics.arcade.enable(this.dummy.post);
+        this.dummy.post.body.immovable = true;
+        this.dummy.post.anchor.setTo(0.5, 1);
+        this.dummy.post.width = this.scalingFactor / 16;
+        this.dummy.post.height = this.scalingFactor / 16;
 
         this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.ESign);
@@ -117,6 +123,7 @@ steamGame.Game.prototype = {
             //this.debugText.PLYR = this.game.debug.body(this.player);
             //this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             //this.debugText.DB = this.game.debug.body(this.dummy);
+            this.debugText.DB = this.game.debug.body(this.dummy.post);
             //this.game.debug.body(this.HPPotTest);
         }
         /*if (debugKey.isUp) {
@@ -783,6 +790,7 @@ steamGame.Game.prototype = {
     },
     collisionHandler: function() {
         this.game.physics.arcade.collide(this.player, this.wall);
+        this.game.physics.arcade.collide(this.player, this.dummy.post);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
