@@ -716,6 +716,7 @@ steamGame.Game.prototype = {
                 this.dummy.currentHP = 0;
                 this.dummy.value = 100;
                 this.dummy.destroy();
+                this.dummy.post.destroy();
                 this.collect(this.player, this.dummy);
                 this.player.hasBomb = 1;
                 this.player.hasWinan = 1;
@@ -771,6 +772,7 @@ steamGame.Game.prototype = {
                 weapon.destroy();
                 this.dummy.value = 100;
                 this.dummy.destroy();
+                this.dummy.post.destroy();
                 this.collect(this.player, this.dummy);
                 this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
                     this.dummyCreate(this);
