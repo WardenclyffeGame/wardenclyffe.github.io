@@ -37,7 +37,7 @@ steamGame.Game.prototype = {
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
         this.dummy.body.immovable = true;
-        this.dummy.post = this.game.add.sprite(this.dummy.centerX + (this.scalingFactor / 32), this.dummy.bottom, '');
+        this.dummy.post = this.game.add.sprite(this.dummy.centerX + (this.scalingFactor / 16), this.dummy.bottom - (this.scalingFactor / 16), '');
         this.game.physics.arcade.enable(this.dummy.post);
         this.dummy.post.body.immovable = true;
         this.dummy.post.anchor.setTo(0.5, 1);
