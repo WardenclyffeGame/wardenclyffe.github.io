@@ -811,9 +811,10 @@ steamGame.Game.prototype = {
         this.wall.moveDown();
         this.water.moveDown();
         
-        this.ASGroup.moveUp();
-        this.mapGroup.moveUp();
-        this.pauseGroup.moveUp();
+        //this.ASGroup.moveUp();
+        //this.mapGroup.moveUp();
+        //this.pauseGroup.moveUp();
+        this.fade.moveUp();
     },
     /////////////////////////////////////////////PLAYER FUNCTIONS///////////////////////////////////////////////////////////////
     playerHPManager: function() {
