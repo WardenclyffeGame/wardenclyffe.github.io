@@ -22,10 +22,12 @@ Tuesday: (fast day) success
     -add respawn function for scarecrow
         -finished ^
     
-Wednesday:
+Wednesday: success before lunch
     -continue considering day night cycle using tint property
     -add pickup for steam by HP potion
+        -finished ^
     -add pickup for electricity by HP potion
+        -finished ^
 
 Thursday:
     -make bomb frames and frames for bomb/ explosion
