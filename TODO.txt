@@ -2,8 +2,53 @@ From this point forward, this will be our place to timestamp and schedule progre
 as well as completed segments.
 For the sake of simplicity I won't go back through everything that's already done, 
 we'll just start here and now.
+*****************************************************************************************************************
+**************************************************WEEK OF 12/7:**************************************************
+*****************************************************************************************************************
 
-WEEK OF 11/30:
+Monday: (slow day)
+    -attempt layer manipulation
+        -tweaked later upon documentation ^
+    -refactor debug.js
+        -complete and looking good ^^
+    -actually do dash functionality
+        -I should've slept, instead, finished ^
+
+Tuesday: (fast day) success
+    -add functionality for turbine
+        -finished ^
+    -add functionality for defib
+        -finished ^
+    -add respawn function for scarecrow
+        -finished ^
+    
+Wednesday:
+    -continue considering day night cycle using tint property
+    -add pickup for steam by HP potion
+    -add pickup for electricity by HP potion
+
+Thursday:
+    -make bomb frames and frames for bomb/ explosion
+    -add bomb functionality (actually similar to spawning the scarecrow)
+
+Friday:
+    -retouch sprites for debug map to more align with art style
+    -add to sprites, possibly begin building Berlin, probably not yet
+
+Saturday:
+    -add NPC to talk to (which more specifically figures out dialogue/ get talked at system )
+    -probably make tesla sprite to represent test NPC
+    -continue considering day night cycle
+
+Sunday:
+    -if not already super busy and if NPC works, move to basic enemy
+    -if basic enemy is started, create basic walking script (walk in a delayed square unless collision)
+        +and do basic detection script, random chance within a range, use moveTo is "spotted"
+    -work on basic enemy frames (worst case scenario shadow milutin) no sword, only punch, simplicity
+
+*****************************************************************************************************************
+**************************************************WEEK OF 11/30:*************************************************
+*****************************************************************************************************************
 
 Monday: success
     -I'm still tired, Beau's reading the code, and Ryan is busy. nothing today but this list
@@ -44,15 +89,21 @@ Friday:
 
 Saturday: TBD (probably delayed, I'm going to the ren fair on saturday and won't be home until closer to 11)
     -make bomb script, does damage in a radius after a timer to any object, player or scarecrow
+        -reschedule
     -create explosion/ destruction frames
+        -reschedule
     -add directional knockback for milutin
+        -basis finished ^
 
 Sunday:
     -add dash function if boots
+        -finished late ^
     -make dash frames, only like 6 for each side, 2 to start, 2 during, 2 to end (kickoff, flight, landing)
+        -finished late ^
     *-make fade in and out of black for smooth transitions (tiled black scales across the screen that tween between alpha 0 and 1)*
         -finished ^
-    -add game over frames (probably only to the side for dramatic effect) then fade to black
+    -add game over frames (probably only to the side for dramatic effect) then fade to black 
+        -reschedule
     *-make fade in for map loading so the first time the update function loads it overrides all motion and fades out of black (0.5 seconds)*
         -finished ^
         
