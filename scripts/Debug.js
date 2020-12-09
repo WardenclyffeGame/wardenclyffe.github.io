@@ -71,9 +71,17 @@ steamGame.Game.prototype = {
         this.kronaTestZ.value = 12;
         this.kronaTestZ.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
 
-        this.HPPotTest = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width - 300), this.game.world.centerY- (this.game.camera.height - 140), 'HPPot');
+        this.HPPotTest = this.game.add.sprite(this.game.world.centerX - (this.scalingFactor * 14.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32), 'HPPot');
         this.game.physics.arcade.enable(this.HPPotTest);
-        this.kronaTestZ.scale.setTo(this.scalingFactor * 1.2, this.scalingFactor * 1.2);
+        this.HPPotTest.scale.setTo(this.scalingFactor * 0.4, this.scalingFactor * 0.4);
+
+        this.coalTest = this.game.add.sprite(this.game.world.centerX - (this.scalingFactor * 12.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32), 'coal');
+        this.game.physics.arcade.enable(this.coalTest);
+        this.coalTest.scale.setTo(this.scalingFactor * 0.55, this.scalingFactor * 0.55);
+
+        this.battTest = this.game.add.sprite(this.game.world.centerX - (this.scalingFactor * 10.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32), 'battery');
+        this.game.physics.arcade.enable(this.battTest);
+        this.battTest.scale.setTo(this.scalingFactor * 0.55, this.scalingFactor * 0.55);
 
 
         this.defaultCreate(this);
@@ -660,42 +668,75 @@ steamGame.Game.prototype = {
         this.dummy.post.height = this.scalingFactor / 16;
     },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
-    debugHurt: function(player, walls) {
-        player.timer += 1;
-        if(player.timer === 100) {
-            player.timer = 0;
-            player.currentHP -= 1;
-        }
-    },
-    debugSteam: function(player, walls) {
-        if (player.currentSteam < player.maxSteam) {
-            player.newSLevel += 0.1;
-            if (player.newSLevel >= 1) {
-                player.currentSteam ++;
-                player.newSLevel = 0;
+    debugHealth: function(player, collectable) {
+        if (collectable != this.HPPotTest) {
+            player.timer += 1;
+            if(player.timer === 100) {
+                player.timer = 0;
+                player.currentHP -= 1;
+            }
+        } else {
+            if (player.currentHP < player.maxHP) {
+                player.currentHP ++;
+                collectable.destroy();
+            } else if (player.currentHP = player.maxHP) {
+                collectable.destroy();
             }
         }
-        /*if (player.currentSteam > 0) {
-            player.newSLevel -= 0.1;
-            if (player.newSLevel <= -1) {
-                player.currentSteam --;
-                player.newSLevel = 0;
-            }
-        }*/
     },
-    debugElec: function(player, walls) {
-        /*if (player.currentSteam < player.maxSteam) {
-            player.newSLevel += 0.1;
-            if (player.newSLevel >= 1) {
-                player.currentSteam ++;
-                player.newSLevel = 0;
+    debugSteam: function(player, collectable) {
+        if (collectable != this.coalTest) {
+            if (player.currentSteam < player.maxSteam) {
+                player.newSLevel += 0.1;
+                if (player.newSLevel >= 1) {
+                    player.currentSteam ++;
+                    player.newSLevel = 0;
+                }
             }
-        }*/
-        if (player.currentEnergy > 0) {
-            player.newELevel -= 0.1;
-            if (player.newELevel <= -1) {
-                player.currentEnergy --;
-                player.newELevel = 0;
+            /*if (player.currentSteam > 0) {
+                player.newSLevel -= 0.1;
+                if (player.newSLevel <= -1) {
+                    player.currentSteam --;
+                    player.newSLevel = 0;
+                }
+            }*/
+        } else {
+            if (player.currentSteam + 10 <= player.maxSteam) {
+                player.currentSteam += 10;
+                collectable.destroy();
+            } else if (player.currentSteam + 10 > player.maxSteam) {
+                player.currentSteam = player.maxSteam;
+                collectable.destroy();
+            } else if (player.currentSteam = player.maxSteam) {
+                collectable.destroy();
+            }
+        }
+    },
+    debugElec: function(player, collectable) {
+        if (collectable != this.battTest) {
+            /*if (player.currentSteam < player.maxSteam) {
+                player.newSLevel += 0.1;
+                if (player.newSLevel >= 1) {
+                    player.currentSteam ++;
+                    player.newSLevel = 0;
+                }
+            }*/
+            if (player.currentEnergy > 0) {
+                player.newELevel -= 0.1;
+                if (player.newELevel <= -1) {
+                    player.currentEnergy --;
+                    player.newELevel = 0;
+                }
+            }
+        } else {
+            if (player.currentEnergy + 5 <= player.maxEnergy) {
+                player.currentEnergy += 5;
+                collectable.destroy();
+            } else if (player.currentEnergy + 10 > player.maxEnergy) {
+                player.currentEnergy = player.maxEnergy;
+                collectable.destroy();
+            } else if (player.currentEnergy = player.maxEnergy) {
+                collectable.destroy();
             }
         }
     },
@@ -791,14 +832,6 @@ steamGame.Game.prototype = {
             coin.destroy();
         }
     },
-    debugHealth: function() {
-        if(this.player.currentHP + 1 <= this.player.maxHP) {
-            this.player.currentHP ++;
-            this.HPPotTest.destroy();
-        } else {
-            this.HPPotTest.destroy();
-        }
-    },
     collisionHandler: function() {
         this.game.physics.arcade.collide(this.player, this.wall);
         this.game.physics.arcade.collide(this.player, this.dummy.post);
@@ -810,8 +843,10 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.CSign, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.ESign, this.debugElec, null, this);
         this.game.physics.arcade.collide(this.player, this.SSign, this.debugSteam, null, this);
-        this.game.physics.arcade.collide(this.player, this.HPSign, this.debugHurt, null, this);
+        this.game.physics.arcade.collide(this.player, this.HPSign, this.debugHealth, null, this);
         this.game.physics.arcade.collide(this.player, this.HPPotTest, this.debugHealth, null, this);
+        this.game.physics.arcade.collide(this.player, this.coalTest, this.debugSteam, null, this);
+        this.game.physics.arcade.collide(this.player, this.battTest, this.debugElec, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
         this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
 
