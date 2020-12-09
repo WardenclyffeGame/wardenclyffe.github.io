@@ -29,14 +29,7 @@ steamGame.Game.prototype = {
  
         
         ///////////////////////////////////testing objects//////////////////////////////////////////
-        //testing object for slashing
-        this.dummy = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY + (100 * this.scalingFactor), 'Dummy');
-        this.game.physics.arcade.enable(this.dummy);
-        this.dummy.hit = false;
-        this.dummy.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
-        this.dummy.maxHP = 3;
-        this.dummy.currentHP = this.dummy.maxHP;
-        this.dummy.body.immovable = true;
+        this.dummyCreate(this);
 
         this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.ESign);
@@ -117,6 +110,7 @@ steamGame.Game.prototype = {
             //this.debugText.PLYR = this.game.debug.body(this.player);
             //this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             //this.debugText.DB = this.game.debug.body(this.dummy);
+            this.game.debug.body(this.dummy.post);
             //this.game.debug.body(this.HPPotTest);
         }
         /*if (debugKey.isUp) {
@@ -649,6 +643,22 @@ steamGame.Game.prototype = {
         this.fade.fixedToCamera = true;
         this.fade.alpha = 1;
     },
+    dummyCreate: function () {
+        //testing object for slashing
+        this.dummy = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY + (100 * this.scalingFactor), 'Dummy');
+        this.game.physics.arcade.enable(this.dummy);
+        this.dummy.hit = false;
+        this.dummy.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
+        this.dummy.maxHP = 3;
+        this.dummy.currentHP = this.dummy.maxHP;
+        this.dummy.body.immovable = true;
+        this.dummy.post = this.game.add.sprite(this.dummy.centerX + (this.dummy.height / 32), this.dummy.bottom - (this.dummy.height / 4), '');
+        this.game.physics.arcade.enable(this.dummy.post);
+        this.dummy.post.body.immovable = true;
+        this.dummy.post.anchor.setTo(0.5, 1);
+        this.dummy.post.width = this.scalingFactor / 16;
+        this.dummy.post.height = this.scalingFactor / 16;
+    },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
     debugHurt: function(player, walls) {
         player.timer += 1;
@@ -706,6 +716,7 @@ steamGame.Game.prototype = {
                 this.dummy.currentHP = 0;
                 this.dummy.value = 100;
                 this.dummy.destroy();
+                this.dummy.post.destroy();
                 this.collect(this.player, this.dummy);
                 this.player.hasBomb = 1;
                 this.player.hasWinan = 1;
@@ -723,6 +734,9 @@ steamGame.Game.prototype = {
                 this.ASGroup.curPos = 5;
                 this.ASGroup.curAbil = 'StunBaton';
                 this.player.state = 'hurt';
+                this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
+                    this.dummyCreate(this);
+                }, this);
                 if (this.direction == 'right') {
                     this.player.body.velocity.x = -this.player.speed * 3;
                     this.player.swipe.body.velocity.x = -this.player.speed * 3;
@@ -753,12 +767,16 @@ steamGame.Game.prototype = {
                     this.dummy.frame = 0;
                 }, this);
             }
-            if(this.dummy.hit == false && this.dummy.currentHP == 2) {
+            if(this.dummy.hit == false && this.dummy.currentHP <= 2) {
                 this.dummy.currentHP = 0;
                 weapon.destroy();
                 this.dummy.value = 100;
                 this.dummy.destroy();
+                this.dummy.post.destroy();
                 this.collect(this.player, this.dummy);
+                this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
+                    this.dummyCreate(this);
+                }, this);
             }
             weapon.destroy();
         }
@@ -783,6 +801,7 @@ steamGame.Game.prototype = {
     },
     collisionHandler: function() {
         this.game.physics.arcade.collide(this.player, this.wall);
+        this.game.physics.arcade.collide(this.player, this.dummy.post);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
         //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
@@ -802,6 +821,12 @@ steamGame.Game.prototype = {
         this.floor.moveDown();
         this.wall.moveDown();
         this.water.moveDown();
+        //this.game.world.moveDown(this.BGGroup);
+
+        this.game.world.bringToTop(this.ASGroup);
+        this.game.world.bringToTop(this.mapGroup);
+        this.game.world.bringToTop(this.pauseGroup);
+        this.fade.moveUp();
     },
     /////////////////////////////////////////////PLAYER FUNCTIONS///////////////////////////////////////////////////////////////
     playerHPManager: function() {
@@ -809,6 +834,33 @@ steamGame.Game.prototype = {
             this.player.diffHP = this.player.maxHP - this.player.currentHP;
             if (this.player.diffHP == 0) {
                 this['heart' + this.highestHeart.toString()].frame = 0;
+            }
+            if (this.player.diffHP == 2) {
+                this['heart' + (this.highestHeart - 1).toString()].frame = 0;
+            }
+            if (this.player.diffHP == 4) {
+                this['heart' + (this.highestHeart - 2).toString()].frame = 0;
+            }
+            if (this.player.diffHP == 6) {
+                this['heart' + (this.highestHeart - 3).toString()].frame = 0;
+            }
+            if (this.player.diffHP == 8) {
+                this['heart' + (this.highestHeart - 4).toString()].frame = 0;
+            }
+            if (this.player.diffHP == 10) {
+                this['heart' + (this.highestHeart - 5).toString()].frame = 0;
+            }
+            if (this.player.diffHP == 12) {
+                this['heart' + (this.highestHeart - 6).toString()].frame = 0;
+            }
+            if (this.player.diffHP == 14) {
+                this['heart' + (this.highestHeart - 7).toString()].frame = 0;
+            }
+            if (this.player.diffHP == 16) {
+                this['heart' + (this.highestHeart - 8).toString()].frame = 0;
+            }
+            if (this.player.diffHP == 18) {
+                this['heart' + (this.highestHeart - 9).toString()].frame = 0;
             }
             if(this.player.diffHP > 0) {
                 if(this.player.diffHP % 2 != 0) {
@@ -1440,8 +1492,8 @@ steamGame.Game.prototype = {
                             }, this);
                             this.usingTiming = true;
                         }
-                    this.idling = true;
-                    this.game.time.events.remove(this.idleTimer1);
+                        this.idling = true;
+                        this.game.time.events.remove(this.idleTimer1);
                     }
                 }
             }
@@ -1503,6 +1555,37 @@ steamGame.Game.prototype = {
             }
         }
 
+        //TURBINE & DEFIB USAGE
+        if (this.hasItems == true) {
+            if (abilityKey.isDown && abilityKey.duration < 2) {
+                if (this.ASGroup.curAbil == "Turbine" && this.usingAbil == "none" && this.player.currentEnergy < this.player.maxEnergy && this.player.currentSteam >= 10) {
+                    this.sitTimed = false;
+                    this.usingAbil = "Turbine";
+                    this.player.currentSteam -= 10;
+                    if (this.player.currentEnergy + 5 <= this.player.maxEnergy) {
+                        this.player.currentEnergy += 5;
+                    } else {
+                        this.player.currentEnergy = this.player.maxEnergy;
+                    }
+                    this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
+                        this.usingAbil = "none";
+                        abilityKey.duration = 0;
+                    }, this);
+                }
+
+                if (this.ASGroup.curAbil == "Defib" && this.usingAbil == "none" && this.player.currentHP < this.player.maxHP && this.player.currentEnergy >= 15) {
+                    this.sitTimed = false;
+                    this.usingAbil = "Defib";
+                    this.player.currentEnergy -= 15;
+                    this.player.currentHP += 1;
+                    this.game.time.events.add(Phaser.Timer.SECOND * (1/2), function(){
+                        this.usingAbil = "none";
+                        abilityKey.duration = 0;
+                    }, this);
+                }
+            }
+        }
+
         //BOOT USAGE
         if(dashKey.isDown && dashKey.duration < 2 && this.player.hasBoots == 1 && this.dashCD != true) {
             this.player.state = "dash";
@@ -1522,11 +1605,11 @@ steamGame.Game.prototype = {
                 }
             }
             if (this.player.body.velocity.y < 0) {
-                this.player.body.velocity.y = this.player.speed * -3 * 0.9;
+                this.player.body.velocity.y = this.player.speed * -3 * 0.7;
                 this.player.swipe.body.velocity.y = this.player.body.velocity.y;
                 this.animationName = "dashUp";
             } else if (this.player.body.velocity.y > 0) {
-                this.player.body.velocity.y = this.player.speed * 3 * 0.9;
+                this.player.body.velocity.y = this.player.speed * 3 * 0.7;
                 this.player.swipe.body.velocity.y = this.player.body.velocity.y;
                 this.animationName = "dashDown";
             }
