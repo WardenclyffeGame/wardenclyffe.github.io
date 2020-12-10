@@ -24,6 +24,7 @@ Tuesday: (fast day) success
     
 Wednesday: success before lunch
     -continue considering day night cycle using tint property
+        -thouroughly considered, and yes, we're doing it, I'm starting tonight
     -add pickup for steam by HP potion
         -finished ^
     -add pickup for electricity by HP potion

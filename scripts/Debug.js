@@ -104,7 +104,7 @@ steamGame.Game.prototype = {
             //this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('halo center Y: ' + this.player.shadowTexture.centerY, this.game.camera.width - 250, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('true TOD: ' + this.trueTOD, this.game.camera.width - 250, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
@@ -126,7 +126,7 @@ steamGame.Game.prototype = {
         }*/
         this.collisionHandler(this);
         this.updateShadows(this);
-        //this.dayCycle = this.dayCycle || this.game.add.tween(this.DNLevel).to({alpha: 0}, 5000, null, true);
+        this.dayCycle(this);
 
         if (this.menuState == 'none') {
             this.playerHPManager(this);
@@ -301,6 +301,26 @@ steamGame.Game.prototype = {
         this.player.lightSprite = this.game.add.image(this.game.camera.x, this.game.camera.y, this.player.shadowTexture);
         this.player.lightSprite.blendMode = Phaser.blendModes.MULTIPLY;
 
+        this.player.worldTintReference = this.game.add.sprite(0, 0, '');
+        this.colorBlend = {step: 0};
+        this.sunSet = this.game.add.tween(this.colorBlend).to({step: 100}, 10000, Phaser.Easing.Default, false)
+            .onUpdateCallback(() => {
+                this.player.worldTintReference.tint = Phaser.Color.interpolateColor(0xffffff, 0xD9B338, 100, this.colorBlend.step, 1);
+            })
+        this.nightFall = this.game.add.tween(this.colorBlend).to({step: 100}, 10000, Phaser.Easing.Default, false)
+            .onUpdateCallback(() => {
+                this.player.worldTintReference.tint = Phaser.Color.interpolateColor(0xD9B338, 0x242969, 100, this.colorBlend.step, 1);
+            })
+        this.sunRise = this.game.add.tween(this.colorBlend).to({step: 100}, 10000, Phaser.Easing.Default, false)
+            .onUpdateCallback(() => {
+                this.player.worldTintReference.tint = Phaser.Color.interpolateColor(0x242969, 0xD9B338, 100, this.colorBlend.step, 1);
+            })
+        this.dayBreak = this.game.add.tween(this.colorBlend).to({step: 100}, 10000, Phaser.Easing.Default, false)
+            .onUpdateCallback(() => {
+                this.player.worldTintReference.tint = Phaser.Color.interpolateColor(0xD9B338, 0xffffff, 100, this.colorBlend.step, 1);
+            })
+
+        
         /****************ALSO VITAL: SAVE STATE INFORMATION / PLAYER DATA********************/
         //player object stuff declaration
         this.player.maxHP = this.playerData.maxHP || 6;
@@ -333,6 +353,8 @@ steamGame.Game.prototype = {
         this.player.hasJar = this.playerData.hasJar || 0;
         this.player.curAbil = this.playerData.curAbil || null;
 
+        this.player.TOD = this.playerData.TOD || "Day";
+
         this.player.timer = 75;
         this.player.newSLevel = 0;
         this.player.newELevel = 0;
@@ -360,6 +382,19 @@ steamGame.Game.prototype = {
         this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
         
+        if (this.player.TOD == "Day") {
+            this.trueTOD = 300;
+            this.player.worldTintReference.tint = 0xffffff;
+        } else if (this.player.TOD == "Dusk") {
+            this.trueTOD = 1140;
+            this.player.worldTintReference.tint = 0xD9B338;
+        } else if (this.player.TOD == "Night") {
+            this.trueTOD = 1200;
+            this.player.worldTintReference.tint = 0x242969;
+        } else if (this.player.TOD == "Dawn") {
+            this.trueTOD = 240;
+            this.player.worldTintReference.tint = 0xD9B338;
+        }
 
         /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
         //Heart declaration
@@ -676,6 +711,36 @@ steamGame.Game.prototype = {
         this.dummy.post.width = this.scalingFactor / 16;
         this.dummy.post.height = this.scalingFactor / 16;
         this.dummy.lightRadius = this.scalingFactor * 32 * 1.5;
+    },
+    dayCycle: function() {
+        if (this.countingSec != true) {
+            this.game.time.events.add(Phaser.Timer.SECOND, function () { this.trueTOD += 5;; this.countingSec = false; }, this);
+            this.countingSec = true;
+            if (this.trueTOD == 235) {
+                this.colorBlend.step = 0;
+                this.sunRise.start();
+                this.player.TOD = "Dawn";
+            }
+            if (this.trueTOD == 295) {
+                this.colorBlend.step = 0;
+                this.dayBreak.start();
+                this.player.TOD = "Day";
+            }
+            if (this.trueTOD == 1135) {
+                this.colorBlend.step = 0;
+                this.sunSet.start();
+                this.player.TOD = "Dusk";
+            }
+            if (this.trueTOD == 1195) {
+                this.colorBlend.step = 0;
+                this.nightFall.start();
+                this.player.TOD = "Night";
+            }
+            if (this.trueTOD == 1440) {
+                this.trueTOD = 0;
+            }
+        }
+        
     },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
     debugHealth: function(player, collectable) {
@@ -2076,8 +2141,9 @@ steamGame.Game.prototype = {
     },
     updateShadows: function() {
         this.player.lightSprite.reset(this.game.camera.x - (this.game.width * 0.1), this.game.camera.y - (this.game.height * 0.1));
-
-        this.player.shadowTexture.context.fillStyle = 'rgb(63, 40, 143)';
+        this.tintRetrieve = Phaser.Color.getRGB(this.player.worldTintReference.tint)
+        this.currentTint = Phaser.Color.RGBtoString(this.tintRetrieve.r, this.tintRetrieve.g, this.tintRetrieve.b);
+        this.player.shadowTexture.context.fillStyle = this.currentTint;
         this.player.shadowTexture.context.fillRect(0, 0, this.game.width * 1.2, this.game.height * 1.2);
 
         this.makeHalo(this.player);
@@ -2133,6 +2199,7 @@ steamGame.Game.prototype = {
         this.playerData.hasDefib = this.player.hasDefib;
         this.playerData.hasJar = this.player.hasJar;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos] || this.player.curAbil;
+        this.playerData.TOD = this.player.TOD;
         this.playerData.map = "Debug";
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
     }
