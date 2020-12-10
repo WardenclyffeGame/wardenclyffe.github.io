@@ -348,13 +348,14 @@ steamGame.Game.prototype = {
         this.menuState = 'none';
 
         this.winanWeapon = this.add.weapon(20, 'steamBullet');
-        this.winanWeapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+        this.winanWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
         this.winanWeapon.bulletAngleOffset = 180;
         this.winanWeapon.bulletSpeed = this.player.speed * 0.025;
         this.winanWeapon.addBulletAnimation('spin', [0, 1, 2, 3], 12, true);
         this.winanWeapon.bullets.forEach((b) => {
             b.scale.setTo(this.scalingFactor * 1.5, this.scalingFactor * 1.5);
             b.body.updateBounds();
+            b.lightRadius = this.scalingFactor * 32;
         }, this);
         this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
@@ -2076,23 +2077,18 @@ steamGame.Game.prototype = {
     updateShadows: function() {
         this.player.lightSprite.reset(this.game.camera.x - (this.game.width * 0.1), this.game.camera.y - (this.game.height * 0.1));
 
-        this.player.shadowX = this.player.centerX - this.game.camera.x + (this.game.width * 0.1),
-        this.player.shadowY = this.player.centerY - this.game.camera.y + (this.game.height * 0.1),
-        this.dummy.shadowX = this.dummy.centerX - this.game.camera.x + (this.game.width * 0.1);
-        this.dummy.shadowY = this.dummy.centerY - this.game.camera.y + (this.game.height * 0.1);
-        this.winanWeapon.bullets.shadowX = this.winanWeapon.bullets.centerX - this.game.camera.x + (this.game.width * 0.1);
-        this.winanWeapon.bullets.shadowY = this.winanWeapon.bullets.centerY - this.game.camera.y + (this.game.height * 0.1);
-
         this.player.shadowTexture.context.fillStyle = 'rgb(63, 40, 143)';
         this.player.shadowTexture.context.fillRect(0, 0, this.game.width * 1.2, this.game.height * 1.2);
 
         this.makeHalo(this.player);
         this.makeHalo(this.dummy);
-        this.makeHalo(this.winanWeapon.bullets);
+        this.winanWeapon.bullets.forEachExists(this.makeHalo, this);
 
         this.player.shadowTexture.dirty = true;
     },
     makeHalo: function(body) {
+        body.shadowX = body.centerX - this.game.camera.x + (this.game.width * 0.1);
+        body.shadowY = body.centerY - this.game.camera.y + (this.game.height * 0.1);
         this.player.shadowTexture.context.beginPath();
         this.player.shadowTexture.context.fillStyle = 'rgb(255, 255, 255)';
         this.player.shadowTexture.context.arc(body.shadowX, body.shadowY, body.lightRadius, 0, Math.PI*2);
