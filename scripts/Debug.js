@@ -121,7 +121,12 @@ steamGame.Game.prototype = {
             this.game.debug.body(this.dummy.post);
             //this.game.debug.body(this.HPPotTest);
             
-            this.trueTOD ++;
+            if (rightArrow.isDown) {
+                this.trueTOD ++;
+            }
+            if (leftArrow.isDown) {
+                this.trueTOD --;
+            }
         }
         /*if (debugKey.isUp) {
             this.debugText.destroy();
@@ -735,8 +740,11 @@ steamGame.Game.prototype = {
                 this.nightFall.start();
                 this.player.TOD = "Night";
             }
-            if (this.trueTOD == 1440) {
+            if (this.trueTOD >= 1440) {
                 this.trueTOD = 0;
+            }
+            if (this.trueTOD < 0) {
+                this.trueTOD = 1338;
             }
         }
         
