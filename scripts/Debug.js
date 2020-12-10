@@ -6,7 +6,7 @@ steamGame.Game.prototype = {
     /////////////////////////////////////////////DEFAULT PHASER FUNCTIONS///////////////////////////////////////////////////////
     create: function(){
         //begin scene setup
-        this.game.stage.backgroundColor = '#acbfbc';
+        this.game.stage.backgroundColor = '#7D7D7D';
         this.scalingFactor = (this.game.world.width / 19) / 32;
         this.map = this.game.add.tilemap('debugMap');
         this.map.addTilesetImage('DebugTiles', 'debugTiles');
@@ -104,7 +104,7 @@ steamGame.Game.prototype = {
             //this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.SL = this.game.debug.text('True steam level: ' + this.player.currentSteam, this.game.world.centerX - 150, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('dummy center Y: ' + this.dummy.y + (this.player.height * 0.75), this.game.camera.width - 250, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('halo center Y: ' + this.player.shadowTexture.centerY, this.game.camera.width - 250, this.game.camera.height - 120, null, 'rgb(0, 0, 0)');
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
@@ -125,6 +125,8 @@ steamGame.Game.prototype = {
             this.debugText.destroy();
         }*/
         this.collisionHandler(this);
+        this.updateShadows(this);
+        //this.dayCycle = this.dayCycle || this.game.add.tween(this.DNLevel).to({alpha: 0}, 5000, null, true);
 
         if (this.menuState == 'none') {
             this.playerHPManager(this);
@@ -292,7 +294,12 @@ steamGame.Game.prototype = {
         this.player.swipe.width = this.player.body.width * 1.5;
         this.player.swipe.height = 42 * this.scalingFactor;
         this.player.swipe.debug = true;
-        //this.player.swipe.body.setSize(this.player.body.width, this.player.body.height);
+
+        this.player.shadowTexture = this.game.add.bitmapData(this.game.width * 1.2, this.game.height * 1.2);
+        this.player.lightRadius = this.scalingFactor * 32 * 3;
+
+        this.player.lightSprite = this.game.add.image(this.game.camera.x, this.game.camera.y, this.player.shadowTexture);
+        this.player.lightSprite.blendMode = Phaser.blendModes.MULTIPLY;
 
         /****************ALSO VITAL: SAVE STATE INFORMATION / PLAYER DATA********************/
         //player object stuff declaration
@@ -341,7 +348,7 @@ steamGame.Game.prototype = {
         this.menuState = 'none';
 
         this.winanWeapon = this.add.weapon(20, 'steamBullet');
-        this.winanWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        this.winanWeapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
         this.winanWeapon.bulletAngleOffset = 180;
         this.winanWeapon.bulletSpeed = this.player.speed * 0.025;
         this.winanWeapon.addBulletAnimation('spin', [0, 1, 2, 3], 12, true);
@@ -349,6 +356,7 @@ steamGame.Game.prototype = {
             b.scale.setTo(this.scalingFactor * 1.5, this.scalingFactor * 1.5);
             b.body.updateBounds();
         }, this);
+        this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
         
 
@@ -666,6 +674,7 @@ steamGame.Game.prototype = {
         this.dummy.post.anchor.setTo(0.5, 1);
         this.dummy.post.width = this.scalingFactor / 16;
         this.dummy.post.height = this.scalingFactor / 16;
+        this.dummy.lightRadius = this.scalingFactor * 32 * 1.5;
     },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
     debugHealth: function(player, collectable) {
@@ -758,6 +767,8 @@ steamGame.Game.prototype = {
                 this.dummy.value = 100;
                 this.dummy.destroy();
                 this.dummy.post.destroy();
+                this.dummy.x = 0;
+                this.dummy.y = 0;
                 this.collect(this.player, this.dummy);
                 this.player.hasBomb = 1;
                 this.player.hasWinan = 1;
@@ -814,6 +825,8 @@ steamGame.Game.prototype = {
                 this.dummy.value = 100;
                 this.dummy.destroy();
                 this.dummy.post.destroy();
+                this.dummy.x = 0;
+                this.dummy.y = 0;
                 this.collect(this.player, this.dummy);
                 this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
                     this.dummyCreate(this);
@@ -856,7 +869,6 @@ steamGame.Game.prototype = {
         this.floor.moveDown();
         this.wall.moveDown();
         this.water.moveDown();
-        //this.game.world.moveDown(this.BGGroup);
 
         this.game.world.bringToTop(this.ASGroup);
         this.game.world.bringToTop(this.mapGroup);
@@ -2060,6 +2072,31 @@ steamGame.Game.prototype = {
             this.ASGroup.stationary = true;
             this.ASGroup.pos = 'down';
         }
+    },
+    updateShadows: function() {
+        this.player.lightSprite.reset(this.game.camera.x - (this.game.width * 0.1), this.game.camera.y - (this.game.height * 0.1));
+
+        this.player.shadowX = this.player.centerX - this.game.camera.x + (this.game.width * 0.1),
+        this.player.shadowY = this.player.centerY - this.game.camera.y + (this.game.height * 0.1),
+        this.dummy.shadowX = this.dummy.centerX - this.game.camera.x + (this.game.width * 0.1);
+        this.dummy.shadowY = this.dummy.centerY - this.game.camera.y + (this.game.height * 0.1);
+        this.winanWeapon.bullets.shadowX = this.winanWeapon.bullets.centerX - this.game.camera.x + (this.game.width * 0.1);
+        this.winanWeapon.bullets.shadowY = this.winanWeapon.bullets.centerY - this.game.camera.y + (this.game.height * 0.1);
+
+        this.player.shadowTexture.context.fillStyle = 'rgb(63, 40, 143)';
+        this.player.shadowTexture.context.fillRect(0, 0, this.game.width * 1.2, this.game.height * 1.2);
+
+        this.makeHalo(this.player);
+        this.makeHalo(this.dummy);
+        this.makeHalo(this.winanWeapon.bullets);
+
+        this.player.shadowTexture.dirty = true;
+    },
+    makeHalo: function(body) {
+        this.player.shadowTexture.context.beginPath();
+        this.player.shadowTexture.context.fillStyle = 'rgb(255, 255, 255)';
+        this.player.shadowTexture.context.arc(body.shadowX, body.shadowY, body.lightRadius, 0, Math.PI*2);
+        this.player.shadowTexture.context.fill();
     },
     /////////////////////////////////////////////DATA FUNCTIONS/////////////////////////////////////////////////////////////////
     pause: function() {
