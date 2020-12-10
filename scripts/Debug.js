@@ -714,7 +714,7 @@ steamGame.Game.prototype = {
     },
     dayCycle: function() {
         if (this.countingSec != true) {
-            this.game.time.events.add(Phaser.Timer.SECOND, function () { this.trueTOD += 5;; this.countingSec = false; }, this);
+            this.game.time.events.add(Phaser.Timer.SECOND, function () { this.trueTOD ++;; this.countingSec = false; }, this);
             this.countingSec = true;
             if (this.trueTOD == 235) {
                 this.colorBlend.step = 0;
