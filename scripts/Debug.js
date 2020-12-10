@@ -60,16 +60,22 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.enable(this.kronaTestG);
         this.kronaTestG.value = 60;
         this.kronaTestG.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+        this.kronaTestG.lightRadius = this.scalingFactor * 16;
+        this.kronaTestG.lightColor = '#f5e022';
 
         this.kronaTestS = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width - 70), this.game.world.centerY, 'KronaS');
         this.game.physics.arcade.enable(this.kronaTestS);
         this.kronaTestS.value = 36;
         this.kronaTestS.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+        this.kronaTestS.lightRadius = this.scalingFactor * 16;
+        this.kronaTestS.lightColor = '#e8e8e8';
 
         this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width - 140), this.game.world.centerY, 'KronaZ');
         this.game.physics.arcade.enable(this.kronaTestZ);
         this.kronaTestZ.value = 12;
         this.kronaTestZ.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+        this.kronaTestZ.lightRadius = this.scalingFactor * 16;
+        this.kronaTestZ.lightColor = '#bf961b';
 
         this.HPPotTest = this.game.add.sprite(this.game.world.centerX - (this.scalingFactor * 14.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32), 'HPPot');
         this.game.physics.arcade.enable(this.HPPotTest);
@@ -301,6 +307,8 @@ steamGame.Game.prototype = {
         this.player.swipe.width = this.player.body.width * 1.5;
         this.player.swipe.height = 42 * this.scalingFactor;
         this.player.swipe.debug = true;
+        
+        this.player.lightColor = "#ffffff";
 
         this.player.shadowTexture = this.game.add.bitmapData(this.game.width * 1.2, this.game.height * 1.2);
         this.player.lightRadius = this.scalingFactor * 32 * 3;
@@ -386,6 +394,7 @@ steamGame.Game.prototype = {
             b.scale.setTo(this.scalingFactor * 1.5, this.scalingFactor * 1.5);
             b.body.updateBounds();
             b.lightRadius = this.scalingFactor * 32;
+            b.lightColor = "#ebfcfb";
         }, this);
         this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
@@ -715,6 +724,7 @@ steamGame.Game.prototype = {
         this.dummy.post.width = this.scalingFactor / 16;
         this.dummy.post.height = this.scalingFactor / 16;
         this.dummy.lightRadius = this.scalingFactor * 32 * 1.5;
+        this.dummy.lightColor = "#ffffff";
     },
     dayCycle: function() {
         if (this.countingSec != true) {
@@ -2156,14 +2166,23 @@ steamGame.Game.prototype = {
         this.makeHalo(this.player);
         this.makeHalo(this.dummy);
         this.winanWeapon.bullets.forEachExists(this.makeHalo, this);
+        /*if (this.trueTOD > 1140 || this.trueTOD < 300) {
+            this.makeHalo(this.kronaTestG);
+            this.makeHalo(this.kronaTestS);
+            this.makeHalo(this.kronaTestZ);
+        }*/
 
         this.player.shadowTexture.dirty = true;
     },
     makeHalo: function(body) {
         body.shadowX = body.centerX - this.game.camera.x + (this.game.width * 0.1);
-        body.shadowY = body.centerY - this.game.camera.y + (this.game.height * 0.1);
+        body.shadowY = ((body.centerY - (body.height / 32 * 5)) - this.game.camera.y) + (this.game.height * 0.1);
+        this.radialGradient = this.player.shadowTexture.context.createRadialGradient(body.shadowX, body.shadowY, (body.lightRadius * (2/3)), body.shadowX, body.shadowY, body.lightRadius)
+        this.radialGradient.addColorStop(0, body.lightColor + 'ff');
+        this.radialGradient.addColorStop(1, body.lightColor + '00');
         this.player.shadowTexture.context.beginPath();
-        this.player.shadowTexture.context.fillStyle = 'rgb(255, 255, 255)';
+        //this.player.shadowTexture.context.fillStyle = 'rgb(255, 255, 255)';
+        this.player.shadowTexture.context.fillStyle = this.radialGradient;
         this.player.shadowTexture.context.arc(body.shadowX, body.shadowY, body.lightRadius, 0, Math.PI*2);
         this.player.shadowTexture.context.fill();
     },
