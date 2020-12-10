@@ -740,6 +740,10 @@ steamGame.Game.prototype = {
                 this.dayBreak.start();
                 this.player.TOD = "Day";
             }
+            if (this.trueTOD > 305 && this.trueTOD < 1135) {
+                this.colorBlend.step = 0;
+                this.player.worldTintReference.tint = 0xffffff;
+            }
             if (this.trueTOD == 1135) {
                 this.colorBlend.step = 0;
                 this.sunSet.start();
