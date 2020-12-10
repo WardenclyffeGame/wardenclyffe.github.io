@@ -120,6 +120,8 @@ steamGame.Game.prototype = {
             //this.debugText.DB = this.game.debug.body(this.dummy);
             this.game.debug.body(this.dummy.post);
             //this.game.debug.body(this.HPPotTest);
+            
+            this.trueTOD ++;
         }
         /*if (debugKey.isUp) {
             this.debugText.destroy();
@@ -353,7 +355,8 @@ steamGame.Game.prototype = {
         this.player.hasJar = this.playerData.hasJar || 0;
         this.player.curAbil = this.playerData.curAbil || null;
 
-        this.player.TOD = this.playerData.TOD || "Day";
+        this.player.TOD = this.playerData.TOD || 300;
+        this.trueTOD = this.player.TOD;
 
         this.player.timer = 75;
         this.player.newSLevel = 0;
@@ -382,17 +385,13 @@ steamGame.Game.prototype = {
         this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
         
-        if (this.player.TOD == "Day") {
-            this.trueTOD = 300;
+        if (this.player.TOD >= 300 && this.player.TOD < 1140) {
             this.player.worldTintReference.tint = 0xffffff;
-        } else if (this.player.TOD == "Dusk") {
-            this.trueTOD = 1140;
+        } else if (this.player.TOD >= 1140 && this.player.TOD < 1200) {
             this.player.worldTintReference.tint = 0xD9B338;
-        } else if (this.player.TOD == "Night") {
-            this.trueTOD = 1200;
+        } else if (this.player.TOD >= 1200 || this.player.TOD < 240) {
             this.player.worldTintReference.tint = 0x242969;
-        } else if (this.player.TOD == "Dawn") {
-            this.trueTOD = 240;
+        } else if (this.player.TOD >= 240 && this.player.TOD < 300) {
             this.player.worldTintReference.tint = 0xD9B338;
         }
 
@@ -2199,7 +2198,7 @@ steamGame.Game.prototype = {
         this.playerData.hasDefib = this.player.hasDefib;
         this.playerData.hasJar = this.player.hasJar;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos] || this.player.curAbil;
-        this.playerData.TOD = this.player.TOD;
+        this.playerData.TOD = this.trueTOD;
         this.playerData.map = "Debug";
         window.localStorage.setItem('playerData', JSON.stringify(this.playerData));
     }
