@@ -417,7 +417,7 @@ steamGame.Game.prototype = {
             b.lightRadius = this.scalingFactor * 16;
             b.lightColor = "#ffcba13f";
             b.debug = true;
-            b.explodeTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function() { this.bombWeapon.addBulletAnimation('explode', [1], 2, true); }, this);
+            //b.events.onKilled.add(function () {}, this);
         }, this);
         this.bombWeapon.bullets.lightRadius = this.scalingFactor * 16;
         this.bombWeapon.trackSprite(this.player, (this.player.width / 16), (this.player.width / 16));
@@ -999,25 +999,25 @@ steamGame.Game.prototype = {
             if (this.player.diffHP == 4) {
                 this['heart' + (this.highestHeart - 2).toString()].frame = 0;
             }
-            if (this.player.diffHP == 6) {
+            if (this.player.diffHP == 6 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 3).toString()].frame = 0;
             }
-            if (this.player.diffHP == 8) {
+            if (this.player.diffHP == 8 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 4).toString()].frame = 0;
             }
-            if (this.player.diffHP == 10) {
+            if (this.player.diffHP == 10 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 5).toString()].frame = 0;
             }
-            if (this.player.diffHP == 12) {
+            if (this.player.diffHP == 12 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 6).toString()].frame = 0;
             }
-            if (this.player.diffHP == 14) {
+            if (this.player.diffHP == 14 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 7).toString()].frame = 0;
             }
-            if (this.player.diffHP == 16) {
+            if (this.player.diffHP == 16 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 8).toString()].frame = 0;
             }
-            if (this.player.diffHP == 18) {
+            if (this.player.diffHP == 18 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 9).toString()].frame = 0;
             }
             if(this.player.diffHP > 0) {
@@ -1751,6 +1751,8 @@ steamGame.Game.prototype = {
                     if (this.ASGroup.curAbil == 'Bomb') {
                         this.bombWeapon.fire();
                         this.player.bombCount --;
+                        this.bombsAlive ++;
+                        //this.game.time.events.add(Phaser.Timer.SECOND * 3, function() { this.bombWeapon.bullets }, this);
                     }
                 }
             }
@@ -1784,6 +1786,9 @@ steamGame.Game.prototype = {
                 this.animationName = "dashDown";
             }
         }
+    },
+    explosionHandler: function(body) {
+        //this.bombWeapon.bullets.forEachExists( function() {this.bombWeapon.addBulletAnimation('explode', [1], 2, true)});
     },
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
     tickerHandler: function() {
