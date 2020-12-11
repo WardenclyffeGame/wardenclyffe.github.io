@@ -404,19 +404,21 @@ steamGame.Game.prototype = {
         this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
 
-        this.bombWeapon = this.add.weapon(20, 'Bomb');
+        this.bombWeapon = this.add.weapon(3, 'Bomb');
         this.bombWeapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
-        this.bombWeapon.bulletLifespan = Phaser.Timer.SECOND * 3;
+        this.bombWeapon.bulletLifespan = Phaser.Timer.SECOND * 5;
         
         this.bombWeapon.bulletAngleOffset = 90;
         this.bombWeapon.bulletSpeed = 0;
-        this.bombWeapon.addBulletAnimation('spin', [0, 1], 2, true);
+        //this.bombWeapon.addBulletAnimation('spin', [0, 1], 2, true);
+        //this.bombWeapon.bullets.onKilled.add(this.explosionHandler(), this);
         this.bombWeapon.bullets.forEach((b) => {
             b.scale.setTo(this.scalingFactor * 0.75);
-            b.body.updateBounds();
+            b.body.setSize(48, 48, 0, 0);
             b.lightRadius = this.scalingFactor * 16;
             b.lightColor = "#ffcba13f";
             b.debug = true;
+            b.exploded = false;
             //b.events.onKilled.add(function () {}, this);
         }, this);
         this.bombWeapon.bullets.lightRadius = this.scalingFactor * 16;
@@ -1757,7 +1759,26 @@ steamGame.Game.prototype = {
                 }
             }
         }
+        this.bombWeapon.bullets.forEachExists((b) => {
+            if (b.fresh == true) {
+                b.frame = 0;
+                b.exploded = false;
+                b.body.setSize(48, 48, 0, 0);
+            }
+            if (b.fresh == true && b.exploded == false && b.timing != true) {
+                b.explosionTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(b) { 
+                    b.exploded = true; 
+                    b.frame = 1; 
+                    b.lightColor = "#fffdd98f";
+                    b.lightRadius = this.scalingFactor * 32 * 2.5;
+                }, this, b); 
+                b.killTimer = this.game.time.events.add(Phaser.Timer.SECOND * 5, function(b) { 
+                    b.exploded = false;
+                }, this, b);
+                b.timing = true;
+            }
 
+        })
         //BOOT USAGE
         if(dashKey.isDown && dashKey.duration < 2 && this.player.hasBoots == 1 && this.dashCD != true) {
             this.player.state = "dash";
@@ -1787,9 +1808,9 @@ steamGame.Game.prototype = {
             }
         }
     },
-    explosionHandler: function(body) {
+    /*explosionHandler: function(body) {
         //this.bombWeapon.bullets.forEachExists( function() {this.bombWeapon.addBulletAnimation('explode', [1], 2, true)});
-    },
+    },*/
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
     tickerHandler: function() {
         /***************************************** Currency tracker **************************************************************************************************/
