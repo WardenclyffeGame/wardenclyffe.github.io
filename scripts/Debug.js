@@ -115,7 +115,7 @@ steamGame.Game.prototype = {
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('player bottom:' + this.player.bottom, this.game.camera.width - 250, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('bombCount:' + this.player.bombCount, this.game.camera.width - 250, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -307,6 +307,9 @@ steamGame.Game.prototype = {
         this.player.swipe.width = this.player.body.width * 1.5;
         this.player.swipe.height = 42 * this.scalingFactor;
         this.player.swipe.debug = true;
+
+        this.bombs = {};
+        this.bombs.living = 0;
         
         this.player.lightColor = "#ffffff";
 
@@ -352,6 +355,7 @@ steamGame.Game.prototype = {
         this.player.newC = this.playerData.newC || 0;
         //ability declarations
         this.player.hasBomb = this.playerData.hasBomb || 0;
+        this.player.bombCount = this.playerData.bombCount || 0;
         this.player.hasBoots = this.playerData.hasBoots || 0;
         this.player.hasExoArm = this.playerData.hasExoArm || 0;
         this.player.hasTaserSword = this.playerData.hasTaserSword || 0;
@@ -410,6 +414,8 @@ steamGame.Game.prototype = {
         }
 
         /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
+        this.UIGroup = this.game.add.group();
+
         //Heart declaration
         for (i = 0; i < (this.player.maxHP/2); i++) {
             this.hPosX = 0;
@@ -426,6 +432,7 @@ steamGame.Game.prototype = {
             this['heart' + i.toString()].fixedToCamera = true;
             this['heart' + i.toString()].scale.setTo (this.scalingFactor*0.65,this.scalingFactor*0.65)
             this.highestHeart = i;
+            this.UIGroup.add(this['heart' + i.toString()]);
         }
 
         this.ticker = {};
@@ -439,11 +446,13 @@ steamGame.Game.prototype = {
             this.ticker['plate' + (i + 1).toString()].fixedToCamera = true;
             this.ticker['plate' + (i + 1).toString()].scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
             this.ticker['plate' + (i + 1).toString()].animations.add('flip', [10, 11, 12, 13, 14, 15]);
+            this.UIGroup.add(this.ticker['plate' + (i + 1).toString()]);
         }
         this.ticker.logo = this.game.add.sprite(this.ticker.plate1.x, this.ticker.plate1.y, 'KronaL');
         this.ticker.logo.anchor.setTo(1, 0);
         this.ticker.logo.fixedToCamera = true;
         this.ticker.logo.scale.setTo(this.scalingFactor / 2, this.scalingFactor / 2);
+        this.UIGroup.add(this.ticker.logo);
 
         //steam meter declaration
         this.steamMeter = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) + 5), 'steamMeter');
@@ -451,12 +460,14 @@ steamGame.Game.prototype = {
         this.steamMeter.fixedToCamera = true;
         this.steamMeter.anchor.setTo(0, 1);
         this.steamMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+        this.UIGroup.add(this.steamMeter);
 
         this.steamLevel = this.game.add.sprite(3, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'steamMeter');
         this.steamLevel.frame = 1;
         this.steamLevel.fixedToCamera = true;
         this.steamLevel.anchor.setTo(0, 86/96);
         this.steamLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+        this.UIGroup.add(this.steamLevel);
 
         //Elec Meter declaration
         this.elecMeter = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) + 5), 'elecMeter');
@@ -464,24 +475,28 @@ steamGame.Game.prototype = {
         this.elecMeter.fixedToCamera = true;
         this.elecMeter.anchor.setTo(0, 1);
         this.elecMeter.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+        this.UIGroup.add(this.elecMeter);
 
         this.elecLevel = this.game.add.sprite(this.steamMeter.x + this.steamMeter.width, (this.heart0.y + (this.heart0.height * 4) - (8 * (this.scalingFactor * 0.65))), 'elecMeter');
         this.elecLevel.frame = 1;
         this.elecLevel.fixedToCamera = true;
         this.elecLevel.anchor.setTo(0, 86/96);
         this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
+        this.UIGroup.add(this.elecLevel);
 
         //frame declaration
         this.frame = this.game.add.sprite(this.game.camera.width, 8, 'frame');
         this.frame.anchor.setTo(1,0);
         this.frame.fixedToCamera = true;
         this.frame.scale.setTo(this.scalingFactor * 1.75, this.scalingFactor * 1.75);
+        this.UIGroup.add(this.frame);
 
         this.frameAbil = this.game.add.sprite(this.game.camera.width - ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2), 8 + ((this.frame.width - (32 * this.scalingFactor * 1.3)) / 2));
         this.frameAbil.anchor.setTo(1,0);
         this.frameAbil.fixedToCamera = true;
         this.frameAbil.scale.setTo(this.scalingFactor * 1.3, this.scalingFactor * 1.3);
         this.frameAbil.name = 'none';
+        this.UIGroup.add(this.frameAbil);
 
 
         /*******************************************MENU SCREENS********************************************/
@@ -920,6 +935,7 @@ steamGame.Game.prototype = {
                 }, this);
             }
             weapon.destroy();
+            this.player.bombCount ++;
         }
     },
     collect: function(player, coin) {
@@ -956,7 +972,8 @@ steamGame.Game.prototype = {
         this.floor.moveDown();
         this.wall.moveDown();
         this.water.moveDown();
-
+        
+        this.game.world.bringToTop(this.UIGroup);
         this.game.world.bringToTop(this.ASGroup);
         this.game.world.bringToTop(this.mapGroup);
         this.game.world.bringToTop(this.pauseGroup);
@@ -1188,6 +1205,7 @@ steamGame.Game.prototype = {
             this.frameAbil.fixedToCamera = true;
             this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
             this.frameAbil.name = this.ASGroup.curAbil;
+            this.UIGroup.add(this.frameAbil);
         }
     },
     playerAnimation: function() {
@@ -1720,6 +1738,22 @@ steamGame.Game.prototype = {
             }
         }
 
+        //BOMB USAGE
+        if (this.hasItems == true) {
+            if (this.player.bombCount > 0) {
+                if (abilityKey.isDown && abilityKey.duration < 2) {
+                    if (this.ASGroup.curAbil == 'Bomb' && this.usingAbil == "none") {
+                        this.bombX = this.player.centerX;
+                        this.bombY = this.player.y;
+                        //this.createBomb(this.bombX, this.bombY);
+                        //////////////////NOTE TO US: MAKE THIS ANOTHER WEAPON WITH NO VELOCITY
+                        /////////basically, same principle as the winan, but no velocity
+                        /////////don't have time right now, it's 1:11
+                    }
+                }
+            }
+        }
+
         //BOOT USAGE
         if(dashKey.isDown && dashKey.duration < 2 && this.player.hasBoots == 1 && this.dashCD != true) {
             this.player.state = "dash";
@@ -1748,6 +1782,20 @@ steamGame.Game.prototype = {
                 this.animationName = "dashDown";
             }
         }
+    },
+    createBomb: function(spawnX, spawnY) {
+        this.bombs[(this.bombs.living + 1).toString()] = this.game.add.sprite(spawnX, spawnY, 'Bomb');
+        this.game.physics.arcade.enable(this.bombs[(this.bombs.living + 1).toString()]);
+        this.bombs[(this.bombs.living + 1).toString()].anchor.setTo(0.5, 0.5);
+        this.bombs[(this.bombs.living + 1).toString()].scale.setTo(this.scalingFactor * 0.75);
+        this.bombs[(this.bombs.living + 1).toString()].body.setSize(48, 48, -8, -8)
+        this.bombs[(this.bombs.living + 1).toString()].debug = true;
+        this.bombs[(this.bombs.living + 1).toString()].explodeTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(){
+            //this.explosion(this.bombs[(this.bombs.living + 1).toString()]);
+            this.bombs[(this.bombs.living).toString()].destroy();
+        }, this);
+        this.bombs.living ++;
+        this.player.bombCount --;
     },
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
     tickerHandler: function() {
@@ -1842,8 +1890,9 @@ steamGame.Game.prototype = {
             this.ASGroup.selPos.pos8 = 'Hammer';
             this.hasItems = true;
         }
-        if (this.player.hasBomb == 1) {
+        if (this.player.hasBomb == 1 || this.player.bombCount > 0) {
             this.ASBomb.frame = 0;
+            this.player.hasBomb = 1;
             this.ASGroup.selPos.pos9 = 'Bomb';
             this.hasItems = true;
         }
@@ -1992,6 +2041,7 @@ steamGame.Game.prototype = {
             this.frameAbil.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
             this.frameAbil.name = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
             this.ASGroup.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos];
+            this.UIGroup.add(this.frameAbil);
         }
         else if (this.frameAbil.name == "none") {
             this.frameAbil.destroy();
