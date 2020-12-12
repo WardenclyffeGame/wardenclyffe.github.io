@@ -1,10 +1,8 @@
 @font-face {
-    font-family: 'arcadeclassicregular';
-    src: url('arcadeText/arcadeclassic-webfont.woff2') format('woff2'),
-         url('arcadeText/arcadeclassic-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
+    font-family: art-deco-custom;
+    src: url('sprites/art-deco.ttf');
+    font-weight:400;
+    font-weight:normal;
 }
 
 canvas {
@@ -12,8 +10,13 @@ canvas {
 }
 
 body {
-    font-family: 'arcadeclassicregular';
     word-spacing: 10px;
     padding: 0px;
     margin: 0px;
+}
+
+.fontLoader {
+    position: absolute;
+    left: -1000px;
+    visibility: hidden;
 }

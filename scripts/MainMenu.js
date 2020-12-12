@@ -56,17 +56,17 @@ steamGame.MainMenu.prototype = {
         this.menuSizingVarY = ((this.game.world.height / 10) * 9.5) / this.menuBack.height;
         this.menuBack.scale.setTo(this.menuSizingVarX, this.menuSizingVarY);
 
-        //this.game.load.bitmapFont('pixelFont', 'sprites/pixelFont.png', 'sprites/pixelFont.fnt');
-        this.startText = this.game.add.bitmapText(this.game.world.centerX, this.game.world.height * 0.85, 'pixelFont', 'Press space to begin.', 48);
+        this.fontFactor = this.game.world.height / 8.2125;
+        this.startText = this.game.add.text(this.game.world.centerX, this.game.world.height * 0.85, 'Press space to begin.', { font: (this.fontFactor / (5/3)) + "px 'art-deco-custom'", fill: "#ffffff" });
         this.startText.anchor.setTo(0.5, 0.5);
 
-        this.menuText1 = this.game.add.bitmapText(this.game.world.centerX, this.game.world.height * 1.2, 'pixelFont', 'Wardenclyffe', 80);
+        this.menuText1 = this.game.add.text(this.game.world.centerX, this.game.world.height * 1.2, 'Wardenclyffe', { font: (this.fontFactor) + "px 'art-deco-custom'", fill: "#b9f0e4" });
         this.menuText1.anchor.setTo(0.5, 0.5);
-        this.menuText2 = this.game.add.bitmapText(this.game.world.centerX, this.game.world.height * 1.4, 'pixelFont', 'New Game', 40);
+        this.menuText2 = this.game.add.text(this.game.world.centerX, this.game.world.height * 1.4, 'New Game', { font: (this.fontFactor / 2) + "px 'art-deco-custom'", fill: "#b9f0e4" });
         this.menuText2.anchor.setTo(0.5, 0.5);
-        this.menuText3 = this.game.add.bitmapText(this.game.world.centerX, this.game.world.height * 1.5, 'pixelFont', 'Continue Game', 40);
+        this.menuText3 = this.game.add.text(this.game.world.centerX, this.game.world.height * 1.5, 'Continue Game', { font: (this.fontFactor / 2) + "px 'art-deco-custom'", fill: "#b9f0e4" });
         this.menuText3.anchor.setTo(0.5, 0.5);
-        this.menuText4 = this.game.add.bitmapText(this.game.world.centerX, this.game.world.height * 1.6, 'pixelFont', 'Exit Game', 40);
+        this.menuText4 = this.game.add.text(this.game.world.centerX, this.game.world.height * 1.6, 'Exit Game', { font: (this.fontFactor / 2) + "px 'art-deco-custom'", fill: "#b9f0e4" });
         this.menuText4.anchor.setTo(0.5, 0.5);
 
         this.menuPointer = this.game.add.sprite(this.menuText2.x - this.menuText2.width - 30, this.menuText2.y, 'menuPointer');

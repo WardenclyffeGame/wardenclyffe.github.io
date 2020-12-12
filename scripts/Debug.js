@@ -115,7 +115,7 @@ steamGame.Game.prototype = {
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('angleDummy:' + (Math.atan2((this.player.centerY - this.dummy.centerY), (this.player.centerX - this.dummy.centerX)) * (180 / Math.PI)), this.game.camera.width - 250, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('arithmatic:' + (this.game.camera.height / 8.2125), this.game.camera.width - 250, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -227,7 +227,6 @@ steamGame.Game.prototype = {
             this.playerAnimation(this);
         }
         this.tickerHandler(this);
-        
     },
     /////////////////////////////////////////////STANDARD CREATE FUNCTIONS//////////////////////////////////////////////////////
     defaultCreate: function() {
@@ -523,6 +522,26 @@ steamGame.Game.prototype = {
         this.frameAbil.name = 'none';
         this.UIGroup.add(this.frameAbil);
 
+        //bomb counter
+        this.fontFactor = this.game.camera.height / 8.2125;
+        this.bombCounter = this.game.add.text(this.game.camera.width - this.scalingFactor * 8, this.frame.bottom, 'x ' + this.player.bombCount, { font: (this.fontFactor / (20/9)) + "px 'art-deco-custom'", fill: "#ffffff" });
+        this.bombCounter.anchor.setTo(1, 0);
+        this.bombCounter.fixedToCamera = true;
+        this.bombIcon = this.game.add.sprite(this.bombCounter.left + this.scalingFactor * 8, this.bombCounter.centerY, 'Bomb');
+        this.bombIcon.anchor.setTo(1, 0.5);
+        this.bombIcon.fixedToCamera = true;
+        this.bombIcon.frame = 33;
+        this.bombIcon.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+        this.UIGroup.add(this.bombCounter);
+        this.UIGroup.add(this.bombIcon);
+
+        this.hourglass = this.game.add.sprite(this.frame.left - this.scalingFactor * 2, this.ticker.plate4.bottom + this.scalingFactor * 4, 'Hourglass');
+        this.hourglass.anchor.setTo(1, 0);
+        this.hourglass.scale.setTo(this.scalingFactor, this.scalingFactor);
+        this.hourglass.fixedToCamera = true;
+        this.hourglass.frame = 1;
+        this.UIGroup.add(this.hourglass);
+
 
         /*******************************************MENU SCREENS********************************************/
         //ability screen above
@@ -715,29 +734,28 @@ steamGame.Game.prototype = {
         this.pauseGroup.pos = 'gone';
         this.pauseGroup.alpha = 0;
 
-        this.pauseText = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 3), 'pixelFont', 'Pause', 15);
+        this.pauseText = this.game.add.text(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 3), 'Pause', { font: (this.fontFactor * 1.25) + "px 'art-deco-custom'", fill: "#ffffff" });
         this.pauseText.anchor.setTo(0.5, 0.5);
-        this.pauseText.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        //this.pauseText.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
         this.pauseGroup.add(this.pauseText);
 
-        this.pauseTextC = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 12), 'pixelFont', 'Continue', 10);
+        this.pauseTextC = this.game.add.text(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 12), 'Continue', { font: (this.fontFactor * (5/8)) + "px 'art-deco-custom'", fill: "#ffffff" });
         this.pauseTextC.anchor.setTo(0.5, 0.5);
-        this.pauseTextC.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        //this.pauseTextC.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
         this.pauseGroup.add(this.pauseTextC);
 
-        this.pauseTextS = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) + (this.pauseMenu.height / 12), 'pixelFont', 'Save', 10);
+        this.pauseTextS = this.game.add.text(this.game.camera.width / 2, (this.game.camera.height / 2) + (this.pauseMenu.height / 12), 'Save', { font: (this.fontFactor * (5/8)) + "px 'art-deco-custom'", fill: "#ffffff" });
         this.pauseTextS.anchor.setTo(0.5, 0.5);
-        this.pauseTextS.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        //this.pauseTextS.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
         this.pauseGroup.add(this.pauseTextS);
 
-        this.pauseTextSQ = this.game.add.bitmapText(this.game.camera.width / 2, (this.game.camera.height / 2) + (this.pauseMenu.height / 4), 'pixelFont', 'Save and Quit', 10);
+        this.pauseTextSQ = this.game.add.text(this.game.camera.width / 2, (this.game.camera.height / 2) + (this.pauseMenu.height / 4), 'Save and Quit', { font: (this.fontFactor * (5/8)) + "px 'art-deco-custom'", fill: "#ffffff" });
         this.pauseTextSQ.anchor.setTo(0.5, 0.5);
-        this.pauseTextSQ.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        //this.pauseTextSQ.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
         this.pauseGroup.add(this.pauseTextSQ);
 
         this.pausePointer = this.game.add.sprite((this.game.camera.width / 2) - (this.pauseTextSQ.width * (2 / 3)), (this.game.camera.height / 2) - (this.pauseMenu.height / 12), 'menuPointer');
         this.pausePointer.anchor.setTo(1, 0.5);
-        this.pauseTextSQ.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
         this.pausePointer.animations.add('spin', [0, 0, 1, 2, 3, 4, 4, 3, 2, 1]);
         this.pausePointer.animations.play('spin', 12, true)
         this.pausePointer.pos = 1;
@@ -801,7 +819,35 @@ steamGame.Game.prototype = {
                 this.trueTOD = 1338;
             }
         }
-        
+        if (this.trueTOD >= 1205 && this.trueTOD < 1325) {
+            this.hourglass.frame = 1;
+        } else if (this.trueTOD >= 1325 || this.trueTOD < 5) {
+            this.hourglass.frame = 2;
+        } else if (this.trueTOD >= 5 && this.trueTOD < 125) {
+            this.hourglass.frame = 3;
+        } else if (this.trueTOD >= 125 && this.trueTOD < 245) {
+            this.hourglass.frame = 4;
+        } else if (this.trueTOD >= 245 && this.trueTOD < 295) {
+            this.hourglass.frame = 5;
+        } else if (this.trueTOD >= 295 && this.trueTOD < 300) {
+            this.hourglass.frame = 6;
+        } else if (this.trueTOD >= 300 && this.trueTOD < 305) {
+            this.hourglass.frame = 7;
+        } else if (this.trueTOD >= 305 && this.trueTOD < 515) {
+            this.hourglass.frame = 1;
+        } else if (this.trueTOD >= 515 && this.trueTOD < 725) {
+            this.hourglass.frame = 2;
+        } else if (this.trueTOD >= 725 && this.trueTOD < 935) {
+            this.hourglass.frame = 3;
+        } else if (this.trueTOD >= 935 && this.trueTOD < 1145) {
+            this.hourglass.frame = 4;
+        } else if (this.trueTOD >= 1145 && this.trueTOD < 1195) {
+            this.hourglass.frame = 5;
+        } else if (this.trueTOD >= 1195 && this.trueTOD < 1200) {
+            this.hourglass.frame = 6;
+        } else if (this.trueTOD >= 1200 && this.trueTOD < 1205) {
+            this.hourglass.frame = 7;
+        }
     },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
     debugHealth: function(player, collectable) {
@@ -1158,6 +1204,14 @@ steamGame.Game.prototype = {
         } else {
             this.elecLevel.scale.setTo(this.scalingFactor * 0.65, this.scalingFactor * 0.65);
         }
+
+        /*************************************************BOMB MANAGER****************************************/
+        if (this.player.bombCount < 10) {
+            this.bombCounter.setText('x 0' + this.player.bombCount);
+        } else {
+            this.bombCounter.setText('x ' + this.player.bombCount);
+        }
+        this.bombCounter.cameraOffset.x = (this.bombIcon.width / 2) + this.bombIcon.cameraOffset.x;
     },
     playerKnockbackHandler: function() {
         if (this.player.state == 'hurt' && this.knockBackTiming != true) {
@@ -1797,8 +1851,6 @@ steamGame.Game.prototype = {
                 if (abilityKey.isDown && abilityKey.duration < 2) {
                     if (this.ASGroup.curAbil == 'Bomb') {
                         this.bombWeapon.fire();
-                        this.player.bombCount --;
-                        this.bombsAlive ++;
                     }
                 }
             }
@@ -1816,6 +1868,7 @@ steamGame.Game.prototype = {
                 b.animations.play('fuse');
             }
             if (b.fresh == true && b.exploded == false && b.timing != true) {
+                this.player.bombCount --;
                 b.explosionTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(b) { 
                     b.exploded = true; 
                     b.frame = 1; 
