@@ -32,10 +32,13 @@ Wednesday: success before lunch
 
 Thursday:
     -make bomb frames and frames for bomb/ explosion
+        -finished late ^
     -add bomb functionality (actually similar to spawning the scarecrow)
+        -totally wrong, but finished anyway ^
 
-Friday:
+Friday: DELAY BERLIN
     -retouch sprites for debug map to more align with art style
+        -finished ^
     -add to sprites, possibly begin building Berlin, probably not yet
 
 Saturday:

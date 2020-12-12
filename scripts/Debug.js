@@ -1215,36 +1215,36 @@ steamGame.Game.prototype = {
             this.player.swipe.body.velocity.x = 0;
             this.player.swipe.body.velocity.y = 0;
             if (upKey.isDown) {
-                this.player.body.velocity.y = -this.player.speed * 0.9;
-                this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
+                this.player.body.velocity.y = -this.player.speed * 1.2;
+                this.player.swipe.body.velocity.y = -this.player.speed * 1.2;
             } 
             if (upArrow.isDown) {
-                this.player.body.velocity.y = -this.player.speed * 0.9;
-                this.player.swipe.body.velocity.y = -this.player.speed * 0.9;
+                this.player.body.velocity.y = -this.player.speed * 1.2;
+                this.player.swipe.body.velocity.y = -this.player.speed * 1.2;
             } 
             if (downKey.isDown) {
-                this.player.body.velocity.y = this.player.speed * 0.9;
-                this.player.swipe.body.velocity.y = this.player.speed * 0.9;
+                this.player.body.velocity.y = this.player.speed * 1.2;
+                this.player.swipe.body.velocity.y = this.player.speed * 1.2;
             }
             if (downArrow.isDown) {
-                this.player.body.velocity.y = this.player.speed * 0.9;
-                this.player.swipe.body.velocity.y = this.player.speed * 0.9;
+                this.player.body.velocity.y = this.player.speed * 1.2;
+                this.player.swipe.body.velocity.y = this.player.speed * 1.2;
             }
             if (rightKey.isDown) {
-                this.player.body.velocity.x = this.player.speed;
-                this.player.swipe.body.velocity.x = this.player.speed;
+                this.player.body.velocity.x = this.player.speed * 1.3;
+                this.player.swipe.body.velocity.x = this.player.speed * 1.3;
             }
             if (rightArrow.isDown) {
-                this.player.body.velocity.x = this.player.speed;
-                this.player.swipe.body.velocity.x = this.player.speed;
+                this.player.body.velocity.x = this.player.speed * 1.3;
+                this.player.swipe.body.velocity.x = this.player.speed * 1.3;
             }
             if (leftKey.isDown) {
-                this.player.body.velocity.x = -this.player.speed;
-                this.player.swipe.body.velocity.x = -this.player.speed;
+                this.player.body.velocity.x = -this.player.speed * 1.3;
+                this.player.swipe.body.velocity.x = -this.player.speed * 1.3;
             }
             if (leftArrow.isDown) {
-                this.player.body.velocity.x = -this.player.speed;
-                this.player.swipe.body.velocity.x = -this.player.speed;
+                this.player.body.velocity.x = -this.player.speed * 1.3;
+                this.player.swipe.body.velocity.x = -this.player.speed * 1.3;
             }
 
         }
