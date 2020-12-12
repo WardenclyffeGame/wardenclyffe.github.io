@@ -115,7 +115,7 @@ steamGame.Game.prototype = {
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            this.game.debug.text('bombCount:' + this.player.bombCount, this.game.camera.width - 250, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.game.debug.text('angleDummy:' + (Math.atan2((this.player.centerY - this.dummy.centerY), (this.player.centerX - this.dummy.centerX)) * (180 / Math.PI)), this.game.camera.width - 250, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
             this.debugText.KC = this.game.debug.text('Currency change: ' + (this.player.newC + 10), this.game.world.centerX - 150, this.game.camera.height - 60, null, 'rgb(0, 0, 0)');
@@ -805,18 +805,25 @@ steamGame.Game.prototype = {
     },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
     debugHealth: function(player, collectable) {
-        if (collectable != this.HPPotTest) {
+        if (collectable == this.HPSign) {
             player.timer += 1;
             if(player.timer === 100) {
                 player.timer = 0;
                 player.currentHP -= 1;
             }
-        } else {
+        } else if (collectable == this.HPPotTest) {
             if (player.currentHP < player.maxHP) {
                 player.currentHP ++;
                 collectable.destroy();
             } else if (player.currentHP = player.maxHP) {
                 collectable.destroy();
+            }
+        } else if (this.bombWeapon.bullets.children.indexOf(collectable) > -1){
+            if (collectable.exploded == true) {
+                if (this.player.state == 'walk') {
+                    this.playerKnockback(collectable, this);
+                    this.player.currentHP -= 2;
+                }
             }
         }
     },
@@ -892,6 +899,7 @@ steamGame.Game.prototype = {
             if(this.dummy.hit == false && this.dummy.currentHP == 1) {
                 this.dummy.currentHP = 0;
                 this.dummy.value = 100;
+                this.playerKnockback(this.dummy, this);
                 this.dummy.destroy();
                 this.dummy.post.destroy();
                 this.dummy.x = 0;
@@ -912,28 +920,11 @@ steamGame.Game.prototype = {
                 this.player.hasBoots = 1;
                 this.ASGroup.curPos = 5;
                 this.ASGroup.curAbil = 'StunBaton';
-                this.player.state = 'hurt';
                 this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
                     this.dummyCreate(this);
                 }, this);
-                if (this.direction == 'right') {
-                    this.player.body.velocity.x = -this.player.speed * 3;
-                    this.player.swipe.body.velocity.x = -this.player.speed * 3;
-                }
-                if (this.direction == 'left') {
-                    this.player.body.velocity.x = this.player.speed * 3;
-                    this.player.swipe.body.velocity.x = this.player.speed * 3;
-                }
-                if (this.direction == 'up') {
-                    this.player.body.velocity.y = this.player.speed * 3;
-                    this.player.swipe.body.velocity.y = this.player.speed * 3;
-                }
-                if (this.direction == 'down') {
-                    this.player.body.velocity.y = -this.player.speed * 3;
-                    this.player.swipe.body.velocity.y = -this.player.speed * 3;
-                }
             }
-        } else if (enemy != this.player.swipe){
+        } else if (this.winanWeapon.bullets.children.indexOf(weapon) > -1){
             if(this.dummy.hit == false && this.dummy.currentHP > 2) {
                 this.dummy.hit = true;
                 this.dummy.frame = 1;
@@ -961,6 +952,19 @@ steamGame.Game.prototype = {
             }
             weapon.destroy();
             this.player.bombCount ++;
+        } else if (this.bombWeapon.bullets.children.indexOf(weapon) > -1){
+            if (weapon.exploded == true) {
+                this.dummy.currentHP = 0;
+                this.dummy.value = 100;
+                this.dummy.destroy();
+                this.dummy.post.destroy();
+                this.dummy.x = 0;
+                this.dummy.y = 0;
+                this.collect(this.player, this.dummy);
+                this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
+                    this.dummyCreate(this);
+                }, this);
+            }
         }
     },
     collect: function(player, coin) {
@@ -990,6 +994,8 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.battTest, this.debugElec, null, this);
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
         this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
+        this.game.physics.arcade.overlap(this.bombWeapon.bullets, this.dummy, this.debugSwipe, null, this);
+        this.game.physics.arcade.overlap(this.bombWeapon.bullets, this.player, this.debugHealth, null, this);
 
         //maintain map at absolute background
         this.decFloor.moveDown();
@@ -1154,9 +1160,10 @@ steamGame.Game.prototype = {
         }
     },
     playerKnockbackHandler: function() {
-        if (this.player.state == 'hurt' && this.knockbackTimer == null) {
-            this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.15, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
-            this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(){ this.player.state = 'walk'; }, this);
+        if (this.player.state == 'hurt' && this.knockBackTiming != true) {
+            this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
+            this.knockbackTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){ this.player.state = 'walk'; this.animationName = "stopped"; this.knockBackTiming = false; }, this);
+            this.knockBackTiming = true;
         } 
         if (this.player.state == 'hurt') {
             if (this.direction == 'right') {
@@ -1177,6 +1184,27 @@ steamGame.Game.prototype = {
             if (this.direction == 'down') {
                 this.player.frame = 82;
             }
+        }
+    },
+    playerKnockback: function(KBSource) {
+        this.player.state = 'hurt';
+        this.KBAngle = Math.atan2((this.player.centerY - KBSource.centerY), (this.player.centerX - KBSource.centerX))  * (180 / Math.PI);
+
+        if ((this.KBAngle < -112.5 && this.KBAngle >= -180) || (this.KBAngle > 112.5 && this.KBAngle <= 180)) {
+            this.player.body.velocity.x = -this.player.speed * 3;
+            this.player.swipe.body.velocity.x = -this.player.speed * 3;
+        }
+        if ((this.KBAngle < 67.5 && this.KBAngle >= 0) || (this.KBAngle > -67.5 && this.KBAngle <= 0)) {
+            this.player.body.velocity.x = this.player.speed * 3;
+            this.player.swipe.body.velocity.x = this.player.speed * 3;
+        }
+        if (this.KBAngle < 157.5 && this.KBAngle > 22.5) {
+            this.player.body.velocity.y = this.player.speed * 3;
+            this.player.swipe.body.velocity.y = this.player.speed * 3;
+        }
+        if (this.KBAngle > -157.5 && this.KBAngle < -22.5) {
+            this.player.body.velocity.y = -this.player.speed * 3;
+            this.player.swipe.body.velocity.y = -this.player.speed * 3;
         }
     },
     playerMovement: function() {
