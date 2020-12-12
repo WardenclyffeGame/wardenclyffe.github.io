@@ -105,7 +105,7 @@ steamGame.Game.prototype = {
             //this.playerData1_2 = window.localStorage.getItem('playerData');
             //this.playerData2 = JSON.parse(this.playerData1_2);
             //this.debugText.HP = this.game.debug.text('Save Data: ' + this.playerData1_2, this.game.world.centerX - 1900, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
-            this.debugText.HP = this.game.debug.text('currentHP: ' + this.player.currentHP, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
+            this.debugText.HP = this.game.debug.text('q: ' + abilityKey.duration, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             //this.game.debug.text('direction: ' + this.direction, this.game.camera.width - 150, this.game.camera.height - 150, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('Health collision timer: ' + this.player.timer, this.game.world.centerX - 150, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
             //this.debugText.HPC = this.game.debug.text('active data: ' + this.player.curAbil, this.game.world.centerX - 900, this.game.camera.height - 135, null, 'rgb(0, 0, 0)');
@@ -125,6 +125,9 @@ steamGame.Game.prototype = {
             //this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             //this.debugText.DB = this.game.debug.body(this.dummy);
             this.game.debug.body(this.dummy.post);
+            this.bombWeapon.bullets.forEach((b) => {
+                this.game.debug.body(b);
+            });
             //this.game.debug.body(this.HPPotTest);
             
             if (rightArrow.isDown) {
@@ -399,9 +402,31 @@ steamGame.Game.prototype = {
             b.body.updateBounds();
             b.lightRadius = this.scalingFactor * 32;
             b.lightColor = "#ebfcfb";
+            b.debug = true;
         }, this);
         this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
+
+        this.bombWeapon = this.add.weapon(3, 'Bomb');
+        this.bombWeapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+        this.bombWeapon.bulletLifespan = Phaser.Timer.SECOND * 5;
+        
+        this.bombWeapon.bulletAngleOffset = 90;
+        this.bombWeapon.bulletSpeed = 0;
+        //this.bombWeapon.addBulletAnimation('spin', [0, 1], 2, true);
+        //this.bombWeapon.bullets.onKilled.add(this.explosionHandler(), this);
+        this.bombWeapon.bullets.forEach((b) => {
+            b.scale.setTo(this.scalingFactor * 0.75);
+            b.body.setSize(48, 48, 0, 0);
+            b.lightRadius = this.scalingFactor * 16;
+            b.lightColor = "#ffcba13f";
+            b.debug = true;
+            b.exploded = false;
+            b.animations.add('fuse', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25], 8, false);
+            b.animations.add('explode', [26, 27, 28, 29, 30, 31, 32], 12, false);
+        }, this);
+        this.bombWeapon.bullets.lightRadius = this.scalingFactor * 16;
+        this.bombWeapon.trackSprite(this.player, (this.player.width / 16), (this.player.width / 16));
         
         if (this.player.TOD >= 300 && this.player.TOD < 1140) {
             this.player.worldTintReference.tint = 0xffffff;
@@ -992,25 +1017,25 @@ steamGame.Game.prototype = {
             if (this.player.diffHP == 4) {
                 this['heart' + (this.highestHeart - 2).toString()].frame = 0;
             }
-            if (this.player.diffHP == 6) {
+            if (this.player.diffHP == 6 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 3).toString()].frame = 0;
             }
-            if (this.player.diffHP == 8) {
+            if (this.player.diffHP == 8 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 4).toString()].frame = 0;
             }
-            if (this.player.diffHP == 10) {
+            if (this.player.diffHP == 10 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 5).toString()].frame = 0;
             }
-            if (this.player.diffHP == 12) {
+            if (this.player.diffHP == 12 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 6).toString()].frame = 0;
             }
-            if (this.player.diffHP == 14) {
+            if (this.player.diffHP == 14 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 7).toString()].frame = 0;
             }
-            if (this.player.diffHP == 16) {
+            if (this.player.diffHP == 16 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 8).toString()].frame = 0;
             }
-            if (this.player.diffHP == 18) {
+            if (this.player.diffHP == 18 && this.player.diffHP != this.player.maxHP) {
                 this['heart' + (this.highestHeart - 9).toString()].frame = 0;
             }
             if(this.player.diffHP > 0) {
@@ -1742,18 +1767,43 @@ steamGame.Game.prototype = {
         if (this.hasItems == true) {
             if (this.player.bombCount > 0) {
                 if (abilityKey.isDown && abilityKey.duration < 2) {
-                    if (this.ASGroup.curAbil == 'Bomb' && this.usingAbil == "none") {
-                        this.bombX = this.player.centerX;
-                        this.bombY = this.player.y;
-                        //this.createBomb(this.bombX, this.bombY);
-                        //////////////////NOTE TO US: MAKE THIS ANOTHER WEAPON WITH NO VELOCITY
-                        /////////basically, same principle as the winan, but no velocity
-                        /////////don't have time right now, it's 1:11
+                    if (this.ASGroup.curAbil == 'Bomb') {
+                        this.bombWeapon.fire();
+                        this.player.bombCount --;
+                        this.bombsAlive ++;
                     }
                 }
             }
         }
+        this.bombWeapon.bullets.forEachExists((b) => {
+            if (b.fresh == true) {
+                b.scale.setTo(this.scalingFactor * 0.75);
+                b.body.setSize(64, 64, -16, -16);
+                b.lightRadius = this.scalingFactor * 16;
+                b.lightColor = "#ffcba13f";
+                b.debug = true;
+                b.exploded = false;
+                b.animations.add('fuse', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25], 8, false);
+                b.animations.add('explode', [26, 27, 28, 29, 30, 31, 32], 12, false);
+                b.animations.play('fuse');
+            }
+            if (b.fresh == true && b.exploded == false && b.timing != true) {
+                b.explosionTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(b) { 
+                    b.exploded = true; 
+                    b.frame = 1; 
+                    b.lightColor = "#fffdd98f";
+                    b.animations.play('explode');
+                    this.game.add.tween(b).to({lightRadius: this.scalingFactor * 32 * 2.5}, 50, null, true);
+                    this.game.add.tween(b).to({lightRadius: 0}, 50, null, true, 375);
+                }, this, b); 
+                b.killTimer = this.game.time.events.add(Phaser.Timer.SECOND * 4, function(b) { 
+                    b.exploded = false;
+                    b.timing = false;
+                }, this, b);
+                b.timing = true;
+            }
 
+        })
         //BOOT USAGE
         if(dashKey.isDown && dashKey.duration < 2 && this.player.hasBoots == 1 && this.dashCD != true) {
             this.player.state = "dash";
@@ -1782,20 +1832,6 @@ steamGame.Game.prototype = {
                 this.animationName = "dashDown";
             }
         }
-    },
-    createBomb: function(spawnX, spawnY) {
-        this.bombs[(this.bombs.living + 1).toString()] = this.game.add.sprite(spawnX, spawnY, 'Bomb');
-        this.game.physics.arcade.enable(this.bombs[(this.bombs.living + 1).toString()]);
-        this.bombs[(this.bombs.living + 1).toString()].anchor.setTo(0.5, 0.5);
-        this.bombs[(this.bombs.living + 1).toString()].scale.setTo(this.scalingFactor * 0.75);
-        this.bombs[(this.bombs.living + 1).toString()].body.setSize(48, 48, -8, -8)
-        this.bombs[(this.bombs.living + 1).toString()].debug = true;
-        this.bombs[(this.bombs.living + 1).toString()].explodeTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3, function(){
-            //this.explosion(this.bombs[(this.bombs.living + 1).toString()]);
-            this.bombs[(this.bombs.living).toString()].destroy();
-        }, this);
-        this.bombs.living ++;
-        this.player.bombCount --;
     },
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
     tickerHandler: function() {
@@ -2220,11 +2256,7 @@ steamGame.Game.prototype = {
         this.makeHalo(this.player);
         this.makeHalo(this.dummy);
         this.winanWeapon.bullets.forEachExists(this.makeHalo, this);
-        /*if (this.trueTOD > 1140 || this.trueTOD < 300) {
-            this.makeHalo(this.kronaTestG);
-            this.makeHalo(this.kronaTestS);
-            this.makeHalo(this.kronaTestZ);
-        }*/
+        this.bombWeapon.bullets.forEachExists(this.makeHalo, this);
 
         this.player.shadowTexture.dirty = true;
     },
@@ -2232,10 +2264,14 @@ steamGame.Game.prototype = {
         body.shadowX = body.centerX - this.game.camera.x + (this.game.width * 0.1);
         body.shadowY = ((body.centerY - (body.height / 32 * 5)) - this.game.camera.y) + (this.game.height * 0.1);
         this.radialGradient = this.player.shadowTexture.context.createRadialGradient(body.shadowX, body.shadowY, (body.lightRadius * (2/3)), body.shadowX, body.shadowY, body.lightRadius)
-        this.radialGradient.addColorStop(0, body.lightColor + 'ff');
-        this.radialGradient.addColorStop(1, body.lightColor + '00');
+        this.radialGradient.addColorStop(0, body.lightColor);
+        if (body.lightColor.length == 9) {
+            body.lightColor2 = body.lightColor.substring(0, body.lightColor.length - 2)
+            this.radialGradient.addColorStop(1, body.lightColor2 + '00');
+        } else {
+            this.radialGradient.addColorStop(1, body.lightColor + '00');
+        }
         this.player.shadowTexture.context.beginPath();
-        //this.player.shadowTexture.context.fillStyle = 'rgb(255, 255, 255)';
         this.player.shadowTexture.context.fillStyle = this.radialGradient;
         this.player.shadowTexture.context.arc(body.shadowX, body.shadowY, body.lightRadius, 0, Math.PI*2);
         this.player.shadowTexture.context.fill();
@@ -2262,6 +2298,7 @@ steamGame.Game.prototype = {
         this.playerData.currentEnergy = this.player.currentEnergy;
         this.playerData.currency = 0;
         this.playerData.newC = this.player.newC;
+        this.playerData.bombCount = this.player.bombCount;
         //ability declarations
         this.playerData.hasBomb = this.player.hasBomb;
         this.playerData.hasBoots = this.player.hasBoots;

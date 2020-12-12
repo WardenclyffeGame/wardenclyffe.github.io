@@ -126,6 +126,7 @@ steamGame.MainMenu.prototype = {
                 this.game.state.states[this.defaultData.map].playerData.hasBoots = 1;
                 this.game.state.states[this.defaultData.map].playerData.hasSteamShield = 1;
                 this.game.state.states[this.defaultData.map].playerData.TOD = 1100;
+                this.game.state.states[this.defaultData.map].playerData.bombCount = 10;
                 this.game.state.start(this.defaultData.map);
             }, this)
         }
