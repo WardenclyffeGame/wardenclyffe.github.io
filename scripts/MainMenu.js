@@ -10,13 +10,17 @@ steamGame.MainMenu.prototype = {
 
         this.backBlimp = this.game.add.sprite(this.game.world.width * 0.75, (this.game.world.centerY / 2), 'menuBlimp');
         this.backBlimp.anchor.setTo(0, 0.5);
-        this.backBlimp.scale.setTo(0.5, 0.5);
+        this.backBlimp.scalingFactor = this.game.world.width / this.backBlimp.width;
+        this.backBlimp.width = this.game.world.width / this.backBlimp.scalingFactor * 0.5;
+        this.backBlimp.height = this.game.world.width / this.backBlimp.scalingFactor * 0.3;
         this.backBlimp.animations.add('float');
         this.backBlimp.animations.play('float', 8, true);
 
         this.backBall2 = this.game.add.sprite(160, this.game.world.height, 'menuBall2');
         this.backBall2.anchor.setTo(0, 0.95);
-        this.backBall2.scale.setTo(0.2, 0.2);
+        this.backBall2.scalingFactor = this.game.world.width / this.backBall2.width;
+        this.backBall2.width = this.game.world.width / this.backBall2.scalingFactor * 0.2;
+        this.backBall2.height = this.game.world.width / this.backBall2.scalingFactor * 0.35;
         this.backBall2.animations.add('float');
         this.backBall2.animations.play('float', 6, true);
 
@@ -37,7 +41,9 @@ steamGame.MainMenu.prototype = {
 
         this.backBall1 = this.game.add.sprite(180, this.game.world.height, 'menuBall1');
         this.backBall1.anchor.setTo(0, 0.95);
-        this.backBall1.scale.setTo(0.3, 0.3);
+        this.backBall1.scalingFactor = this.game.world.width / this.backBall1.width;
+        this.backBall1.width = this.game.world.width / this.backBall1.scalingFactor * 0.3;
+        this.backBall1.height = this.game.world.width / this.backBall1.scalingFactor * 0.45;
         this.backBall1.animations.add('float', [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         this.backBall1.animations.play('float', 6, true);
 
