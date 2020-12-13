@@ -997,7 +997,9 @@ steamGame.Game.prototype = {
                 }, this);
             }
             weapon.destroy();
-            this.player.bombCount ++;
+            if (this.player.bombCount < 10) {
+                this.player.bombCount ++;
+            }
         } else if (this.bombWeapon.bullets.children.indexOf(weapon) > -1){
             if (weapon.exploded == true) {
                 this.dummy.currentHP = 0;
