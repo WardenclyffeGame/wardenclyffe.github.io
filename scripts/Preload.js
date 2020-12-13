@@ -27,10 +27,8 @@ steamGame.Preload.prototype = {
             this.load.image('plaque', 'maps/menuMapping.png');
         this.load.atlasJSONHash('menuBG', 'sprites/images/titleWarden.png', 'sprites/images/titleWarden.json');
             this.load.image('menuBG2', 'sprites/images/title2.png');
-        this.load.bitmapFont('pixelFont', 'sprites/pixelFont.png', 'sprites/pixelFont.fnt');
-            this.load.atlasJSONHash('menuPointer', 'sprites/images/menuPointer.png', 'sprites/images/menuPointer.json');
+        this.load.atlasJSONHash('menuPointer', 'sprites/images/menuPointer.png', 'sprites/images/menuPointer.json');
         //this.load.atlasJSONHash('protest', 'sprites/game/testingProtag.png', 'sprites/game/testingProtag.json');
-            //this.load.atlasJSONHash('debugTiles', 'sprites/game/testTiles.png', 'sprites/game/jsonKeys/testTiles.json');
             this.load.image('debugTiles', 'sprites/game/Tiles.png');
             this.load.image('black', 'sprites/game/black.png');
         this.load.tilemap('debugMap', 'maps/DebugMap2.json', null, Phaser.Tilemap.TILED_JSON);

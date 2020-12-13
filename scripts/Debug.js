@@ -4,9 +4,15 @@ steamGame.Game = function(){}
 
 steamGame.Game.prototype = {
     /////////////////////////////////////////////DEFAULT PHASER FUNCTIONS///////////////////////////////////////////////////////
+    preload: function() {
+        this.game.stage.backgroundColor = '#000000';
+        this.load.atlasJSONHash('Tesla', 'sprites/game/teslaSheet.png', 'sprites/game/jsonKeys/teslaSheet.json');
+
+        this.npcGroup = this.game.add.group();
+    },
     create: function(){
         //begin scene setup
-        this.game.stage.backgroundColor = '#7D7D7D';
+        this.game.stage.backgroundColor = '#000000';
         this.scalingFactor = (this.game.world.width / 19) / 32;
         this.map = this.game.add.tilemap('debugMap');
         this.map.addTilesetImage('DebugTiles', 'debugTiles');
@@ -29,7 +35,8 @@ steamGame.Game.prototype = {
  
         
         ///////////////////////////////////testing objects//////////////////////////////////////////
-        this.dummyCreate(this);
+        this.dummyCreate((this.game.world.centerX + (500 * this.scalingFactor)), (this.game.world.centerY + (100 * this.scalingFactor)));
+        this.teslaCreate((this.scalingFactor * 32 * 24) * 1.5, (this.scalingFactor * 32 * 5) * 4);
 
         this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.ESign);
@@ -124,10 +131,7 @@ steamGame.Game.prototype = {
             //this.debugText.PLYR = this.game.debug.body(this.player);
             //this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             //this.debugText.DB = this.game.debug.body(this.dummy);
-            this.game.debug.body(this.dummy.post);
-            this.bombWeapon.bullets.forEach((b) => {
-                this.game.debug.body(b);
-            });
+            //this.game.debug.body(this.tesla.collider);
             //this.game.debug.body(this.HPPotTest);
             
             if (rightArrow.isDown) {
@@ -157,11 +161,6 @@ steamGame.Game.prototype = {
 
             if(this.player.state == "walk") {
                 this.playerUseAbil(this);
-            }
-            if (this.dummy.bottom > this.player.bottom) {
-                this.dummy.moveUp();
-            } else if (this.dummy.bottom < this.player.bottom) {
-                this.dummy.moveDown();
             }
 
             this.playerAnimation(this);
@@ -766,12 +765,14 @@ steamGame.Game.prototype = {
         this.fade.fixedToCamera = true;
         this.fade.alpha = 1;
     },
-    dummyCreate: function () {
+    dummyCreate: function (spawnX, spawnY) {
         //testing object for slashing
-        this.dummy = this.game.add.sprite(this.game.world.centerX + (500 * this.scalingFactor), this.game.world.centerY + (100 * this.scalingFactor), 'Dummy');
+        this.dummy = this.game.add.sprite(spawnX, spawnY, 'Dummy');
         this.game.physics.arcade.enable(this.dummy);
         this.dummy.hit = false;
         this.dummy.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
+        this.dummy.lightRadius = this.scalingFactor * 32 * 1.5;
+        this.dummy.lightColor = "#ffffff";
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
         this.dummy.body.immovable = true;
@@ -781,8 +782,26 @@ steamGame.Game.prototype = {
         this.dummy.post.anchor.setTo(0.5, 1);
         this.dummy.post.width = this.scalingFactor / 16;
         this.dummy.post.height = this.scalingFactor / 16;
-        this.dummy.lightRadius = this.scalingFactor * 32 * 1.5;
-        this.dummy.lightColor = "#ffffff";
+    },
+    teslaCreate: function(spawnX, spawnY) {
+        this.tesla = this.game.add.sprite(spawnX, spawnY, 'Tesla');
+        this.game.physics.arcade.enable(this.tesla);
+        this.tesla.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
+        this.tesla.maxHP = 3;
+        this.tesla.animations.add('idleDown', [39, 39, 39, 39, 39, 40, 40, 40, 41, 41, 41, 39], 4, true);
+        this.tesla.animations.play('idleDown');
+        this.tesla.currentHP = this.tesla.maxHP;
+        this.tesla.body.immovable = true;
+        this.tesla.body.setSize(4, 7, 14, 11);
+        this.tesla.collider = this.game.add.sprite(this.tesla.centerX, this.tesla.bottom - (this.tesla.height / 4), '');
+        this.game.physics.arcade.enable(this.tesla.collider);
+        this.tesla.collider.body.immovable = true;
+        this.tesla.collider.anchor.setTo(0.5, 0.5);
+        this.tesla.collider.width = this.scalingFactor * 32 * 2;
+        this.tesla.collider.height = this.scalingFactor * 32 * 2.5;
+        this.tesla.lightRadius = this.scalingFactor * 32 * 3;
+        this.tesla.lightColor = "#ffffff";
+        this.npcGroup.add(this.tesla.collider);
     },
     dayCycle: function() {
         if (this.countingSec != true) {
@@ -948,8 +967,7 @@ steamGame.Game.prototype = {
                 this.playerKnockback(this.dummy, this);
                 this.dummy.destroy();
                 this.dummy.post.destroy();
-                this.dummy.x = 0;
-                this.dummy.y = 0;
+                this.dummy.lightRadius = 0; 
                 this.collect(this.player, this.dummy);
                 this.player.hasBomb = 1;
                 this.player.hasWinan = 1;
@@ -967,7 +985,7 @@ steamGame.Game.prototype = {
                 this.ASGroup.curPos = 5;
                 this.ASGroup.curAbil = 'StunBaton';
                 this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
-                    this.dummyCreate(this);
+                    this.dummyCreate((this.game.world.centerX + (500 * this.scalingFactor)), (this.game.world.centerY + (100 * this.scalingFactor)));
                 }, this);
             }
         } else if (this.winanWeapon.bullets.children.indexOf(weapon) > -1){
@@ -989,11 +1007,10 @@ steamGame.Game.prototype = {
                 this.dummy.value = 100;
                 this.dummy.destroy();
                 this.dummy.post.destroy();
-                this.dummy.x = 0;
-                this.dummy.y = 0;
+                this.dummy.lightRadius = 0; 
                 this.collect(this.player, this.dummy);
                 this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
-                    this.dummyCreate(this);
+                    this.dummyCreate((this.game.world.centerX + (500 * this.scalingFactor)), (this.game.world.centerY + (100 * this.scalingFactor)));
                 }, this);
             }
             weapon.destroy();
@@ -1006,11 +1023,10 @@ steamGame.Game.prototype = {
                 this.dummy.value = 100;
                 this.dummy.destroy();
                 this.dummy.post.destroy();
-                this.dummy.x = 0;
-                this.dummy.y = 0;
+                this.dummy.lightRadius = 0; 
                 this.collect(this.player, this.dummy);
                 this.dummyRespawnTimer = this.game.time.events.add(Phaser.Timer.SECOND * 20, function () {
-                    this.dummyCreate(this);
+                    this.dummyCreate((this.game.world.centerX + (500 * this.scalingFactor)), (this.game.world.centerY + (100 * this.scalingFactor)));
                 }, this);
             }
         }
@@ -1028,8 +1044,7 @@ steamGame.Game.prototype = {
     collisionHandler: function() {
         this.game.physics.arcade.collide(this.player, this.wall);
         this.game.physics.arcade.collide(this.player, this.dummy.post);
-        //this.game.physics.arcade.collide(this.player, this.wall, this.debugSteam);
-        //this.game.physics.arcade.collide(this.player, this.wall, this.debugHurt, null, this);
+        this.game.physics.arcade.collide(this.player, this.tesla);
         this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
@@ -1044,6 +1059,23 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
         this.game.physics.arcade.overlap(this.bombWeapon.bullets, this.dummy, this.debugSwipe, null, this);
         this.game.physics.arcade.overlap(this.bombWeapon.bullets, this.player, this.debugHealth, null, this);
+        this.game.physics.arcade.overlap(this.player, this.npcGroup, this.dialogueQueue, null, this);
+
+        if (this.dummy.bottom > this.player.bottom) {
+            this.dummy.moveUp();
+        } else if (this.dummy.bottom < this.player.bottom) {
+            this.dummy.moveDown();
+        }
+        this.npcGroup.forEach((npc) => {
+            
+        })
+        if (this.tesla.bottom > this.player.bottom) {
+            this.tesla.moveUp();
+            this.tesla.body.setSize(4, 3, 14, 22);
+        } else if (this.tesla.bottom < this.player.bottom) {
+            this.tesla.moveDown();
+            this.tesla.body.setSize(4, 7, 14, 11);
+        }
 
         //maintain map at absolute background
         this.decFloor.moveDown();
@@ -1208,6 +1240,9 @@ steamGame.Game.prototype = {
         }
 
         /*************************************************BOMB MANAGER****************************************/
+        if (this.player.bombCount > 10) {
+            this.player.bombCount = 10;
+        }
         if (this.player.bombCount < 10) {
             this.bombCounter.setText('x 0' + this.player.bombCount);
         } else {
@@ -1916,6 +1951,11 @@ steamGame.Game.prototype = {
             }
         }
     },
+    dialogueQueue: function(player, npc) {
+        if (interactKey.isDown && interactKey.duration < 2) {
+            this.player.bombCount ++;
+        }
+    },
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
     tickerHandler: function() {
         /***************************************** Currency tracker **************************************************************************************************/
@@ -2340,6 +2380,7 @@ steamGame.Game.prototype = {
         this.makeHalo(this.dummy);
         this.winanWeapon.bullets.forEachExists(this.makeHalo, this);
         this.bombWeapon.bullets.forEachExists(this.makeHalo, this);
+        this.makeHalo(this.tesla);
 
         this.player.shadowTexture.dirty = true;
     },
