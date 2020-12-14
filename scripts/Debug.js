@@ -469,6 +469,7 @@ steamGame.Game.prototype = {
 
         /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
         this.UIGroup = this.game.add.group();
+        //this.textGrad = this
 
         //Heart declaration
         for (i = 0; i < (this.player.maxHP/2); i++) {
@@ -804,9 +805,9 @@ steamGame.Game.prototype = {
         this.dialogueText.wordWrap = true;
         this.diaGroup.add(this.dialogueText);
 
-        this.dialoguePortrait = this.game.add.sprite(this.dialogueWindow.x + (this.dialogueWindow.width * (39.8/48)), this.dialogueWindow.y + (this.dialogueWindow.height / 5.3), '');
-        this.dialoguePortrait.width = this.scalingFactor * 32 * 1.4;
-        this.dialoguePortrait.height = this.scalingFactor * 32 * 1.4;
+        this.dialoguePortrait = this.game.add.sprite(this.dialogueWindow.x + (this.dialogueWindow.width * (38.05/48)), this.dialogueWindow.y, '');
+        this.dialoguePortrait.width = this.dialogueWindow.height;
+        this.dialoguePortrait.height = this.dialogueWindow.height;
         this.dialoguePortrait.alpha = 0;
         this.diaGroup.add(this.dialoguePortrait);
 
@@ -862,9 +863,11 @@ steamGame.Game.prototype = {
         this.tesla.lightColor = "#ffffff";
 
         this.tesla.collider.diaNum = 0;
-        this.tesla.collider.message0 = "Why are you still here?";
+        this.tesla.collider.messageARY = ["Why are you still here?", "Go away.", "I know I'm the only thing to mess with right now but that doesn't mean I'm not busy.", "The least you could do take care of Ben for me, scarecrows frighten me.", "I am ERROR", "It's a secret to everybody.", "Well excuse me, princess."]
+        this.tesla.collider.message0 = this.tesla.collider.messageARY[Math.floor(Math.random() * this.tesla.collider.messageARY.length)];
         this.tesla.collider.message1 = "It's dangerous to go alone, take this!";
         this.tesla.collider.message2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.";
+        this.tesla.collider.message3 = "Go away.";
         this.tesla.collider.portrait = "teslaPortrait"
 
         this.npcGroup.add(this.tesla.collider);
@@ -2022,6 +2025,7 @@ steamGame.Game.prototype = {
     dialogueQueue: function(player, npc) {
         if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none") {
             this.menuState = "dialogue";
+            npc.message0 = npc.messageARY[Math.floor(Math.random() * npc.messageARY.length)]
             npc.diaNum = npc.diaNum + 1;
             this.displayDia = npc['message' + npc.diaNum] || npc.message0;
             this.dialoguePortrait.loadTexture(npc.portrait);
@@ -2047,8 +2051,8 @@ steamGame.Game.prototype = {
                 this.dialogueText.alpha = 1;
             }
         }
-        this.dialoguePortrait.width = this.scalingFactor * 32 * 1.4;
-        this.dialoguePortrait.height = this.scalingFactor * 32 * 1.4;
+        this.dialoguePortrait.width = this.dialogueWindow.height;
+        this.dialoguePortrait.height = this.dialogueWindow.height;
     },
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
     tickerHandler: function() {
