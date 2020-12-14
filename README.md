@@ -15,13 +15,14 @@
     +Added Boots <br>
       <ul>+Added functionality <br> </ul>
     </ul>
-  *~HUD*
+  *~HUD* <ul>
     +Bomb counter <br>
     +Daytime clock <br>
       <ul>
       +Added Turbine sprites <br>
       +Added Defibrillator sprites <br>
       +Added bottle sprites <br>
+      </ul>
     </ul>
   *~Map*
     <ul>
@@ -31,10 +32,11 @@
     +Added Energy pickup <br>
     +Added Tesla spirte <br>
     </ul>
-  *~Miscellaneous*
+  *~Miscellaneous* <ul>
     +Save state capability completed<br>
     +Added Day/Night cycle<br>
       <ul>+Added functionality <br> </ul> 
+    </ul>
    
 **v.0.1 11-25-20** <br>
   *~Character*
