@@ -67,6 +67,7 @@ steamGame.Preload.prototype = {
         this.load.image('coal', 'sprites/game/coalTest.png');
             this.load.image('battery', 'sprites/game/battTest.png');
         this.load.atlasJSONHash('Hourglass', 'sprites/game/Hourglass.png', 'sprites/game/jsonKeys/Hourglass.json');
+            this.load.image('diaWindow', 'sprites/game/dialogueWindow.png');
     },
     create: function() {
         this.state.start('MainMenu');

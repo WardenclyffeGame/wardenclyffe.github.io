@@ -227,6 +227,33 @@ steamGame.Game.prototype = {
 
             this.playerAnimation(this);
         }
+        if (this.menuState == 'dialogue') {
+            if (this.activeDia != true) {
+                if (interactKey.isDown && interactKey.duration < 2) {
+                    this.dialogueWindow.alpha = 0;
+                    this.dialogueText.alpha = 0;
+                    this.dialoguePointer.alpha = 0;
+                    this.menuState = 'none';
+                    this.diaCounter = -1;
+                }
+            } else if (this.activeDia == true && this.diaCounter != null && this.diaCounter != -1) {
+                if (interactKey.isDown && interactKey.duration < 2) {
+                    this.diaCounter = 0;
+                }
+            }
+            this.dialogueRender(this.displayDia);
+
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            this.player.swipe.body.velocity.x = 0;
+            this.player.swipe.body.velocity.y = 0;
+            this.game.time.events.remove(this.idleTimer1);
+            if (this.animationName != "seated") {
+                this.animationName = "stopped";
+            }
+
+            this.playerAnimation(this);
+        }
         this.tickerHandler(this);
     },
     /////////////////////////////////////////////STANDARD CREATE FUNCTIONS//////////////////////////////////////////////////////
@@ -761,6 +788,29 @@ steamGame.Game.prototype = {
         this.pausePointer.animations.play('spin', 12, true)
         this.pausePointer.pos = 1;
         this.pauseGroup.add(this.pausePointer);
+
+        this.diaGroup = this.game.add.group();
+        this.dialogueWindow = this.game.add.sprite(this.game.camera.width / 6, (this.game.camera.height * (3/4))  - this.scalingFactor * 4, 'diaWindow');
+        this.dialogueWindow.alpha = 0;
+        this.dialogueWindow.width = this.game.camera.width * (2/3);
+        this.dialogueWindow.height = this.game.camera.height / 4;
+        this.diaGroup.add(this.dialogueWindow);
+        this.dialogueText = this.game.add.text(this.game.camera.width / 2, this.game.camera.height / 2, '', { font: (this.fontFactor * (3/8)) + "px 'art-deco-custom'", fill: "#ffffff", align: "left" })
+        //this.dialogueText.setTextBounds((this.game.camera.width / 4) + (this.game.camera.width / 16), (this.game.camera.height * (5/6)) + (this.game.camera.height / 36), (this.game.camera.width / 4), this.game.camera.height / 9)
+        //this.dialogueText.setTextBounds(this.game.camera.width / 2, this.game.camera.height / 2, (this.game.camera.width / 4), this.game.camera.height / 9)
+        this.dialogueText.alignTo(this.dialogueWindow, Phaser.TOP_LEFT, -this.dialogueWindow.width / 12, -this.dialogueWindow.height / 3);
+        this.dialogueText.wordWrapWidth = this.dialogueWindow.width * (5/9);
+        this.dialogueText.wordWrap = true;
+        this.diaGroup.add(this.dialogueText)
+
+        this.dialoguePointer = this.game.add.sprite(this.dialogueWindow.x + (this.dialogueWindow.width * (2/3)), this.dialogueWindow.y + (this.dialogueWindow.height * (4/6)), 'menuPointer');
+        this.dialoguePointer.animations.add('spin', [0, 0, 1, 2, 3, 4, 4, 3, 2, 1]);
+        this.dialoguePointer.animations.play('spin', 12, true);
+        this.dialoguePointer.rotation = 90 / (180 / Math.PI);
+        this.dialoguePointer.alpha = 0;
+        this.dialoguePointer.scale.setTo(this.scalingFactor / 3, this.scalingFactor / 3)
+        this.diaGroup.add(this.dialoguePointer);
+        this.diaGroup.fixedToCamera = true;
         
         /*********************************************fade to black tiles***********************************************************/
         this.fade = this.game.add.tileSprite(this.game.camera.x, this.game.camera.y, this.game.camera.width, this.game.camera.height, 'black');
@@ -803,6 +853,12 @@ steamGame.Game.prototype = {
         this.tesla.collider.height = this.scalingFactor * 32 * 2.5;
         this.tesla.lightRadius = this.scalingFactor * 32 * 3;
         this.tesla.lightColor = "#ffffff";
+
+        this.tesla.collider.diaNum = 0;
+        this.tesla.collider.message0 = "Why are you still here?"
+        this.tesla.collider.message1 = "It's dangerous to go alone, take this!";
+        this.tesla.collider.message2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+
         this.npcGroup.add(this.tesla.collider);
     },
     dayCycle: function() {
@@ -1085,7 +1141,9 @@ steamGame.Game.prototype = {
         this.floor.moveDown();
         this.wall.moveDown();
         this.water.moveDown();
-        
+
+        this.player.lightSprite.moveUp();
+        this.game.world.bringToTop(this.diaGroup);
         this.game.world.bringToTop(this.UIGroup);
         this.game.world.bringToTop(this.ASGroup);
         this.game.world.bringToTop(this.mapGroup);
@@ -1954,8 +2012,30 @@ steamGame.Game.prototype = {
         }
     },
     dialogueQueue: function(player, npc) {
-        if (interactKey.isDown && interactKey.duration < 2) {
-            this.player.bombCount ++;
+        if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none") {
+            this.menuState = "dialogue";
+            npc.diaNum = npc.diaNum + 1;
+            this.displayDia = npc['message' + npc.diaNum] || npc.message0;
+            this.diaCounter = -1;
+            this.dialogueWindow.alpha = 1;
+            this.activeDia = true;
+        }
+    },
+    dialogueRender: function(message) {
+        if (this.diaDelay != true) {
+            if (this.diaCounter == null || this.diaCounter == -1) {
+                this.diaCounter = this.displayDia.length;
+            } else if (this.diaCounter == 0) {
+                this.dialogueText.setText(message);
+                this.activeDia = false;
+                this.dialoguePointer.alpha = 1;
+            } else {
+                this.diaCounter --;
+                this.diaPause = this.game.time.events.add(Phaser.Timer.SECOND * 0.05, function () { this.diaDelay = false; }, this);
+                this.dialogueText.setText(message.substring(0, message.length - this.diaCounter));
+                this.diaDelay = true;
+                this.dialogueText.alpha = 1;
+            }
         }
     },
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
