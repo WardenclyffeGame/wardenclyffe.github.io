@@ -3,6 +3,36 @@ as well as completed segments.
 For the sake of simplicity I won't go back through everything that's already done, 
 we'll just start here and now.
 *****************************************************************************************************************
+**************************************************WEEK OF 12/14:**************************************************
+*****************************************************************************************************************
+
+Monday:
+    -if not finished, finish dialogue
+    -start on enemy (or at least decide on enemy)
+
+Tuesday:
+    -make enemy idle patterns (walk in square with delays)
+    -spawn jukebox, record gymnopedie
+
+Wednesday:
+    -figure out audio context and playing music with the jukebox
+    -maybe start addin smallg sounds to play with actions, at least sword swipe, maybe other simple actions
+
+Thursday:
+    -flat color layout of destroyed berlin
+
+Friday:
+    -city sprites
+    -if it comes up, chunk based area loading
+
+Saturday:
+    -map functionality based on flat color map ratios
+
+Sunday:
+    -blank for now / touch up day for everything else through the week
+
+
+*****************************************************************************************************************
 **************************************************WEEK OF 12/7:**************************************************
 *****************************************************************************************************************
 
@@ -41,12 +71,12 @@ Friday: DELAY BERLIN
         -finished ^
     -add to sprites, possibly begin building Berlin, probably not yet
 
-Saturday:
+Saturday: HE'S THERE!!! BUT HE DON'T TALK YET
     -add NPC to talk to (which more specifically figures out dialogue/ get talked at system )
     -probably make tesla sprite to represent test NPC
     -continue considering day night cycle
 
-Sunday:
+Sunday: NOPE, RESCHEDULE, AS PER USUAL WITH SUNDAYS
     -if not already super busy and if NPC works, move to basic enemy
     -if basic enemy is started, create basic walking script (walk in a delayed square unless collision)
         +and do basic detection script, random chance within a range, use moveTo is "spotted"

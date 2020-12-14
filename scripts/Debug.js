@@ -6,6 +6,8 @@ steamGame.Game.prototype = {
     /////////////////////////////////////////////DEFAULT PHASER FUNCTIONS///////////////////////////////////////////////////////
     preload: function() {
         this.game.stage.backgroundColor = '#000000';
+        this.load.tilemap('debugMap', 'maps/DebugMap2.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('debugTiles', 'sprites/game/Tiles.png');
         this.load.atlasJSONHash('Tesla', 'sprites/game/teslaSheet.png', 'sprites/game/jsonKeys/teslaSheet.json');
 
         this.npcGroup = this.game.add.group();
@@ -405,7 +407,7 @@ steamGame.Game.prototype = {
         this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
         this.winanWeapon.trackSprite(this.player, (this.player.width / 32) * -3, (this.player.width / 32) * 7);
 
-        this.bombWeapon = this.add.weapon(3, 'Bomb');
+        this.bombWeapon = this.add.weapon(1, 'Bomb');
         this.bombWeapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
         this.bombWeapon.bulletLifespan = Phaser.Timer.SECOND * 5;
         
