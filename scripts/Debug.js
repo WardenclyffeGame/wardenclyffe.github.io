@@ -10,6 +10,7 @@ steamGame.Game.prototype = {
         this.load.image('debugTiles', 'sprites/game/Tiles.png');
         this.load.atlasJSONHash('Tesla', 'sprites/game/teslaSheet.png', 'sprites/game/jsonKeys/teslaSheet.json');
         this.load.image('teslaPortrait', 'sprites/portraits/teslaPortrait.png');
+        this.load.atlasJSONHash('signSheets', 'sprites/game/signSheets.png', 'sprites/game/jsonKeys/signSheets.json');
 
         this.npcGroup = this.game.add.group();
     },
@@ -147,6 +148,7 @@ steamGame.Game.prototype = {
         /*if (debugKey.isUp) {
             this.debugText.destroy();
         }*/
+        this.keyTutorial.alpha = 0;
         this.collisionHandler(this);
         this.updateShadows(this);
         this.dayCycle(this);
@@ -253,6 +255,8 @@ steamGame.Game.prototype = {
             if (this.animationName != "seated") {
                 this.animationName = "stopped";
             }
+
+            this.keyTutorial.alpha = 0;
 
             this.playerAnimation(this);
         }
@@ -819,6 +823,11 @@ steamGame.Game.prototype = {
         this.diaGroup.add(this.dialoguePointer);
         this.diaGroup.fixedToCamera = true;
         
+        this.keyTutorial = this.game.add.sprite(0, 0, 'keyboard');
+        this.keyTutorial.alpha = 0
+        this.keyTutorial.anchor.setTo(0.5, 1);
+        this.keyTutorial.scale.setTo(this.scalingFactor * 0.5)
+        
         /*********************************************fade to black tiles***********************************************************/
         this.fade = this.game.add.tileSprite(this.game.camera.x, this.game.camera.y, this.game.camera.width, this.game.camera.height, 'black');
         this.fade.fixedToCamera = true;
@@ -1151,6 +1160,7 @@ steamGame.Game.prototype = {
         this.water.moveDown();
 
         this.player.lightSprite.moveUp();
+        this.keyTutorial.moveUp();
         this.game.world.bringToTop(this.diaGroup);
         this.game.world.bringToTop(this.UIGroup);
         this.game.world.bringToTop(this.ASGroup);
@@ -2030,6 +2040,10 @@ steamGame.Game.prototype = {
             this.dialoguePortrait.alpha = 1;
             this.activeDia = true;
         }
+        this.keyTutorial.x = npc.centerX;
+        this.keyTutorial.y = npc.top - (this.scalingFactor * 8);
+        this.keyTutorial.frame = 2;
+        this.keyTutorial.alpha = 1;
     },
     dialogueRender: function(message) {
         if (this.diaDelay != true) {
