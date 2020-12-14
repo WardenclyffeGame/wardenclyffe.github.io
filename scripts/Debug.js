@@ -469,7 +469,6 @@ steamGame.Game.prototype = {
 
         /***************************************ABSOLUTELY VITAL: UI SCRIPT*****************************************************/
         this.UIGroup = this.game.add.group();
-        //this.textGrad = this
 
         //Heart declaration
         for (i = 0; i < (this.player.maxHP/2); i++) {
@@ -863,7 +862,7 @@ steamGame.Game.prototype = {
         this.tesla.lightColor = "#ffffff";
 
         this.tesla.collider.diaNum = 0;
-        this.tesla.collider.messageARY = ["Why are you still here?", "Go away.", "I know I'm the only thing to mess with right now but that doesn't mean I'm not busy.", "The least you could do take care of Ben for me, scarecrows frighten me.", "I am ERROR", "It's a secret to everybody.", "Well excuse me, princess."]
+        this.tesla.collider.messageARY = ["Why are you still here?", "Go away.", "I know I'm the only thing to mess with right now but that doesn't mean I'm not busy.", "The least you could do take care of Ben, scarecrows frighten me.", "I am ERROR", "It's a secret to everybody.", "Well excuse me, princess."]
         this.tesla.collider.message0 = this.tesla.collider.messageARY[Math.floor(Math.random() * this.tesla.collider.messageARY.length)];
         this.tesla.collider.message1 = "It's dangerous to go alone, take this!";
         this.tesla.collider.message2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.";
