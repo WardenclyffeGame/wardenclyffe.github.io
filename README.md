@@ -32,7 +32,6 @@
     +Added Tesla spirte <br>
     </ul>
   *~Miscellaneous*
-  <ul>
     +Save state capability completed<br>
     +Added Day/Night cycle<br>
       <ul>+Added functionality <br> </ul> 
