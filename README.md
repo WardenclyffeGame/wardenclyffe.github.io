@@ -16,7 +16,6 @@
       <ul>+Added functionality <br> </ul>
     </ul>
   *~HUD*
-    <ul>
     +Bomb counter <br>
     +Daytime clock <br>
       <ul>
