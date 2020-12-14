@@ -2041,7 +2041,7 @@ steamGame.Game.prototype = {
                 this.dialoguePointer.alpha = 1;
             } else {
                 this.diaCounter --;
-                this.diaPause = this.game.time.events.add(Phaser.Timer.SECOND * 0.05, function () { this.diaDelay = false; }, this);
+                this.diaPause = this.game.time.events.add(Phaser.Timer.SECOND * 0.025, function () { this.diaDelay = false; }, this);
                 this.dialogueText.setText(message.substring(0, message.length - this.diaCounter));
                 this.diaDelay = true;
                 this.dialogueText.alpha = 1;
