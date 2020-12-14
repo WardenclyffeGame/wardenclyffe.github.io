@@ -9,6 +9,7 @@ steamGame.Game.prototype = {
         this.load.tilemap('debugMap', 'maps/DebugMap2.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('debugTiles', 'sprites/game/Tiles.png');
         this.load.atlasJSONHash('Tesla', 'sprites/game/teslaSheet.png', 'sprites/game/jsonKeys/teslaSheet.json');
+        this.load.image('teslaPortrait', 'sprites/portraits/teslaPortrait.png');
 
         this.npcGroup = this.game.add.group();
     },
@@ -233,6 +234,7 @@ steamGame.Game.prototype = {
                     this.dialogueWindow.alpha = 0;
                     this.dialogueText.alpha = 0;
                     this.dialoguePointer.alpha = 0;
+                    this.dialoguePortrait.alpha = 0;
                     this.menuState = 'none';
                     this.diaCounter = -1;
                 }
@@ -795,13 +797,18 @@ steamGame.Game.prototype = {
         this.dialogueWindow.width = this.game.camera.width * (2/3);
         this.dialogueWindow.height = this.game.camera.height / 4;
         this.diaGroup.add(this.dialogueWindow);
+
         this.dialogueText = this.game.add.text(this.game.camera.width / 2, this.game.camera.height / 2, '', { font: (this.fontFactor * (3/8)) + "px 'art-deco-custom'", fill: "#ffffff", align: "left" })
-        //this.dialogueText.setTextBounds((this.game.camera.width / 4) + (this.game.camera.width / 16), (this.game.camera.height * (5/6)) + (this.game.camera.height / 36), (this.game.camera.width / 4), this.game.camera.height / 9)
-        //this.dialogueText.setTextBounds(this.game.camera.width / 2, this.game.camera.height / 2, (this.game.camera.width / 4), this.game.camera.height / 9)
         this.dialogueText.alignTo(this.dialogueWindow, Phaser.TOP_LEFT, -this.dialogueWindow.width / 12, -this.dialogueWindow.height / 3);
         this.dialogueText.wordWrapWidth = this.dialogueWindow.width * (5/9);
         this.dialogueText.wordWrap = true;
-        this.diaGroup.add(this.dialogueText)
+        this.diaGroup.add(this.dialogueText);
+
+        this.dialoguePortrait = this.game.add.sprite(this.dialogueWindow.x + (this.dialogueWindow.width * (39.8/48)), this.dialogueWindow.y + (this.dialogueWindow.height / 5.3), '');
+        this.dialoguePortrait.width = this.scalingFactor * 32 * 1.4;
+        this.dialoguePortrait.height = this.scalingFactor * 32 * 1.4;
+        this.dialoguePortrait.alpha = 0;
+        this.diaGroup.add(this.dialoguePortrait);
 
         this.dialoguePointer = this.game.add.sprite(this.dialogueWindow.x + (this.dialogueWindow.width * (2/3)), this.dialogueWindow.y + (this.dialogueWindow.height * (4/6)), 'menuPointer');
         this.dialoguePointer.animations.add('spin', [0, 0, 1, 2, 3, 4, 4, 3, 2, 1]);
@@ -855,9 +862,10 @@ steamGame.Game.prototype = {
         this.tesla.lightColor = "#ffffff";
 
         this.tesla.collider.diaNum = 0;
-        this.tesla.collider.message0 = "Why are you still here?"
+        this.tesla.collider.message0 = "Why are you still here?";
         this.tesla.collider.message1 = "It's dangerous to go alone, take this!";
-        this.tesla.collider.message2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+        this.tesla.collider.message2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.";
+        this.tesla.collider.portrait = "teslaPortrait"
 
         this.npcGroup.add(this.tesla.collider);
     },
@@ -2016,8 +2024,10 @@ steamGame.Game.prototype = {
             this.menuState = "dialogue";
             npc.diaNum = npc.diaNum + 1;
             this.displayDia = npc['message' + npc.diaNum] || npc.message0;
+            this.dialoguePortrait.loadTexture(npc.portrait);
             this.diaCounter = -1;
             this.dialogueWindow.alpha = 1;
+            this.dialoguePortrait.alpha = 1;
             this.activeDia = true;
         }
     },
@@ -2037,6 +2047,8 @@ steamGame.Game.prototype = {
                 this.dialogueText.alpha = 1;
             }
         }
+        this.dialoguePortrait.width = this.scalingFactor * 32 * 1.4;
+        this.dialoguePortrait.height = this.scalingFactor * 32 * 1.4;
     },
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
     tickerHandler: function() {
