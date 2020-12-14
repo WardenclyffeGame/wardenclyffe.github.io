@@ -803,14 +803,14 @@ steamGame.Game.prototype = {
         this.diaGroup.add(this.dialogueWindow);
 
         this.dialogueText = this.game.add.text(this.game.camera.width / 2, this.game.camera.height / 2, '', { font: (this.fontFactor * (3/8)) + "px 'art-deco-custom'", fill: "#ffffff", align: "left" })
-        this.dialogueText.alignTo(this.dialogueWindow, Phaser.TOP_LEFT, -this.dialogueWindow.width / 12, -this.dialogueWindow.height / 3);
-        this.dialogueText.wordWrapWidth = this.dialogueWindow.width * (5/9);
+        this.dialogueText.alignTo(this.dialogueWindow, Phaser.TOP_LEFT, -this.dialogueWindow.width / 24, -this.dialogueWindow.height / 3);
+        this.dialogueText.wordWrapWidth = this.dialogueWindow.width * (2/3);
         this.dialogueText.wordWrap = true;
         this.diaGroup.add(this.dialogueText);
 
-        this.dialoguePortrait = this.game.add.sprite(this.dialogueWindow.x + (this.dialogueWindow.width * (39.8/48)), this.dialogueWindow.y + (this.dialogueWindow.height / 5.3), '');
-        this.dialoguePortrait.width = this.scalingFactor * 32 * 1.4;
-        this.dialoguePortrait.height = this.scalingFactor * 32 * 1.4;
+        this.dialoguePortrait = this.game.add.sprite(this.dialogueWindow.x + (this.dialogueWindow.width * (38.05/48)), this.dialogueWindow.y, '');
+        this.dialoguePortrait.width = this.dialogueWindow.height;
+        this.dialoguePortrait.height = this.dialogueWindow.height;
         this.dialoguePortrait.alpha = 0;
         this.diaGroup.add(this.dialoguePortrait);
 
@@ -871,9 +871,37 @@ steamGame.Game.prototype = {
         this.tesla.lightColor = "#ffffff";
 
         this.tesla.collider.diaNum = 0;
-        this.tesla.collider.message0 = "Why are you still here?";
+        this.tesla.collider.messageARY = [
+            "Why are you still here?", 
+            "I know I'm the only thing to mess with right now but that doesn't mean I'm not busy.", 
+            "The least you could do is take care of Ben, scarecrows frighten me.", 
+            "Well excuse me, princess.", 
+            "The present is theirs; the future, for which I really worked, is mine.", 
+            "The day science begins to study non-physical phenomena, it will make more progress in one decade than in all the previous centuries of its existence.",
+            "Our virtues and our failings are inseparable, like force and matter. When they separate, man is no more.",
+            "I do not think you can name many great inventions that have been made by married men.",
+            "The spread of civilisation may be likened to a fire; first, a feeble spark, next a flickering flame, then a mighty blaze, ever increasing in speed and power.",
+            "The scientists of today think deeply instead of clearly. One must be sane to think clearly, but one can think deeply and be quite insane.",
+            "If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.",
+            "I don’t care that they stole my idea …  I care that they don’t have any of their own.",
+            "Let the future tell the truth, and evaluate each one according to his work and accomplishments.",
+            "If your hate could be turned into electricity, it would light up the whole world.",
+            "My brain is only a receiver, in the Universe there is a core from which we obtain knowledge, strength and inspiration.",
+            "All that was great in the past was ridiculed, condemned, combated, suppressed — only to emerge all the more powerfully, all the more triumphantly from the struggle.",
+            "Life is and will ever remain an equation incapable of solution, but it contains certain known factors.",
+            "We crave for new sensations but soon become indifferent to them. The wonders of yesterday are today common occurrences",
+            "Invention is the most important product of man’s creative brain. The ultimate purpose is the complete mastery of mind over the material world.",
+            "If you only knew the magnificence of the 3, 6 and 9, then you would have the key to the universe.",
+            "What one man calls God, another calls the laws of physics.",
+            "The individual is ephemeral, races and nations come and pass away, but man remains.",
+            "It’s not the love you make. It’s the love you give.",
+            "Peace can only come as a natural consequence of universal enlightenment and merging of races, and we are still far from this blissful realization.",
+            "As I review the events of my past life I realize how subtle are the influences that shape our destinies."
+        ]
+        this.tesla.collider.message0 = this.tesla.collider.messageARY[Math.floor(Math.random() * this.tesla.collider.messageARY.length)];
         this.tesla.collider.message1 = "It's dangerous to go alone, take this!";
         this.tesla.collider.message2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.";
+        this.tesla.collider.message3 = "Go away.";
         this.tesla.collider.portrait = "teslaPortrait"
 
         this.npcGroup.add(this.tesla.collider);
@@ -1166,7 +1194,7 @@ steamGame.Game.prototype = {
         this.game.world.bringToTop(this.ASGroup);
         this.game.world.bringToTop(this.mapGroup);
         this.game.world.bringToTop(this.pauseGroup);
-        this.fade.moveUp();
+        this.fade.bringToTop();
     },
     /////////////////////////////////////////////PLAYER FUNCTIONS///////////////////////////////////////////////////////////////
     playerHPManager: function() {
@@ -2032,6 +2060,7 @@ steamGame.Game.prototype = {
     dialogueQueue: function(player, npc) {
         if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none") {
             this.menuState = "dialogue";
+            npc.message0 = npc.messageARY[Math.floor(Math.random() * npc.messageARY.length)]
             npc.diaNum = npc.diaNum + 1;
             this.displayDia = npc['message' + npc.diaNum] || npc.message0;
             this.dialoguePortrait.loadTexture(npc.portrait);
@@ -2039,6 +2068,15 @@ steamGame.Game.prototype = {
             this.dialogueWindow.alpha = 1;
             this.dialoguePortrait.alpha = 1;
             this.activeDia = true;
+            /*npc.paused = true;
+            this.diaAngle = Math.atan2((this.player.centerY - npc.centerY), (this.player.centerX - npc.centerX))  * (180 / Math.PI);
+            if (this.diaAngle < -45 && this.diaAngle > -135) {
+                npc.frame = 39;
+            } else if (this.diaAngle < -135 || this.diaAngle > 90) {
+                npc.frame = 42;
+            } else if (this.diaAngle < 90 && this.diaAngle > -45) {
+                npc.frame = 43;
+            }*/
         }
         this.keyTutorial.x = npc.centerX;
         this.keyTutorial.y = npc.top - (this.scalingFactor * 8);
@@ -2055,14 +2093,14 @@ steamGame.Game.prototype = {
                 this.dialoguePointer.alpha = 1;
             } else {
                 this.diaCounter --;
-                this.diaPause = this.game.time.events.add(Phaser.Timer.SECOND * 0.05, function () { this.diaDelay = false; }, this);
+                this.diaPause = this.game.time.events.add(Phaser.Timer.SECOND * 0.025, function () { this.diaDelay = false; }, this);
                 this.dialogueText.setText(message.substring(0, message.length - this.diaCounter));
                 this.diaDelay = true;
                 this.dialogueText.alpha = 1;
             }
         }
-        this.dialoguePortrait.width = this.scalingFactor * 32 * 1.4;
-        this.dialoguePortrait.height = this.scalingFactor * 32 * 1.4;
+        this.dialoguePortrait.width = this.dialogueWindow.height;
+        this.dialoguePortrait.height = this.dialogueWindow.height;
     },
     /////////////////////////////////////////////SCREEN FUNCTIONS///////////////////////////////////////////////////////////////
     tickerHandler: function() {
