@@ -1,5 +1,42 @@
 # wardenclyffe.github.io
-
+**v.0.2 12-xx-20** <br>
+  *~Abilities and Combat*
+    <ul>
+    +Added Winan <br>
+      <ul>+Added functionality <br></ul>
+    +Added Bomb <br>
+      <ul>+Added pickups <br>
+          +Added counter <br>
+          +Added functionality <br> </ul>
+    +Added Defibrillator <br>
+      <ul>+Added functionality <br> </ul>
+    +Added Turbine <br>
+      <ul>+Added functionality <br> </ul>
+    +Added Boots <br>
+      <ul>+Added functionality <br> </ul>
+    </ul>
+  *~HUD*
+    <ul>
+    +Bomb counter <br>
+    +Daytime clock <br>
+      <ul>
+      +Added Turbine sprites <br>
+      +Added Defibrillator sprites <br>
+      +Added bottle sprites <br>
+    </ul>
+  *~Map*
+    <ul>
+    +Added test dummy <br>
+    +Added Coal pickup <br>
+    +Added health pickup <br>
+    +Added Energy pickup <br>
+    +Added Tesla spirte <br>
+    </ul>
+  *~Miscellaneous*
+  <ul>
+    +Save state capability completed<br>
+    +Added Day/Night cycle<br>
+      <ul>+Added functionality <br> </ul> 
 **v.0.1 11-25-20** <br>
   *~Character*
     <ul>
@@ -15,7 +52,7 @@
       +50e <br>
     </ul>
     </ul>
-  *~Combat*
+  *~Abilities and Combat*
     <ul>
     +Added Sword <br>
       <ul>+Added Sword combos <br></ul>
