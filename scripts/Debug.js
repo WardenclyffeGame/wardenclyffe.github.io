@@ -13,6 +13,7 @@ steamGame.Game.prototype = {
         this.load.atlasJSONHash('signSheets', 'sprites/game/signSheets.png', 'sprites/game/jsonKeys/signSheets.json');
 
         this.npcGroup = this.game.add.group();
+        this.collectibles = this.game.add.group();
     },
     create: function(){
         //begin scene setup
@@ -67,38 +68,21 @@ steamGame.Game.prototype = {
         this.HPSign.frame = 3;
         this.HPSign.body.immovable = true;
 
-        this.kronaTestG = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width), this.game.world.centerY, 'KronaG');
-        this.game.physics.arcade.enable(this.kronaTestG);
-        this.kronaTestG.value = 60;
-        this.kronaTestG.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
-        this.kronaTestG.lightRadius = this.scalingFactor * 16;
-        this.kronaTestG.lightColor = '#f5e022';
+        this.kronaGCreate(this.game.world.centerX - (this.game.camera.width), this.game.world.centerY);
 
-        this.kronaTestS = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width - 70), this.game.world.centerY, 'KronaS');
-        this.game.physics.arcade.enable(this.kronaTestS);
-        this.kronaTestS.value = 36;
-        this.kronaTestS.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
-        this.kronaTestS.lightRadius = this.scalingFactor * 16;
-        this.kronaTestS.lightColor = '#e8e8e8';
+        this.kronaSCreate(this.game.world.centerX - (this.game.camera.width - 70), this.game.world.centerY);
 
-        this.kronaTestZ = this.game.add.sprite(this.game.world.centerX - (this.game.camera.width - 140), this.game.world.centerY, 'KronaZ');
-        this.game.physics.arcade.enable(this.kronaTestZ);
-        this.kronaTestZ.value = 12;
-        this.kronaTestZ.scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
-        this.kronaTestZ.lightRadius = this.scalingFactor * 16;
-        this.kronaTestZ.lightColor = '#bf961b';
+        this.kronaZCreate(this.game.world.centerX - (this.game.camera.width - 140), this.game.world.centerY);
 
-        this.HPPotTest = this.game.add.sprite(this.game.world.centerX - (this.scalingFactor * 14.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32), 'HPPot');
-        this.game.physics.arcade.enable(this.HPPotTest);
-        this.HPPotTest.scale.setTo(this.scalingFactor * 0.4, this.scalingFactor * 0.4);
+        this.HPPotCreate(this.game.world.centerX - (this.scalingFactor * 14.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32));
 
-        this.coalTest = this.game.add.sprite(this.game.world.centerX - (this.scalingFactor * 12.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32), 'coal');
-        this.game.physics.arcade.enable(this.coalTest);
-        this.coalTest.scale.setTo(this.scalingFactor * 0.55, this.scalingFactor * 0.55);
+        this.coalCreate(this.game.world.centerX - (this.scalingFactor * 12.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32));
 
-        this.battTest = this.game.add.sprite(this.game.world.centerX - (this.scalingFactor * 10.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32), 'battery');
-        this.game.physics.arcade.enable(this.battTest);
-        this.battTest.scale.setTo(this.scalingFactor * 0.55, this.scalingFactor * 0.55);
+        this.batteryCreate(this.game.world.centerX - (this.scalingFactor * 10.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32));
+
+        this.batteryCreate(this.game.world.centerX - (this.scalingFactor * 10.5 * 32), this.game.world.centerY - (this.scalingFactor * 6 * 32));
+
+        this.batteryCreate(this.game.world.centerX - (this.scalingFactor * 10.5 * 32), this.game.world.centerY - (this.scalingFactor * 5 * 32));
 
 
         this.defaultCreate(this);
@@ -833,6 +817,66 @@ steamGame.Game.prototype = {
         this.fade.fixedToCamera = true;
         this.fade.alpha = 1;
     },
+    kronaGCreate: function(spawnX, spawnY) {
+        this["kronaG" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'KronaG');
+        this.game.physics.arcade.enable(this["kronaG" + spawnX + "," + spawnY]);
+        this["kronaG" + spawnX + "," + spawnY].value = 60;
+        this["kronaG" + spawnX + "," + spawnY].scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+        this["kronaG" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
+        this["kronaG" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
+        this["kronaG" + spawnX + "," + spawnY].type = "krona";
+        this.collectibles.add(this["kronaG" + spawnX + "," + spawnY]);
+    },
+    kronaSCreate: function(spawnX, spawnY) {
+        this["kronaS" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'KronaS');
+        this.game.physics.arcade.enable(this["kronaS" + spawnX + "," + spawnY]);
+        this["kronaS" + spawnX + "," + spawnY].value = 36;
+        this["kronaS" + spawnX + "," + spawnY].scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+        this["kronaS" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
+        this["kronaS" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
+        this["kronaS" + spawnX + "," + spawnY].type = "krona";
+        this.collectibles.add(this["kronaS" + spawnX + "," + spawnY]);
+    },
+    kronaZCreate: function(spawnX, spawnY) {
+        this["kronaZ" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'KronaZ');
+        this.game.physics.arcade.enable(this["kronaZ" + spawnX + "," + spawnY]);
+        this["kronaZ" + spawnX + "," + spawnY].value = 36;
+        this["kronaZ" + spawnX + "," + spawnY].scale.setTo(this.scalingFactor * 1.1, this.scalingFactor * 1.1);
+        this["kronaZ" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
+        this["kronaZ" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
+        this["kronaZ" + spawnX + "," + spawnY].type = "krona";
+        this.collectibles.add(this["kronaZ" + spawnX + "," + spawnY]);
+    },
+    HPPotCreate: function(spawnX, spawnY) {
+        this["HPPot" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'HPPot');
+        this.game.physics.arcade.enable(this["HPPot" + spawnX + "," + spawnY]);
+        this["HPPot" + spawnX + "," + spawnY].value = 36;
+        this["HPPot" + spawnX + "," + spawnY].scale.setTo(this.scalingFactor * 0.4, this.scalingFactor * 0.4);
+        this["HPPot" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
+        this["HPPot" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
+        this["HPPot" + spawnX + "," + spawnY].type = "HP";
+        this.collectibles.add(this["HPPot" + spawnX + "," + spawnY]);
+    },
+    coalCreate: function(spawnX, spawnY) {
+        this["coal" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'coal');
+        this.game.physics.arcade.enable(this["coal" + spawnX + "," + spawnY]);
+        this["coal" + spawnX + "," + spawnY].value = 36;
+        this["coal" + spawnX + "," + spawnY].scale.setTo(this.scalingFactor * 0.55, this.scalingFactor * 0.55);
+        this["coal" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
+        this["coal" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
+        this["coal" + spawnX + "," + spawnY].type = "coal";
+        this.collectibles.add(this["coal" + spawnX + "," + spawnY]);
+    },
+    batteryCreate: function(spawnX, spawnY) {
+        this["battery" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'battery');
+        this.game.physics.arcade.enable(this["battery" + spawnX + "," + spawnY]);
+        this["battery" + spawnX + "," + spawnY].value = 36;
+        this["battery" + spawnX + "," + spawnY].scale.setTo(this.scalingFactor * 0.55, this.scalingFactor * 0.55);
+        this["battery" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
+        this["battery" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
+        this["battery" + spawnX + "," + spawnY].type = "battery";
+        this.collectibles.add(this["battery" + spawnX + "," + spawnY]);
+    },
     dummyCreate: function (spawnX, spawnY) {
         //testing object for slashing
         this.dummy = this.game.add.sprite(spawnX, spawnY, 'Dummy');
@@ -981,82 +1025,51 @@ steamGame.Game.prototype = {
         }
     },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
-    debugHealth: function(player, collectable) {
-        if (collectable == this.HPSign) {
+    debugHealth: function(player, source) {
+        if (source == this.HPSign) {
             player.timer += 1;
             if(player.timer === 100) {
                 player.timer = 0;
                 player.currentHP -= 1;
             }
-        } else if (collectable == this.HPPotTest) {
-            if (player.currentHP < player.maxHP) {
-                player.currentHP ++;
-                collectable.destroy();
-            } else if (player.currentHP = player.maxHP) {
-                collectable.destroy();
-            }
-        } else if (this.bombWeapon.bullets.children.indexOf(collectable) > -1){
-            if (collectable.exploded == true) {
+        } else if (this.bombWeapon.bullets.children.indexOf(source) > -1){
+            if (source.exploded == true) {
                 if (this.player.state == 'walk') {
-                    this.playerKnockback(collectable, this);
+                    this.playerKnockback(source, this);
                     this.player.currentHP -= 2;
                 }
             }
         }
     },
-    debugSteam: function(player, collectable) {
-        if (collectable != this.coalTest) {
-            if (player.currentSteam < player.maxSteam) {
-                player.newSLevel += 0.1;
-                if (player.newSLevel >= 1) {
-                    player.currentSteam ++;
-                    player.newSLevel = 0;
-                }
-            }
-            /*if (player.currentSteam > 0) {
-                player.newSLevel -= 0.1;
-                if (player.newSLevel <= -1) {
-                    player.currentSteam --;
-                    player.newSLevel = 0;
-                }
-            }*/
-        } else {
-            if (player.currentSteam + 10 <= player.maxSteam) {
-                player.currentSteam += 10;
-                collectable.destroy();
-            } else if (player.currentSteam + 10 > player.maxSteam) {
-                player.currentSteam = player.maxSteam;
-                collectable.destroy();
-            } else if (player.currentSteam = player.maxSteam) {
-                collectable.destroy();
+    debugSteam: function(player, source) {
+        if (player.currentSteam < player.maxSteam) {
+            player.newSLevel += 0.1;
+            if (player.newSLevel >= 1) {
+                player.currentSteam ++;
+                player.newSLevel = 0;
             }
         }
-    },
-    debugElec: function(player, collectable) {
-        if (collectable != this.battTest) {
-            /*if (player.currentSteam < player.maxSteam) {
-                player.newSLevel += 0.1;
-                if (player.newSLevel >= 1) {
-                    player.currentSteam ++;
-                    player.newSLevel = 0;
-                }
-            }*/
-            if (player.currentEnergy > 0) {
-                player.newELevel -= 0.1;
-                if (player.newELevel <= -1) {
-                    player.currentEnergy --;
-                    player.newELevel = 0;
-                }
+        /*if (player.currentSteam > 0) {
+            player.newSLevel -= 0.1;
+            if (player.newSLevel <= -1) {
+                player.currentSteam --;
+                player.newSLevel = 0;
             }
-        } else {
-            if (player.currentEnergy + 5 <= player.maxEnergy) {
-                player.currentEnergy += 5;
-                collectable.destroy();
-            } else if (player.currentEnergy + 10 > player.maxEnergy) {
-                player.currentEnergy = player.maxEnergy;
-                collectable.destroy();
-            } else if (player.currentEnergy = player.maxEnergy) {
-                collectable.destroy();
+        }*/
+    },
+    debugElec: function(player, source) {
+        /*if (player.currentSteam < player.maxSteam) {
+            player.newSLevel += 0.1;
+            if (player.newSLevel >= 1) {
+                player.currentSteam ++;
+                player.newSLevel = 0;
+            }
+        }*/
+        if (player.currentEnergy > 0) {
+            player.newELevel -= 0.1;
+            if (player.newELevel <= -1) {
+                player.currentEnergy --;
+                player.newELevel = 0;
             }
         }
     },
@@ -1144,29 +1157,50 @@ steamGame.Game.prototype = {
         }
     },
     collect: function(player, coin) {
-        if (player.newC + coin.value < 10000) {
-            player.newC += coin.value;
-        } else {
-            player.newC = 9999;
+        if (coin.type == "krona") {
+            if (player.newC + coin.value < 10000) {
+                player.newC += coin.value;
+            } else {
+                player.newC = 9999;
+            }
+        }
+        if (coin.type == "HP") {
+            if (player.currentHP < player.maxHP) {
+                player.currentHP ++;
+            }
+        }
+        if (coin.type == "coal") {
+            if (player.currentSteam + 10 < player.maxSteam) {
+                player.currentSteam += 10;
+            } else {
+                player.currentSteam = player.maxSteam;
+            }
+        }
+        if (coin.type == "battery") {
+            if (player.currentEnergy + 5 < player.maxEnergy) {
+                player.currentEnergy += 5;
+            } else {
+                player.currentEnergy = player.maxEnergy;
+            }
         }
         if (coin != this.CSign) {
             coin.destroy();
+            coin.lightRadius = 0;
         }
     },
     collisionHandler: function() {
         this.game.physics.arcade.collide(this.player, this.wall);
         this.game.physics.arcade.collide(this.player, this.dummy.post);
         this.game.physics.arcade.collide(this.player, this.tesla);
-        this.game.physics.arcade.collide(this.player, this.kronaTestG, this.collect, null, this);
-        this.game.physics.arcade.collide(this.player, this.kronaTestS, this.collect, null, this);
-        this.game.physics.arcade.collide(this.player, this.kronaTestZ, this.collect, null, this);
+        this.collectibles.forEach((c) => {
+            this.game.physics.arcade.collide(this.player, c, this.collect, null, this);
+        })
+
         this.game.physics.arcade.collide(this.player, this.CSign, this.collect, null, this);
         this.game.physics.arcade.collide(this.player, this.ESign, this.debugElec, null, this);
         this.game.physics.arcade.collide(this.player, this.SSign, this.debugSteam, null, this);
         this.game.physics.arcade.collide(this.player, this.HPSign, this.debugHealth, null, this);
-        this.game.physics.arcade.collide(this.player, this.HPPotTest, this.debugHealth, null, this);
-        this.game.physics.arcade.collide(this.player, this.coalTest, this.debugSteam, null, this);
-        this.game.physics.arcade.collide(this.player, this.battTest, this.debugElec, null, this);
+
         this.game.physics.arcade.overlap(this.player.swipe, this.dummy, this.debugSwipe, null, this);
         this.game.physics.arcade.collide(this.winanWeapon.bullets, this.dummy, this.debugSwipe, null, this);
         this.game.physics.arcade.overlap(this.bombWeapon.bullets, this.dummy, this.debugSwipe, null, this);
@@ -1198,6 +1232,7 @@ steamGame.Game.prototype = {
 
         this.player.lightSprite.moveUp();
         this.keyTutorial.moveUp();
+        this.game.world.bringToTop(this.collectibles);
         this.game.world.bringToTop(this.diaGroup);
         this.game.world.bringToTop(this.UIGroup);
         this.game.world.bringToTop(this.ASGroup);
@@ -2546,6 +2581,7 @@ steamGame.Game.prototype = {
         this.winanWeapon.bullets.forEachExists(this.makeHalo, this);
         this.bombWeapon.bullets.forEachExists(this.makeHalo, this);
         this.makeHalo(this.tesla);
+        this.collectibles.forEachExists(this.makeHalo, this);
 
         this.player.shadowTexture.dirty = true;
     },
