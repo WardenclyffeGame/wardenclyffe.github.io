@@ -17,6 +17,7 @@ Tuesday:
 Wednesday:
     -figure out audio context and playing music with the jukebox
     -maybe start addin smallg sounds to play with actions, at least sword swipe, maybe other simple actions
+    -probably finish up enemy too, I don't have that much confidence in Tuesday
 
 Thursday:
     -flat color layout of destroyed berlin
