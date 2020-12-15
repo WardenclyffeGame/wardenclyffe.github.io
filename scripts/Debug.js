@@ -850,12 +850,14 @@ steamGame.Game.prototype = {
         this.dummy.post.anchor.setTo(0.5, 1);
         this.dummy.post.width = this.scalingFactor / 16;
         this.dummy.post.height = this.scalingFactor / 16;
+        this.dummy.moveUp();
     },
     teslaCreate: function(spawnX, spawnY) {
         this.tesla = this.game.add.sprite(spawnX, spawnY, 'Tesla');
         this.game.physics.arcade.enable(this.tesla);
         this.tesla.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
         this.tesla.maxHP = 3;
+        this.tesla.anchor.setTo(0.5, 0.5);
         this.tesla.animations.add('idleDown', [39, 39, 39, 39, 39, 40, 40, 40, 41, 41, 41, 39], 4, true);
         this.tesla.animations.play('idleDown');
         this.tesla.currentHP = this.tesla.maxHP;
@@ -900,9 +902,16 @@ steamGame.Game.prototype = {
         ]
         this.tesla.collider.message0 = this.tesla.collider.messageARY[Math.floor(Math.random() * this.tesla.collider.messageARY.length)];
         this.tesla.collider.message1 = "It's dangerous to go alone, take this!";
-        this.tesla.collider.message2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.";
-        this.tesla.collider.message3 = "Go away.";
-        this.tesla.collider.portrait = "teslaPortrait"
+        this.tesla.collider.message2 = "(By which I mean you can attack with space.)";
+        this.tesla.collider.message3 = "Press Tab to open your inventory and see your items, and once again to close it.";
+        this.tesla.collider.message4 = "You can also press M to open and close your map.";
+        this.tesla.collider.message5 = "To use your items, hit Q while one is selected and visible in the top right corner.";
+        this.tesla.collider.message6 = "If you have an item, it will become colored in your inventory permanently.";
+        this.tesla.collider.message7 = "Right now, the items that work are the steam pistol, and the bombs, so long as you have steam or bombs left to use.";
+        this.tesla.collider.message8 = "If you have the boots, (displayed under the sword in your inventory) you can hold Shift to dash while you walk.";
+        this.tesla.collider.message9 = "That's all the tips I have, but if you ever want to hear an inventor's thoughts, you're always welcome to talk to me.";
+        this.tesla.collider.portrait = "teslaPortrait";
+        this.tesla.collider.parentKey = "tesla";
 
         this.npcGroup.add(this.tesla.collider);
     },
@@ -1174,7 +1183,7 @@ steamGame.Game.prototype = {
         })
         if (this.tesla.bottom > this.player.bottom) {
             this.tesla.moveUp();
-            this.tesla.body.setSize(4, 3, 14, 22);
+            this.tesla.body.setSize(4, 2, 14, 24);
         } else if (this.tesla.bottom < this.player.bottom) {
             this.tesla.moveDown();
             this.tesla.body.setSize(4, 7, 14, 11);
@@ -2060,6 +2069,7 @@ steamGame.Game.prototype = {
     dialogueQueue: function(player, npc) {
         if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none") {
             this.menuState = "dialogue";
+            this.npcActive = npc;
             npc.message0 = npc.messageARY[Math.floor(Math.random() * npc.messageARY.length)]
             npc.diaNum = npc.diaNum + 1;
             this.displayDia = npc['message' + npc.diaNum] || npc.message0;
@@ -2068,20 +2078,29 @@ steamGame.Game.prototype = {
             this.dialogueWindow.alpha = 1;
             this.dialoguePortrait.alpha = 1;
             this.activeDia = true;
-            /*npc.paused = true;
-            this.diaAngle = Math.atan2((this.player.centerY - npc.centerY), (this.player.centerX - npc.centerX))  * (180 / Math.PI);
-            if (this.diaAngle < -45 && this.diaAngle > -135) {
-                npc.frame = 39;
-            } else if (this.diaAngle < -135 || this.diaAngle > 90) {
-                npc.frame = 42;
-            } else if (this.diaAngle < 90 && this.diaAngle > -45) {
-                npc.frame = 43;
-            }*/
+            
+            //this.npcActiveTimer = this.game.time.events.add(Phaser.Timer.SECOND * 7, function (npc) { this[npc.parentKey].animations.paused = false; this[npc.parentKey].animations.play('idleDown'); }, this, npc);
         }
         this.keyTutorial.x = npc.centerX;
         this.keyTutorial.y = npc.top - (this.scalingFactor * 8);
         this.keyTutorial.frame = 2;
         this.keyTutorial.alpha = 1;
+
+        //this[npc.parentKey].animations.paused = true;
+        this.diaAngle = Math.atan2((this.player.centerY - this[npc.parentKey].centerY), (this.player.centerX - this[npc.parentKey].centerX))  * (180 / Math.PI);
+        if (this.diaAngle > 45 && this.diaAngle < 135) {
+            this[npc.parentKey].frame = 39;
+        } else if (this.diaAngle > 135 || this.diaAngle < -90) {
+            this[npc.parentKey].frame = 45;
+            if (this[npc.parentKey].scale.x < 0) {
+                this[npc.parentKey].scale.x = -this[npc.parentKey].scale.x
+            }
+        } else if (this.diaAngle > -90 && this.diaAngle < 45) {
+            this[npc.parentKey].frame = 45;
+            if (this[npc.parentKey].scale.x > 0) {
+                this[npc.parentKey].scale.x = -this[npc.parentKey].scale.x
+            }
+        }
     },
     dialogueRender: function(message) {
         if (this.diaDelay != true) {
