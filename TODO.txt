@@ -6,7 +6,7 @@ we'll just start here and now.
 **************************************************WEEK OF 12/14:**************************************************
 *****************************************************************************************************************
 
-Monday:
+Monday: Works and well at that. dialogue finished, enemy in progress.
     -if not finished, finish dialogue
     -start on enemy (or at least decide on enemy)
 

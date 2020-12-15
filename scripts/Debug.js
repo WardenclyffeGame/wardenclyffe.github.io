@@ -875,7 +875,7 @@ steamGame.Game.prototype = {
         this.tesla.collider.diaNum = 0;
         this.tesla.collider.messageARY = [
             "Why are you still here?", 
-            "I know I'm the only thing to mess with right now but that doesn't mean I'm not busy.", 
+            "I know I’m the only thing to mess with right now but that doesn't mean I’m not busy.", 
             "The least you could do is take care of Ben, scarecrows frighten me.", 
             "Well excuse me, princess.", 
             "The present is theirs; the future, for which I really worked, is mine.", 
@@ -901,7 +901,7 @@ steamGame.Game.prototype = {
             "As I review the events of my past life I realize how subtle are the influences that shape our destinies."
         ]
         this.tesla.collider.message0 = this.tesla.collider.messageARY[Math.floor(Math.random() * this.tesla.collider.messageARY.length)];
-        this.tesla.collider.message1 = "It's dangerous to go alone, take this!";
+        this.tesla.collider.message1 = "It’s dangerous to go alone, take this!";
         this.tesla.collider.message2 = "(By which I mean you can attack with space.)";
         this.tesla.collider.message3 = "Press Tab to open your inventory and see your items, and once again to close it.";
         this.tesla.collider.message4 = "You can also press M to open and close your map.";
@@ -909,7 +909,7 @@ steamGame.Game.prototype = {
         this.tesla.collider.message6 = "If you have an item, it will become colored in your inventory permanently.";
         this.tesla.collider.message7 = "Right now, the items that work are the steam pistol, and the bombs, so long as you have steam or bombs left to use.";
         this.tesla.collider.message8 = "If you have the boots, (displayed under the sword in your inventory) you can hold Shift to dash while you walk.";
-        this.tesla.collider.message9 = "That's all the tips I have, but if you ever want to hear an inventor's thoughts, you're always welcome to talk to me.";
+        this.tesla.collider.message9 = "That’s all the tips I have, but if you ever want to hear an inventor’s thoughts, you’re always welcome to talk to me.";
         this.tesla.collider.portrait = "teslaPortrait";
         this.tesla.collider.parentKey = "tesla";
 
