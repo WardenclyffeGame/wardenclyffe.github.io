@@ -137,6 +137,10 @@ steamGame.Game.prototype = {
         this.updateShadows(this);
         this.dayCycle(this);
 
+        if (this.shopAudio1.isPlaying != true) {
+            this.phonograph.animations.stop();
+        }
+
         if (this.menuState == 'none') {
             this.playerHPManager(this);
             
@@ -2162,7 +2166,6 @@ steamGame.Game.prototype = {
             if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none" && this.shopAudio1.isPlaying != true) {
                 this.shopAudio1.play();
                 this[npc.parentKey].animations.play('play', 12, true);
-                this.recordTimer = this.game.time.events.add(Phaser.Timer.SECOND * this.shopAudio1.totalDuration, function(npc) { this[npc.parentKey].animations.stop(); }, this, npc);
             }
         }
 
