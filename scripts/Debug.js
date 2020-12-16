@@ -818,7 +818,7 @@ steamGame.Game.prototype = {
         this.fade.alpha = 1;
 
         /*****************************************************AUDIO*/
-        this.shopAudio1 = this.game.add.sound('gymnopedie', 25, false); 
+        this.shopAudio1 = this.game.add.sound('gymnopedie', 0.1, false); 
     },
     kronaGCreate: function(spawnX, spawnY) {
         this["kronaG" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'KronaG');
@@ -970,7 +970,6 @@ steamGame.Game.prototype = {
         this.phonograph.maxHP = 3;
         this.phonograph.anchor.setTo(0.5, 0.5);
         this.phonograph.animations.add('play');
-        this.phonograph.animations.play('play', 12, true);
         this.phonograph.body.setSize(30, 4, 1, 42);
         this.phonograph.body.immovable = true;
 
@@ -978,10 +977,11 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.enable(this.phonograph.collider);
         this.phonograph.collider.body.immovable = true;
         this.phonograph.collider.anchor.setTo(0.5, 0.5);
-        this.phonograph.collider.width = this.scalingFactor * 32 * 2;
-        this.phonograph.collider.height = this.scalingFactor * 32 * 2;
+        this.phonograph.collider.width = this.scalingFactor * 32 * 1.5;
+        this.phonograph.collider.height = this.scalingFactor * 32 * 1.2;
         this.phonograph.collider.lightRadius = this.scalingFactor * 32 * 2;
         this.phonograph.collider.lightColor = "#ffffff";
+        this.phonograph.collider.parentKey = "phonograph"
 
         this.npcGroup.add(this.phonograph.collider);
     },
@@ -2159,8 +2159,10 @@ steamGame.Game.prototype = {
                 }
             }
         } else if (npc == this.phonograph.collider) {
-            if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none" && this.shopAudio1.isPlaying != false) {
+            if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none" && this.shopAudio1.isPlaying != true) {
                 this.shopAudio1.play();
+                this[npc.parentKey].animations.play('play', 12, true);
+                this.recordTimer = this.game.time.events.add(Phaser.Timer.SECOND * this.shopAudio1.totalDuration, function(npc) { this[npc.parentKey].animations.stop(); }, this, npc);
             }
         }
 
