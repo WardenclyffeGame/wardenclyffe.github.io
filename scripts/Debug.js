@@ -11,6 +11,8 @@ steamGame.Game.prototype = {
         this.load.atlasJSONHash('Tesla', 'sprites/game/teslaSheet.png', 'sprites/game/jsonKeys/teslaSheet.json');
         this.load.image('teslaPortrait', 'sprites/portraits/teslaPortrait.png');
         this.load.atlasJSONHash('signSheets', 'sprites/game/signSheets.png', 'sprites/game/jsonKeys/signSheets.json');
+        this.load.atlasJSONHash('phonograph', 'sprites/game/phonograph.png', 'sprites/game/jsonKeys/phonograph.json');
+        this.load.audio('gymnopedie', 'audio/music/Gymnopedie.mp3');
 
         this.npcGroup = this.game.add.group();
         this.collectibles = this.game.add.group();
@@ -80,9 +82,7 @@ steamGame.Game.prototype = {
 
         this.batteryCreate(this.game.world.centerX - (this.scalingFactor * 10.5 * 32), this.game.world.centerY - (this.scalingFactor * 7 * 32));
 
-        this.batteryCreate(this.game.world.centerX - (this.scalingFactor * 10.5 * 32), this.game.world.centerY - (this.scalingFactor * 6 * 32));
-
-        this.batteryCreate(this.game.world.centerX - (this.scalingFactor * 10.5 * 32), this.game.world.centerY - (this.scalingFactor * 5 * 32));
+        this.phonographCreate(this.scalingFactor * 32 * 24.5, this.scalingFactor * 32 * 3.7);
 
 
         this.defaultCreate(this);
@@ -816,6 +816,9 @@ steamGame.Game.prototype = {
         this.fade = this.game.add.tileSprite(this.game.camera.x, this.game.camera.y, this.game.camera.width, this.game.camera.height, 'black');
         this.fade.fixedToCamera = true;
         this.fade.alpha = 1;
+
+        /*****************************************************AUDIO*/
+        this.shopAudio1 = this.game.add.sound('gymnopedie', 25, false); 
     },
     kronaGCreate: function(spawnX, spawnY) {
         this["kronaG" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'KronaG');
@@ -913,8 +916,8 @@ steamGame.Game.prototype = {
         this.tesla.collider.anchor.setTo(0.5, 0.5);
         this.tesla.collider.width = this.scalingFactor * 32 * 2;
         this.tesla.collider.height = this.scalingFactor * 32 * 2.5;
-        this.tesla.lightRadius = this.scalingFactor * 32 * 3;
-        this.tesla.lightColor = "#ffffff";
+        this.tesla.collider.lightRadius = this.scalingFactor * 32 * 3;
+        this.tesla.collider.lightColor = "#ffffff";
 
         this.tesla.collider.diaNum = 0;
         this.tesla.collider.messageARY = [
@@ -956,8 +959,31 @@ steamGame.Game.prototype = {
         this.tesla.collider.message9 = "That’s all the tips I have, but if you ever want to hear an inventor’s thoughts, you’re always welcome to talk to me.";
         this.tesla.collider.portrait = "teslaPortrait";
         this.tesla.collider.parentKey = "tesla";
+        this.tesla.moveUp();
 
         this.npcGroup.add(this.tesla.collider);
+    },
+    phonographCreate: function(spawnX, spawnY) {
+        this.phonograph = this.game.add.sprite(spawnX, spawnY, 'phonograph');
+        this.game.physics.arcade.enable(this.phonograph);
+        this.phonograph.scale.setTo(this.scalingFactor, this.scalingFactor);
+        this.phonograph.maxHP = 3;
+        this.phonograph.anchor.setTo(0.5, 0.5);
+        this.phonograph.animations.add('play');
+        this.phonograph.animations.play('play', 12, true);
+        this.phonograph.body.setSize(30, 4, 1, 42);
+        this.phonograph.body.immovable = true;
+
+        this.phonograph.collider = this.game.add.sprite(this.phonograph.centerX, this.phonograph.bottom - (this.phonograph.height / 4), '');
+        this.game.physics.arcade.enable(this.phonograph.collider);
+        this.phonograph.collider.body.immovable = true;
+        this.phonograph.collider.anchor.setTo(0.5, 0.5);
+        this.phonograph.collider.width = this.scalingFactor * 32 * 2;
+        this.phonograph.collider.height = this.scalingFactor * 32 * 2;
+        this.phonograph.collider.lightRadius = this.scalingFactor * 32 * 2;
+        this.phonograph.collider.lightColor = "#ffffff";
+
+        this.npcGroup.add(this.phonograph.collider);
     },
     dayCycle: function() {
         if (this.countingSec != true) {
@@ -1192,6 +1218,8 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.collide(this.player, this.wall);
         this.game.physics.arcade.collide(this.player, this.dummy.post);
         this.game.physics.arcade.collide(this.player, this.tesla);
+        this.game.physics.arcade.collide(this.player, this.phonograph);
+
         this.collectibles.forEach((c) => {
             this.game.physics.arcade.collide(this.player, c, this.collect, null, this);
         })
@@ -2102,40 +2130,45 @@ steamGame.Game.prototype = {
         }
     },
     dialogueQueue: function(player, npc) {
-        if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none") {
-            this.menuState = "dialogue";
-            this.npcActive = npc;
-            npc.message0 = npc.messageARY[Math.floor(Math.random() * npc.messageARY.length)]
-            npc.diaNum = npc.diaNum + 1;
-            this.displayDia = npc['message' + npc.diaNum] || npc.message0;
-            this.dialoguePortrait.loadTexture(npc.portrait);
-            this.diaCounter = -1;
-            this.dialogueWindow.alpha = 1;
-            this.dialoguePortrait.alpha = 1;
-            this.activeDia = true;
-            
-            //this.npcActiveTimer = this.game.time.events.add(Phaser.Timer.SECOND * 7, function (npc) { this[npc.parentKey].animations.paused = false; this[npc.parentKey].animations.play('idleDown'); }, this, npc);
+        if (npc != this.phonograph.collider) {
+            if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none") {
+                this.menuState = "dialogue";
+                this.npcActive = npc;
+                npc.message0 = npc.messageARY[Math.floor(Math.random() * npc.messageARY.length)]
+                npc.diaNum = npc.diaNum + 1;
+                this.displayDia = npc['message' + npc.diaNum] || npc.message0;
+                this.dialoguePortrait.loadTexture(npc.portrait);
+                this.diaCounter = -1;
+                this.dialogueWindow.alpha = 1;
+                this.dialoguePortrait.alpha = 1;
+                this.activeDia = true;
+            }
+
+            this.diaAngle = Math.atan2((this.player.centerY - this[npc.parentKey].centerY), (this.player.centerX - this[npc.parentKey].centerX))  * (180 / Math.PI);
+            if (this.diaAngle > 45 && this.diaAngle < 135) {
+                this[npc.parentKey].frame = 39;
+            } else if (this.diaAngle > 135 || this.diaAngle < -90) {
+                this[npc.parentKey].frame = 45;
+                if (this[npc.parentKey].scale.x < 0) {
+                    this[npc.parentKey].scale.x = -this[npc.parentKey].scale.x
+                }
+            } else if (this.diaAngle > -90 && this.diaAngle < 45) {
+                this[npc.parentKey].frame = 45;
+                if (this[npc.parentKey].scale.x > 0) {
+                    this[npc.parentKey].scale.x = -this[npc.parentKey].scale.x
+                }
+            }
+        } else if (npc == this.phonograph.collider) {
+            if (interactKey.isDown && interactKey.duration < 2 && this.player.state == "walk" && this.menuState == "none" && this.shopAudio1.isPlaying != false) {
+                this.shopAudio1.play();
+            }
         }
+
         this.keyTutorial.x = npc.centerX;
         this.keyTutorial.y = npc.top - (this.scalingFactor * 8);
         this.keyTutorial.frame = 2;
         this.keyTutorial.alpha = 1;
 
-        //this[npc.parentKey].animations.paused = true;
-        this.diaAngle = Math.atan2((this.player.centerY - this[npc.parentKey].centerY), (this.player.centerX - this[npc.parentKey].centerX))  * (180 / Math.PI);
-        if (this.diaAngle > 45 && this.diaAngle < 135) {
-            this[npc.parentKey].frame = 39;
-        } else if (this.diaAngle > 135 || this.diaAngle < -90) {
-            this[npc.parentKey].frame = 45;
-            if (this[npc.parentKey].scale.x < 0) {
-                this[npc.parentKey].scale.x = -this[npc.parentKey].scale.x
-            }
-        } else if (this.diaAngle > -90 && this.diaAngle < 45) {
-            this[npc.parentKey].frame = 45;
-            if (this[npc.parentKey].scale.x > 0) {
-                this[npc.parentKey].scale.x = -this[npc.parentKey].scale.x
-            }
-        }
     },
     dialogueRender: function(message) {
         if (this.diaDelay != true) {
@@ -2580,8 +2613,8 @@ steamGame.Game.prototype = {
         this.makeHalo(this.dummy);
         this.winanWeapon.bullets.forEachExists(this.makeHalo, this);
         this.bombWeapon.bullets.forEachExists(this.makeHalo, this);
-        this.makeHalo(this.tesla);
         this.collectibles.forEachExists(this.makeHalo, this);
+        this.npcGroup.forEachExists(this.makeHalo, this);
 
         this.player.shadowTexture.dirty = true;
     },
