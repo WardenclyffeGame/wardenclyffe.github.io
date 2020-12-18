@@ -12,19 +12,26 @@ Monday: Works and well at that. dialogue finished, enemy in progress.
 
 Tuesday:
     -make enemy idle patterns (walk in square with delays)
+        -delay
     -spawn jukebox, record gymnopedie
+        -finished
 
 Wednesday:
     -figure out audio context and playing music with the jukebox
+        -finished
     -maybe start addin smallg sounds to play with actions, at least sword swipe, maybe other simple actions
+        -working on finding good sounds first
     -probably finish up enemy too, I don't have that much confidence in Tuesday
+        -I was right not to, still haven't started past concept art, delay.
 
 Thursday:
     -flat color layout of destroyed berlin
+        -finished and proper
 
 Friday:
     -city sprites
     -if it comes up, chunk based area loading
+        -it's coming up -_-
 
 Saturday:
     -map functionality based on flat color map ratios
