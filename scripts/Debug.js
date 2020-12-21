@@ -42,8 +42,6 @@ steamGame.Game.prototype = {
  
         
         ///////////////////////////////////testing objects//////////////////////////////////////////
-        this.dummyCreate((this.game.world.centerX + (500 * this.scalingFactor)), (this.game.world.centerY + (100 * this.scalingFactor)));
-        this.teslaCreate((this.scalingFactor * 32 * 24) * 1.5, (this.scalingFactor * 32 * 5) * 4);
 
         this.ESign = this.game.add.sprite(this.game.world.centerX + (600 * this.scalingFactor), this.game.world.centerY - (400 * this.scalingFactor), 'signSheets');
         this.game.physics.arcade.enable(this.ESign);
@@ -86,6 +84,11 @@ steamGame.Game.prototype = {
 
 
         this.defaultCreate(this);
+
+
+        ///////////////////////////////////////////////////// NPC LAYER ///////////////////////////////////////////////////////////////////////
+        this.dummyCreate((this.game.world.centerX + (500 * this.scalingFactor)), (this.game.world.centerY + (100 * this.scalingFactor)));
+        this.teslaCreate((this.scalingFactor * 32 * 24) * 1.5, (this.scalingFactor * 32 * 5) * 4);
         
 
     },
