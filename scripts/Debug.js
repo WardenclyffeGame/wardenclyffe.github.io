@@ -97,10 +97,6 @@ steamGame.Game.prototype = {
         if (this.fade.alpha == 1 && this.intro == null) {
             this.game.add.tween(this.fade).to({alpha: 0}, 500, null, true);
             this.intro = true;
-            this.tesla.moveDown();
-            this.dummy.moveDown();
-            this.tesla.moveUp();
-            this.dummy.moveUp();
         }
         if (debugKey.isDown) {
             this.debugText = this.debugText || {};
