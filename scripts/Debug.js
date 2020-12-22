@@ -222,6 +222,8 @@ steamGame.Game.prototype = {
             this.playerAnimation(this);
         }
         if (this.menuState == 'dialogue') {
+            this.mapAway(this);
+            this.abilAway(this);
             if (this.activeDia != true) {
                 if (interactKey.isDown && interactKey.duration < 2) {
                     this.dialogueWindow.alpha = 0;
