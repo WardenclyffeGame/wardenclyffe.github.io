@@ -2113,7 +2113,7 @@ steamGame.Game.prototype = {
         if(dashKey.isDown && dashKey.duration < 2 && this.player.hasBoots == 1 && this.dashCD != true) {
             this.player.state = "dash";
             this.dashCD = true;
-            this.dashORTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.4, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; this.player.state = "walk";}, this);
+            this.dashORTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.4, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; this.player.state = "walk"; this.animationName = 'stopped';}, this);
             this.dashCDTimer = this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){ dashKey.duration = 0; this.dashCD = false;}, this);
             if (this.player.body.velocity.x < 0) {
                 this.player.body.velocity.x = this.player.speed * -3;
