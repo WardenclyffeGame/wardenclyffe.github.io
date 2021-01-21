@@ -16,7 +16,6 @@ steamGame.Game.prototype = {
 
         this.npcGroup = this.game.add.group();
         this.collectibles = this.game.add.group();
-        this.characters = this.game.add.group();
     },
     create: function(){
         //begin scene setup
@@ -123,16 +122,7 @@ steamGame.Game.prototype = {
             //this.debugText.PLYR = this.game.debug.body(this.player);
             //this.debugText.PLYRS = this.game.debug.body(this.player.swipe);
             //this.debugText.DB = this.game.debug.body(this.dummy);
-            this.characters.forEachExists((o) => { 
-                if (o.rigid != null) {
-                    this.game.debug.body(o.rigid);
-                } else {
-                    this.game.debug.body(o);
-                }
-                if (o.collider != null) {
-                    this.game.debug.body(o.collider, "#ff00000f");
-                }
-            })
+            //this.game.debug.body(this.tesla.collider);
             //this.game.debug.body(this.HPPotTest);
             
             if (rightArrow.isDown) {
@@ -437,7 +427,7 @@ steamGame.Game.prototype = {
             b.scale.setTo(this.scalingFactor * 1.5, this.scalingFactor * 1.5);
             b.body.updateBounds();
             b.lightRadius = this.scalingFactor * 32;
-            b.lightColor = "#ebfcfb";
+            b.lightColor = "#faffff";
             b.debug = true;
         }, this);
         this.winanWeapon.bullets.lightRadius = this.scalingFactor * 32;
@@ -830,15 +820,13 @@ steamGame.Game.prototype = {
         this.keyTutorial.alpha = 0
         this.keyTutorial.anchor.setTo(0.5, 1);
         this.keyTutorial.scale.setTo(this.scalingFactor * 0.5)
-
-        this.characters.add(this.player);
         
         /*********************************************fade to black tiles***********************************************************/
         this.fade = this.game.add.tileSprite(this.game.camera.x, this.game.camera.y, this.game.camera.width, this.game.camera.height, 'black');
         this.fade.fixedToCamera = true;
         this.fade.alpha = 1;
 
-        /*****************************************************AUDIO******************************************************************/
+        /*****************************************************AUDIO*/
         this.shopAudio1 = this.game.add.sound('gymnopedie', 0.1, false); 
     },
     kronaGCreate: function(spawnX, spawnY) {
@@ -919,42 +907,29 @@ steamGame.Game.prototype = {
         this.dummy.post.width = this.scalingFactor / 16;
         this.dummy.post.height = this.scalingFactor / 16;
         this.dummy.moveUp();
-        this.dummy.type = "dummy";
-
-        this.characters.add(this.dummy);
     },
     teslaCreate: function(spawnX, spawnY) {
-        this["tesla" + spawnX + "," + spawnY] = this.game.add.sprite(spawnX, spawnY, 'Tesla');
+        this.tesla = this.game.add.sprite(spawnX, spawnY, 'Tesla');
+        this.game.physics.arcade.enable(this.tesla);
+        this.tesla.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
+        this.tesla.maxHP = 3;
+        this.tesla.anchor.setTo(0.5, 0.5);
+        this.tesla.animations.add('idleDown', [39, 39, 39, 39, 39, 40, 40, 40, 41, 41, 41, 39], 4, true);
+        this.tesla.animations.play('idleDown');
+        this.tesla.currentHP = this.tesla.maxHP;
+        this.tesla.body.immovable = true;
+        this.tesla.body.setSize(4, 7, 14, 11);
+        this.tesla.collider = this.game.add.sprite(this.tesla.centerX, this.tesla.bottom - (this.tesla.height / 4), '');
+        this.game.physics.arcade.enable(this.tesla.collider);
+        this.tesla.collider.body.immovable = true;
+        this.tesla.collider.anchor.setTo(0.5, 0.5);
+        this.tesla.collider.width = this.scalingFactor * 32 * 2;
+        this.tesla.collider.height = this.scalingFactor * 32 * 2.5;
+        this.tesla.collider.lightRadius = this.scalingFactor * 32 * 3;
+        this.tesla.collider.lightColor = "#ffffff";
 
-        //this["tesla" + spawnX + "," + spawnY].rigid = this.game.add.sprite(spawnX, spawnY, '');
-        //this["tesla" + spawnX + "," + spawnY].rigid.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
-        //this["tesla" + spawnX + "," + spawnY].rigid.anchor.setTo(0.5, 0.5);
-        //this.game.physics.arcade.enable(this["tesla" + spawnX + "," + spawnY].rigid);
-
-        this["tesla" + spawnX + "," + spawnY].scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
-        this["tesla" + spawnX + "," + spawnY].maxHP = 3;
-        this["tesla" + spawnX + "," + spawnY].anchor.setTo(0.5, 0.5);
-        this["tesla" + spawnX + "," + spawnY].animations.add('idleDown', [39, 39, 39, 39, 39, 40, 40, 40, 41, 41, 41, 39], 4, true);
-        this["tesla" + spawnX + "," + spawnY].animations.play('idleDown');
-        this["tesla" + spawnX + "," + spawnY].currentHP = this["tesla" + spawnX + "," + spawnY].maxHP;
-        //this["tesla" + spawnX + "," + spawnY].rigid.body.immovable = true;
-        //this["tesla" + spawnX + "," + spawnY].rigid.body.setSize(4, 7, 14, 11);
-
-        this.game.physics.arcade.enable(this["tesla" + spawnX + "," + spawnY]);
-        this["tesla" + spawnX + "," + spawnY].body.immovable = true;
-        this["tesla" + spawnX + "," + spawnY].body.setSize(4, 7, 14, 11);
-
-        this["tesla" + spawnX + "," + spawnY].collider = this.game.add.sprite(this["tesla" + spawnX + "," + spawnY].centerX, this["tesla" + spawnX + "," + spawnY].bottom - (this["tesla" + spawnX + "," + spawnY].height / 4), '');
-        this.game.physics.arcade.enable(this["tesla" + spawnX + "," + spawnY].collider);
-        this["tesla" + spawnX + "," + spawnY].collider.body.immovable = true;
-        this["tesla" + spawnX + "," + spawnY].collider.anchor.setTo(0.5, 0.5);
-        this["tesla" + spawnX + "," + spawnY].collider.width = this.scalingFactor * 32 * 2;
-        this["tesla" + spawnX + "," + spawnY].collider.height = this.scalingFactor * 32 * 2.5;
-        this["tesla" + spawnX + "," + spawnY].collider.lightRadius = this.scalingFactor * 32 * 3;
-        this["tesla" + spawnX + "," + spawnY].collider.lightColor = "#ffffff";
-
-        this["tesla" + spawnX + "," + spawnY].collider.diaNum = 0;
-        this["tesla" + spawnX + "," + spawnY].collider.messageARY = [
+        this.tesla.collider.diaNum = 0;
+        this.tesla.collider.messageARY = [
             "Why are you still here?", 
             "I know I’m the only thing to mess with right now but that doesn't mean I’m not busy.", 
             "The least you could do is take care of Ben, scarecrows frighten me.", 
@@ -981,32 +956,21 @@ steamGame.Game.prototype = {
             "Peace can only come as a natural consequence of universal enlightenment and merging of races, and we are still far from this blissful realization.",
             "As I review the events of my past life I realize how subtle are the influences that shape our destinies."
         ]
-        this["tesla" + spawnX + "," + spawnY].collider.message0 = this["tesla" + spawnX + "," + spawnY].collider.messageARY[Math.floor(Math.random() * this["tesla" + spawnX + "," + spawnY].collider.messageARY.length)];
-        this["tesla" + spawnX + "," + spawnY].collider.message1 = "It’s dangerous to go alone, take this!";
-        this["tesla" + spawnX + "," + spawnY].collider.message2 = "(By which I mean you can attack with space.)";
-        this["tesla" + spawnX + "," + spawnY].collider.message3 = "Press Tab to open your inventory and see your items, and once again to close it.";
-        this["tesla" + spawnX + "," + spawnY].collider.message4 = "You can also press M to open and close your map.";
-        this["tesla" + spawnX + "," + spawnY].collider.message5 = "To use your items, hit Q while one is selected and visible in the top right corner.";
-        this["tesla" + spawnX + "," + spawnY].collider.message6 = "If you have an item, it will become colored in your inventory permanently.";
-        this["tesla" + spawnX + "," + spawnY].collider.message7 = "Right now, the items that work are the steam pistol, and the bombs, so long as you have steam or bombs left to use.";
-        this["tesla" + spawnX + "," + spawnY].collider.message8 = "If you have the boots, (displayed under the sword in your inventory) you can hold Shift to dash while you walk.";
-        this["tesla" + spawnX + "," + spawnY].collider.message9 = "That’s all the tips I have, but if you ever want to hear an inventor’s thoughts, you’re always welcome to talk to me.";
-        this["tesla" + spawnX + "," + spawnY].collider.portrait = "teslaPortrait";
-        this["tesla" + spawnX + "," + spawnY].collider.parentKey = "tesla" + spawnX + "," + spawnY;
-        this["tesla" + spawnX + "," + spawnY].moveUp();
-        this["tesla" + spawnX + "," + spawnY].bodysets = {
-            u1: 7, 
-            u2: 4,
-            u3: 14,
-            u4: 22,
-            d1: 4, 
-            d2: 7,
-            d3: 14,
-            d4: 11
-        }
+        this.tesla.collider.message0 = this.tesla.collider.messageARY[Math.floor(Math.random() * this.tesla.collider.messageARY.length)];
+        this.tesla.collider.message1 = "It’s dangerous to go alone, take this!";
+        this.tesla.collider.message2 = "(By which I mean you can attack with space.)";
+        this.tesla.collider.message3 = "Press Tab to open your inventory and see your items, and once again to close it.";
+        this.tesla.collider.message4 = "You can also press M to open and close your map.";
+        this.tesla.collider.message5 = "To use your items, hit Q while one is selected and visible in the top right corner.";
+        this.tesla.collider.message6 = "If you have an item, it will become colored in your inventory permanently.";
+        this.tesla.collider.message7 = "Right now, the items that work are the steam pistol, and the bombs, so long as you have steam or bombs left to use.";
+        this.tesla.collider.message8 = "If you have the boots, (displayed under the sword in your inventory) you can hold Shift to dash while you walk.";
+        this.tesla.collider.message9 = "That’s all the tips I have, but if you ever want to hear an inventor’s thoughts, you’re always welcome to talk to me.";
+        this.tesla.collider.portrait = "teslaPortrait";
+        this.tesla.collider.parentKey = "tesla";
+        this.tesla.moveUp();
 
-        this.npcGroup.add(this["tesla" + spawnX + "," + spawnY].collider);
-        this.characters.add(this["tesla" + spawnX + "," + spawnY]);
+        this.npcGroup.add(this.tesla.collider);
     },
     phonographCreate: function(spawnX, spawnY) {
         this.phonograph = this.game.add.sprite(spawnX, spawnY, 'phonograph');
@@ -1261,6 +1225,8 @@ steamGame.Game.prototype = {
     },
     collisionHandler: function() {
         this.game.physics.arcade.collide(this.player, this.wall);
+        this.game.physics.arcade.collide(this.player, this.dummy.post);
+        this.game.physics.arcade.collide(this.player, this.tesla);
         this.game.physics.arcade.collide(this.player, this.phonograph);
 
         this.collectibles.forEach((c) => {
@@ -1278,20 +1244,21 @@ steamGame.Game.prototype = {
         this.game.physics.arcade.overlap(this.bombWeapon.bullets, this.player, this.debugHealth, null, this);
         this.game.physics.arcade.overlap(this.player, this.npcGroup, this.dialogueQueue, null, this);
 
-        this.characters.forEachExists((o) => {
-            this.game.physics.arcade.collide(this.player, o);
-            if (o.bottom > this.player.bottom) {
-                o.moveUp();
-                if (o.bodysets != null) {
-                    o.body.setSize(7, 4, 14, 22,);
-                }
-            } else if (o.bottom < this.player.bottom) {
-                this.characters.sendToBack(o);
-                if (o.bodysets != null) {
-                    o.body.setSize(o.bodysets.d1, o.bodysets.d2, o.bodysets.d3, o.bodysets.d4);
-                }
-            }
+        if (this.dummy.bottom > this.player.bottom) {
+            this.dummy.moveUp();
+        } else if (this.dummy.bottom < this.player.bottom) {
+            this.dummy.moveDown();
+        }
+        this.npcGroup.forEach((npc) => {
+            
         })
+        if (this.tesla.bottom > this.player.bottom) {
+            this.tesla.moveUp();
+            this.tesla.body.setSize(4, 2, 14, 24);
+        } else if (this.tesla.bottom < this.player.bottom) {
+            this.tesla.moveDown();
+            this.tesla.body.setSize(4, 7, 14, 11);
+        }
 
         //maintain map at absolute background
         this.decFloor.moveDown();
@@ -1301,9 +1268,8 @@ steamGame.Game.prototype = {
         this.water.moveDown();
 
         this.player.lightSprite.moveUp();
+        this.keyTutorial.moveUp();
         this.game.world.bringToTop(this.collectibles);
-        this.game.world.bringToTop(this.characters);
-        this.game.world.bringToTop(this.keyTutorial);
         this.game.world.bringToTop(this.diaGroup);
         this.game.world.bringToTop(this.UIGroup);
         this.game.world.bringToTop(this.ASGroup);
