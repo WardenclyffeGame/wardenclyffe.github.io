@@ -94,7 +94,7 @@ steamGame.Game.prototype = {
     },
     update: function(){
         /***************************************** Collision handler for player vs. layers and debug text ***************************************************************/
-        if (this.fade.alpha == 1 && this.intro == null) {
+        if (this.fade.alpha == 1 && this.intro != true && this.menuState != "GameOver") {
             this.game.add.tween(this.fade).to({alpha: 0}, 500, null, true);
             this.intro = true;
         }
@@ -220,6 +220,25 @@ steamGame.Game.prototype = {
             this.pauseManager(this);
 
             this.playerAnimation(this);
+        }
+        if (this.menuState == 'GameOver') {
+            //this.mapAway(this);
+            //this.abilAway(this);
+
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            this.player.swipe.body.velocity.x = 0;
+            this.player.swipe.body.velocity.y = 0;
+            this.game.time.events.remove(this.idleTimer1);
+            if (this.animationName != "seated") {
+                this.animationName = "stopped";
+            }
+            
+            this.GOverShow(this);
+
+            this.GOverManager(this);
+
+            //this.playerAnimation(this);
         }
         if (this.menuState == 'dialogue') {
             this.mapAway(this);
@@ -788,6 +807,40 @@ steamGame.Game.prototype = {
         this.pausePointer.pos = 1;
         this.pauseGroup.add(this.pausePointer);
 
+        //Game Over window
+        this.GameOver = this.game.add.sprite(this.game.camera.width / 2, this.game.camera.height / 2, 'plaque');
+        this.GameOver.anchor.setTo(0.5, 0.5);
+        this.GameOver.width = this.game.camera.width / 2;
+        this.GameOver.height = this.game.camera.height * 0.6;
+        this.GOverGroup = this.game.add.group();
+        this.GOverGroup.add(this.GameOver);
+        this.GOverGroup.fixedToCamera = true;
+        this.GOverGroup.stationary = true;
+        this.GOverGroup.pos = 'gone';
+        this.GOverGroup.alpha = 0;
+
+        this.GOverText = this.game.add.text(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 3), 'Game Over', { font: (this.fontFactor * 1.25) + "px 'art-deco-custom'", fill: "#ffffff" });
+        this.GOverText.anchor.setTo(0.5, 0.5);
+        //this.pauseText.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.GOverGroup.add(this.GOverText);
+
+        this.GOverTextSC = this.game.add.text(this.game.camera.width / 2, (this.game.camera.height / 2) - (this.pauseMenu.height / 12), 'Save and Continue', { font: (this.fontFactor * (5/8)) + "px 'art-deco-custom'", fill: "#ffffff" });
+        this.GOverTextSC.anchor.setTo(0.5, 0.5);
+        //this.pauseTextC.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.GOverGroup.add(this.GOverTextSC);
+
+        this.GOverTextSQ = this.game.add.text(this.game.camera.width / 2, (this.game.camera.height / 2) + (this.pauseMenu.height / 12), 'Save and Quit', { font: (this.fontFactor * (5/8)) + "px 'art-deco-custom'", fill: "#ffffff" });
+        this.GOverTextSQ.anchor.setTo(0.5, 0.5);
+        //this.pauseTextSQ.scale.setTo(this.scalingFactor * 2.2, this.scalingFactor * 2.2);
+        this.GOverGroup.add(this.GOverTextSQ);
+
+        this.GOverPointer = this.game.add.sprite((this.game.camera.width / 2) - (this.pauseTextSQ.width * (2 / 3)), (this.game.camera.height / 2) - (this.pauseMenu.height / 12), 'menuPointer');
+        this.GOverPointer.anchor.setTo(1, 0.5);
+        this.GOverPointer.animations.add('spin', [0, 0, 1, 2, 3, 4, 4, 3, 2, 1]);
+        this.GOverPointer.animations.play('spin', 12, true)
+        this.GOverPointer.pos = 1;
+        this.GOverGroup.add(this.GOverPointer);
+
         this.diaGroup = this.game.add.group();
         this.dialogueWindow = this.game.add.sprite(this.game.camera.width / 6, (this.game.camera.height * (3/4))  - this.scalingFactor * 4, 'diaWindow');
         this.dialogueWindow.alpha = 0;
@@ -1276,11 +1329,23 @@ steamGame.Game.prototype = {
         this.game.world.bringToTop(this.mapGroup);
         this.game.world.bringToTop(this.pauseGroup);
         this.fade.bringToTop();
+        this.game.world.bringToTop(this.GOverGroup);
     },
     /////////////////////////////////////////////PLAYER FUNCTIONS///////////////////////////////////////////////////////////////
     playerHPManager: function() {
         if (this.player.currentHP <= this.player.maxHP) {
             this.player.diffHP = this.player.maxHP - this.player.currentHP;
+            if (this.player.currentHP <= 0) {
+                if (this.fade.alpha == 0) {
+                    this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                    this.menuState = "GameOver";
+                    this.intro = false;
+                    if (this.frameAbil != null) {
+                        this.frameAbil.name == "none";
+                        this.frameAbil.destroy();
+                    }
+                }
+            }
             if (this.player.diffHP == 0) {
                 this['heart' + this.highestHeart.toString()].frame = 0;
             }
@@ -1389,15 +1454,6 @@ steamGame.Game.prototype = {
                 }
                 if(this.player.diffHP % 2 == 0 || this.player.diffHP > 19) {
                     this['heart' + (this.highestHeart - 9).toString()].frame = 2;
-                }
-            }
-            if (this.player.currentHP <= 0) {
-                if (this.fade.alpha == 0) {
-                    this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
-                    if (this.frameAbil != null) {
-                        this.frameAbil.name == "none";
-                        this.frameAbil.destroy();
-                    }
                 }
             }
         }
@@ -2538,6 +2594,86 @@ steamGame.Game.prototype = {
             this.pausePointer.y = (this.game.camera.height / 2) + (this.pauseMenu.height / 4);
         }
     },
+    GOverManager: function() {
+        if (spaceKey.isDown || enterKey.isDown) {
+            if (this.GOverPointer.pos == 1) {
+                this.save(this);
+                this.GOverGroup.alpha == 0;
+                this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
+                    //this.game.state.states[this.playerData.map].playerData = this.playerData;
+                    this.game.state.restart(true, false, this.playerData);
+                }, this)
+            } else if (this.pausePointer.pos == 2) {
+                this.save(this);
+                if (this.fade.alpha == 0) {
+                    this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
+                    if (this.frameAbil != null) {
+                        this.frameAbil.name == "none";
+                        this.frameAbil.destroy();
+                    }
+                }
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){window.location.href = "http://wardenclyffegame.github.io";}, this);
+            }
+        }
+
+        if (downKey.isDown || downArrow.isDown) {
+            if (downKey.isDown && downKey.duration < 1) {
+                if (this.pausePointer.pos == 3) {
+                    this.pausePointer.pos = 1;
+                } else {
+                    this.pausePointer.pos += 1;
+                }
+
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    downKey.duration = 0;
+                }, this);
+            }
+            if (downArrow.isDown && downArrow.duration < 1) {
+                if (this.pausePointer.pos == 3) {
+                    this.pausePointer.pos = 1;
+                } else {
+                    this.pausePointer.pos += 1;
+                }
+
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    downArrow.duration = 0;
+                }, this);
+            }
+        }
+
+        if (upKey.isDown || upArrow.isDown) {
+            if (upKey.isDown && upKey.duration < 1) {
+                if (this.pausePointer.pos == 1) {
+                    this.pausePointer.pos = 3;
+                } else {
+                    this.pausePointer.pos -= 1;
+                }
+
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    upKey.duration = 0;
+                }, this);
+            }
+            if (upArrow.isDown && upArrow.duration < 1) {
+                if (this.pausePointer.pos == 1) {
+                    this.pausePointer.pos = 3;
+                } else {
+                    this.pausePointer.pos -= 1;
+                }
+
+                this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+                    upArrow.duration = 0;
+                }, this);
+            }
+        }
+
+        if (this.pausePointer.pos == 1) {
+            this.pausePointer.y = (this.game.camera.height / 2) - (this.pauseMenu.height / 12);
+        } else if (this.pausePointer.pos == 2) {
+            this.pausePointer.y = (this.game.camera.height / 2) + (this.pauseMenu.height / 12);
+        } else if (this.pausePointer.pos == 3) {
+            this.pausePointer.y = (this.game.camera.height / 2) + (this.pauseMenu.height / 4);
+        }
+    },
     abilityTrans: function() {
         if (this.ASGroup.stationary == true) {
             if (this.menuState == 'none' || this.menuState == 'ability') {
@@ -2603,6 +2739,12 @@ steamGame.Game.prototype = {
             this.pauseGroup.pos = 'there';
         }
     },
+    GOverShow: function() {
+        if (this.GOverGroup.pos == 'gone') {
+            this.GOverGroup.alpha = 1;
+            this.GOverGroup.pos = 'there';
+        }
+    },
     abilShow: function() {
         if (this.ASGroup.cameraOffset.y < this.ASGroup.maxH + (this.game.camera.height * 1.5)) {
             this.ASGroup.cameraOffset.y += this.game.camera.height / 40;
@@ -2659,7 +2801,11 @@ steamGame.Game.prototype = {
     },
     save: function() {
         this.playerData.maxHP = this.player.maxHP;
-        this.playerData.currentHP = this.player.currentHP;
+        if (this.player.currentHP > 0) {
+            this.playerData.currentHP = this.player.currentHP;
+        } else {
+            this.playerData.currentHP = this.player.maxHP;
+        }
         this.playerData.maxSteam = this.player.maxSteam;
         this.playerData.currentSteam = this.player.currentSteam;
         this.playerData.maxEnergy = this.player.maxEnergy;
