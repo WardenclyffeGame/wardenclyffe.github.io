@@ -97,6 +97,7 @@ steamGame.Game.prototype = {
         if (this.fade.alpha == 1 && this.intro != true && this.menuState != "GameOver") {
             this.game.add.tween(this.fade).to({alpha: 0}, 500, null, true);
             this.intro = true;
+            this.countingSec = false;
         }
         if (debugKey.isDown) {
             this.debugText = this.debugText || {};
@@ -1049,7 +1050,7 @@ steamGame.Game.prototype = {
     },
     dayCycle: function() {
         if (this.countingSec != true) {
-            this.game.time.events.add(Phaser.Timer.SECOND, function () { this.trueTOD ++;; this.countingSec = false; }, this);
+            this.game.time.events.add(Phaser.Timer.SECOND, function () { this.trueTOD ++; this.countingSec = false; }, this);
             this.countingSec = true;
             if (this.trueTOD == 235) {
                 this.colorBlend.step = 0;
@@ -2826,7 +2827,7 @@ steamGame.Game.prototype = {
         this.playerData.hasTurbine = this.player.hasTurbine;
         this.playerData.hasDefib = this.player.hasDefib;
         this.playerData.hasJar = this.player.hasJar;
-        this.playerData.fresh = 0;
+        this.playerData.countingSec = false;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos] || this.player.curAbil;
         this.playerData.TOD = this.trueTOD;
         this.playerData.map = "Debug";
