@@ -99,6 +99,7 @@ steamGame.MainMenu.prototype = {
             maxEnergy: 50,
             currency: 0,
             map: "Debug",
+            fresh: 1,
         };
         this.playerData = JSON.parse(window.localStorage.getItem('playerData'));
 
@@ -136,6 +137,7 @@ steamGame.MainMenu.prototype = {
                 //this.game.state.states[this.defaultData.map].playerData.hasSteamShield = 1;
                 this.game.state.states[this.defaultData.map].playerData.TOD = 1100;
                 this.game.state.states[this.defaultData.map].playerData.bombCount = 10;
+                this.game.state.states[this.defaultData.map].playerData.fresh = 1;
                 this.game.state.start(this.defaultData.map);
             }, this)
         }
@@ -303,6 +305,7 @@ steamGame.MainMenu.prototype = {
                         }
                         this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
                             this.game.state.states[this.playerData.map].playerData = this.playerData;
+                            this.game.state.states[this.playerData.map].playerData.fresh = 1;
                             this.game.state.start(this.playerData.map);
                         }, this)
                     }
@@ -313,6 +316,7 @@ steamGame.MainMenu.prototype = {
                         }
                         this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
                             this.game.state.states[this.playerData.map].playerData = this.playerData;
+                            this.game.state.states[this.playerData.map].playerData.fresh = 1;
                             this.game.state.start(this.playerData.map);
                         }, this)
                     }

@@ -20,7 +20,7 @@ steamGame.Game.prototype = {
     create: function(){
         //begin scene setup
         this.game.stage.backgroundColor = '#000000';
-        this.scalingFactor = (this.game.world.width / 19) / 32;
+        this.scalingFactor = (this.game.camera.width / 19) / 32;
         this.map = this.game.add.tilemap('debugMap');
         this.map.addTilesetImage('DebugTiles', 'debugTiles');
         this.water = this.map.createLayer('water');
@@ -2600,10 +2600,9 @@ steamGame.Game.prototype = {
                 this.save(this);
                 this.GOverGroup.alpha == 0;
                 this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){ 
-                    //this.game.state.states[this.playerData.map].playerData = this.playerData;
                     this.game.state.restart(true, false, this.playerData);
                 }, this)
-            } else if (this.pausePointer.pos == 2) {
+            } else if (this.GOverPointer.pos == 2) {
                 this.save(this);
                 if (this.fade.alpha == 0) {
                     this.game.add.tween(this.fade).to({alpha: 1}, 500, null, true);
@@ -2618,10 +2617,10 @@ steamGame.Game.prototype = {
 
         if (downKey.isDown || downArrow.isDown) {
             if (downKey.isDown && downKey.duration < 1) {
-                if (this.pausePointer.pos == 3) {
-                    this.pausePointer.pos = 1;
+                if (this.GOverPointer.pos == 2) {
+                    this.GOverPointer.pos = 1;
                 } else {
-                    this.pausePointer.pos += 1;
+                    this.GOverPointer.pos += 1;
                 }
 
                 this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
@@ -2629,10 +2628,10 @@ steamGame.Game.prototype = {
                 }, this);
             }
             if (downArrow.isDown && downArrow.duration < 1) {
-                if (this.pausePointer.pos == 3) {
-                    this.pausePointer.pos = 1;
+                if (this.GOverPointer.pos == 2) {
+                    this.GOverPointer.pos = 1;
                 } else {
-                    this.pausePointer.pos += 1;
+                    this.GOverPointer.pos += 1;
                 }
 
                 this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
@@ -2643,10 +2642,10 @@ steamGame.Game.prototype = {
 
         if (upKey.isDown || upArrow.isDown) {
             if (upKey.isDown && upKey.duration < 1) {
-                if (this.pausePointer.pos == 1) {
-                    this.pausePointer.pos = 3;
+                if (this.GOverPointer.pos == 1) {
+                    this.GOverPointer.pos = 2;
                 } else {
-                    this.pausePointer.pos -= 1;
+                    this.GOverPointer.pos -= 1;
                 }
 
                 this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
@@ -2654,10 +2653,10 @@ steamGame.Game.prototype = {
                 }, this);
             }
             if (upArrow.isDown && upArrow.duration < 1) {
-                if (this.pausePointer.pos == 1) {
-                    this.pausePointer.pos = 3;
+                if (this.GOverPointer.pos == 1) {
+                    this.GOverPointer.pos = 2;
                 } else {
-                    this.pausePointer.pos -= 1;
+                    this.GOverPointer.pos -= 1;
                 }
 
                 this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
@@ -2666,12 +2665,10 @@ steamGame.Game.prototype = {
             }
         }
 
-        if (this.pausePointer.pos == 1) {
-            this.pausePointer.y = (this.game.camera.height / 2) - (this.pauseMenu.height / 12);
-        } else if (this.pausePointer.pos == 2) {
-            this.pausePointer.y = (this.game.camera.height / 2) + (this.pauseMenu.height / 12);
-        } else if (this.pausePointer.pos == 3) {
-            this.pausePointer.y = (this.game.camera.height / 2) + (this.pauseMenu.height / 4);
+        if (this.GOverPointer.pos == 1) {
+            this.GOverPointer.y = (this.game.camera.height / 2) - (this.pauseMenu.height / 12);
+        } else if (this.GOverPointer.pos == 2) {
+            this.GOverPointer.y = (this.game.camera.height / 2) + (this.pauseMenu.height / 12);
         }
     },
     abilityTrans: function() {
@@ -2829,6 +2826,7 @@ steamGame.Game.prototype = {
         this.playerData.hasTurbine = this.player.hasTurbine;
         this.playerData.hasDefib = this.player.hasDefib;
         this.playerData.hasJar = this.player.hasJar;
+        this.playerData.fresh = 0;
         this.playerData.curAbil = this.ASGroup.selPos['pos' + this.ASGroup.curPos] || this.player.curAbil;
         this.playerData.TOD = this.trueTOD;
         this.playerData.map = "Debug";
