@@ -113,7 +113,7 @@ steamGame.Game.prototype = {
             //this.debugText.SC = this.game.debug.text('Steam counter timer:' + this.player.newSLevel, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('menu state:' + this.menuState, this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             //this.debugText.MS = this.game.debug.text('mapPos:' + (this.ASGroup.curPos + 1), this.game.world.centerX - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
-            //this.debugText.TC = this.game.debug.text('curAbil:' + this.ASGroup.curAbil, this.game.camera.width - 150, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
+            this.debugText.TC = this.game.debug.text('krona:' + this.player.newC, this.game.camera.width - 250, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.game.debug.text('arithmatic:' + (this.game.camera.height / 8.2125), this.game.camera.width - 250, this.game.camera.height - 105, null, 'rgb(0, 0, 0)');
             this.debugText.EL = this.game.debug.text('True energy: ' + this.player.currentEnergy, this.game.world.centerX - 150, this.game.camera.height - 90, null, 'rgb(0, 0, 0)');
             this.debugText.K = this.game.debug.text('Currency: ' + (this.player.currency + 10), this.game.world.centerX - 150, this.game.camera.height - 75, null, 'rgb(0, 0, 0)');
@@ -891,6 +891,7 @@ steamGame.Game.prototype = {
         this["kronaG" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
         this["kronaG" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
         this["kronaG" + spawnX + "," + spawnY].type = "krona";
+        this["kronaG" + spawnX + "," + spawnY].coll = true;
         this.collectibles.add(this["kronaG" + spawnX + "," + spawnY]);
     },
     kronaSCreate: function(spawnX, spawnY) {
@@ -901,6 +902,7 @@ steamGame.Game.prototype = {
         this["kronaS" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
         this["kronaS" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
         this["kronaS" + spawnX + "," + spawnY].type = "krona";
+        this["kronaS" + spawnX + "," + spawnY].coll = true;
         this.collectibles.add(this["kronaS" + spawnX + "," + spawnY]);
     },
     kronaZCreate: function(spawnX, spawnY) {
@@ -911,6 +913,7 @@ steamGame.Game.prototype = {
         this["kronaZ" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
         this["kronaZ" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
         this["kronaZ" + spawnX + "," + spawnY].type = "krona";
+        this["kronaZ" + spawnX + "," + spawnY].coll = true;
         this.collectibles.add(this["kronaZ" + spawnX + "," + spawnY]);
     },
     HPPotCreate: function(spawnX, spawnY) {
@@ -921,6 +924,7 @@ steamGame.Game.prototype = {
         this["HPPot" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
         this["HPPot" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
         this["HPPot" + spawnX + "," + spawnY].type = "HP";
+        this["HPPot" + spawnX + "," + spawnY].coll = true;
         this.collectibles.add(this["HPPot" + spawnX + "," + spawnY]);
     },
     coalCreate: function(spawnX, spawnY) {
@@ -931,6 +935,7 @@ steamGame.Game.prototype = {
         this["coal" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
         this["coal" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
         this["coal" + spawnX + "," + spawnY].type = "coal";
+        this["coal" + spawnX + "," + spawnY].coll = true;
         this.collectibles.add(this["coal" + spawnX + "," + spawnY]);
     },
     batteryCreate: function(spawnX, spawnY) {
@@ -941,6 +946,7 @@ steamGame.Game.prototype = {
         this["battery" + spawnX + "," + spawnY].lightRadius = this.scalingFactor * 16;
         this["battery" + spawnX + "," + spawnY].lightColor = '#ffffff4f';
         this["battery" + spawnX + "," + spawnY].type = "battery";
+        this["battery" + spawnX + "," + spawnY].coll = true;
         this.collectibles.add(this["battery" + spawnX + "," + spawnY]);
     },
     dummyCreate: function (spawnX, spawnY) {
@@ -951,6 +957,7 @@ steamGame.Game.prototype = {
         this.dummy.scale.setTo(this.scalingFactor * 2, this.scalingFactor * 2);
         this.dummy.lightRadius = this.scalingFactor * 32 * 1.5;
         this.dummy.lightColor = "#ffffff";
+        this.dummy.value = 100;
         this.dummy.maxHP = 3;
         this.dummy.currentHP = this.dummy.maxHP;
         this.dummy.body.immovable = true;
@@ -1253,26 +1260,32 @@ steamGame.Game.prototype = {
                 player.newC = 9999;
             }
         }
-        if (coin.type == "HP") {
+        else if (coin.type == "HP") {
             if (player.currentHP < player.maxHP) {
                 player.currentHP ++;
             }
         }
-        if (coin.type == "coal") {
+        else if (coin.type == "coal") {
             if (player.currentSteam + 10 < player.maxSteam) {
                 player.currentSteam += 10;
             } else {
                 player.currentSteam = player.maxSteam;
             }
         }
-        if (coin.type == "battery") {
+        else if (coin.type == "battery") {
             if (player.currentEnergy + 5 < player.maxEnergy) {
                 player.currentEnergy += 5;
             } else {
                 player.currentEnergy = player.maxEnergy;
             }
+        } else {
+            if (player.newC + coin.value < 10000) {
+                player.newC += coin.value;
+            } else {
+                player.newC = 9999;
+            }
         }
-        if (coin != this.CSign) {
+        if (coin.coll == true) {
             coin.destroy();
             coin.lightRadius = 0;
         }
