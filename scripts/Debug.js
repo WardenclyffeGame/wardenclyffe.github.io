@@ -1191,7 +1191,7 @@ steamGame.Game.prototype = {
             if(this.dummy.hit == false && this.dummy.currentHP == 1) {
                 this.dummy.currentHP = 0;
                 this.dummy.value = 100;
-                this.playerKnockback(this.dummy, this);
+                //this.playerKnockback(this.dummy, this);
                 this.dummy.destroy();
                 this.dummy.post.destroy();
                 this.dummy.lightRadius = 0; 
