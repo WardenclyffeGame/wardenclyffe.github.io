@@ -6,7 +6,7 @@ steamGame.Game.prototype = {
     /////////////////////////////////////////////DEFAULT PHASER FUNCTIONS///////////////////////////////////////////////////////
     preload: function() {
         this.game.stage.backgroundColor = '#000000';
-        this.load.tilemap('debugMap', 'maps/DebugMap2.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.tilemap('debugMap', 'maps/England.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('debugTiles', 'sprites/game/Tiles.png');
         this.load.atlasJSONHash('Tesla', 'sprites/game/teslaSheet.png', 'sprites/game/jsonKeys/teslaSheet.json');
         this.load.image('teslaPortrait', 'sprites/portraits/teslaPortrait.png');
@@ -19,26 +19,27 @@ steamGame.Game.prototype = {
     },
     create: function(){
         //begin scene setup
-        this.game.stage.backgroundColor = '#000000';
+        this.game.stage.backgroundColor = '#f5eec4';
         this.scalingFactor = (this.game.camera.width / 19) / 32;
         this.map = this.game.add.tilemap('debugMap');
         this.map.addTilesetImage('DebugTiles', 'debugTiles');
-        this.water = this.map.createLayer('water');
-        this.water.setScale(this.scalingFactor);
-        this.wall = this.map.createLayer('wall');
-        this.wall.setScale(this.scalingFactor);
-        this.wall.hit = false;
-        this.game.physics.arcade.enable(this.wall);
-        this.floor = this.map.createLayer('floor');
-        this.floor.setScale(this.scalingFactor);
-        this.decWall = this.map.createLayer('wall1');
-        this.decWall.setScale(this.scalingFactor);
-        this.decFloor = this.map.createLayer('floor1');
-        this.decFloor.setScale(this.scalingFactor);
+        this.base = this.map.createLayer('base');
+        this.base.setScale(this.scalingFactor);
+        //this.wall = this.map.createLayer('wall');
+        //this.wall.setScale(this.scalingFactor);
+        //this.wall.hit = false;
+        this.game.physics.arcade.enable(this.base);
+        //this.floor = this.map.createLayer('floor');
+        //this.floor.setScale(this.scalingFactor);
+        //this.decWall = this.map.createLayer('wall1');
+        //this.decWall.setScale(this.scalingFactor);
+        this.deco = this.map.createLayer('deco');
+        this.deco.setScale(this.scalingFactor);
         
         //this.wall.debug = true;
-        this.map.setCollisionBetween(4, 25, true, 'wall');
-        this.water.resizeWorld();
+        this.map.setCollision([9, 10, 11, 12, 16,17, 19, 23, 24, 27, 28], true, 'base');
+        this.map.setCollision([17, 19, 30], true, 'deco');
+        this.base.resizeWorld();
  
         
         ///////////////////////////////////testing objects//////////////////////////////////////////
@@ -344,10 +345,10 @@ steamGame.Game.prototype = {
         this.player.animations.add('dashDown', [128, 129, 130, 131, 132, 133], 12, false);
         this.game.physics.arcade.enable(this.player);
         this.player.body.enbable = true;
-        this.player.speed = (this.scalingFactor * 320) / 3.2;
+        this.player.speed = (this.scalingFactor * 320) / 2.7;
         this.player.body.setSize(12, 22, 10, 10);
         this.player.body.collideWorldBounds = true;
-        this.game.camera.follow(this.player, 1);
+        this.game.camera.follow(this.player, 0);
 
         this.game.physics.arcade.enable(this.player.swipe);
         this.player.swipe.x = this.player.body.x - (this.player.body.width * 0.25);
@@ -1291,7 +1292,8 @@ steamGame.Game.prototype = {
         }
     },
     collisionHandler: function() {
-        this.game.physics.arcade.collide(this.player, this.wall);
+        this.game.physics.arcade.collide(this.player, this.base);
+        this.game.physics.arcade.collide(this.player, this.deco);
         this.game.physics.arcade.collide(this.player, this.dummy.post);
         this.game.physics.arcade.collide(this.player, this.tesla);
         this.game.physics.arcade.collide(this.player, this.phonograph);
@@ -1328,11 +1330,13 @@ steamGame.Game.prototype = {
         }
 
         //maintain map at absolute background
-        this.decFloor.moveDown();
+        /*this.decFloor.moveDown();
         this.decWall.moveDown();
         this.floor.moveDown();
         this.wall.moveDown();
-        this.water.moveDown();
+        this.water.moveDown();*/
+        this.deco.moveDown();
+        this.base.moveDown();
 
         this.player.lightSprite.moveUp();
         this.keyTutorial.moveUp();
