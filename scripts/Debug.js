@@ -37,7 +37,7 @@ steamGame.Game.prototype = {
         this.deco.setScale(this.scalingFactor);
         
         //this.wall.debug = true;
-        this.map.setCollision([9, 10, 11, 12, 16,17, 19, 23, 24, 27, 28], true, 'base');
+        this.map.setCollision([9, 10, 11, 12, 13, 16, 17, 19, 23, 24, 27, 28], true, 'base');
         this.map.setCollision([17, 19, 30], true, 'deco');
         this.base.resizeWorld();
  
