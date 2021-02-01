@@ -154,6 +154,8 @@ steamGame.Game.prototype = {
 
             /***************************************** Player Movement Handling ******************************************************************************************/
             this.playerKnockbackHandler(this);
+
+            this.playerInvcHandler(this);
             
             this.playerMovement(this);
 
@@ -1540,6 +1542,26 @@ steamGame.Game.prototype = {
             }
             if (this.direction == 'down') {
                 this.player.frame = 82;
+            }
+        }
+    },
+    playerInvcHandler: function() {
+        if (this.player.invc == true) {
+            if (this.playerFlicker != true) {
+                this.playerFlicker = true;
+                this.invcFrameTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.15, function(){ 
+                    if (this.player.alpha > 0) {
+                        this.player.alpha = 0;
+                    } else {
+                        this.player.alpha = 1;
+                    }
+                    this.playerFlicker = false;
+                }, this);
+            }
+        }
+        else {
+            if (this.player.alpha == 0) {
+                this.player.alpha = 1;
             }
         }
     },
