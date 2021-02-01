@@ -348,6 +348,7 @@ steamGame.Game.prototype = {
         this.player.speed = (this.scalingFactor * 320) / 2.7;
         this.player.body.setSize(12, 22, 10, 10);
         this.player.body.collideWorldBounds = true;
+        this.player.invc = false;
         this.game.camera.follow(this.player, 0);
 
         this.game.physics.arcade.enable(this.player.swipe);
@@ -1123,17 +1124,19 @@ steamGame.Game.prototype = {
     },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
     debugHealth: function(player, source) {
-        if (source == this.HPSign) {
-            player.timer += 1;
-            if(player.timer === 100) {
-                player.timer = 0;
-                player.currentHP -= 1;
-            }
-        } else if (this.bombWeapon.bullets.children.indexOf(source) > -1){
-            if (source.exploded == true) {
-                if (this.player.state == 'walk') {
-                    this.playerKnockback(source, this);
-                    this.player.currentHP -= 2;
+        if (this.player.invc == false) {
+            if (source == this.HPSign) {
+                player.timer += 1;
+                if(player.timer === 100) {
+                    player.timer = 0;
+                    player.currentHP -= 1;
+                }
+            } else if (this.bombWeapon.bullets.children.indexOf(source) > -1){
+                if (source.exploded == true) {
+                    if (this.player.state == 'walk') {
+                        this.playerKnockback(source, this);
+                        this.player.currentHP -= 2;
+                    }
                 }
             }
         }
@@ -1513,8 +1516,10 @@ steamGame.Game.prototype = {
     },
     playerKnockbackHandler: function() {
         if (this.player.state == 'hurt' && this.knockBackTiming != true) {
+            this.player.invc = true;
             this.knockbackTimer = this.game.time.events.add(Phaser.Timer.SECOND * 0.25, function(){ this.player.body.velocity.x = 0; this.player.body.velocity.y = 0; this.player.swipe.body.velocity.x = 0; this.player.swipe.body.velocity.y = 0; }, this);
             this.knockbackTimer2 = this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){ this.player.state = 'walk'; this.animationName = "stopped"; this.knockBackTiming = false; }, this);
+            this.knockbackTimer3 = this.game.time.events.add(Phaser.Timer.SECOND * 1.25, function(){ this.player.invc = false; }, this);
             this.knockBackTiming = true;
         } 
         if (this.player.state == 'hurt') {
