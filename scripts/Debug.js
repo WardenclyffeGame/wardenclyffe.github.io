@@ -2175,7 +2175,7 @@ steamGame.Game.prototype = {
                     this.game.add.tween(b).to({lightRadius: this.scalingFactor * 32 * 2.5}, 50, null, true);
                     this.game.add.tween(b).to({lightRadius: 0}, 50, null, true, 375);
                 }, this, b); 
-                b.killTimer = this.game.time.events.add(Phaser.Timer.SECOND * 4, function(b) { 
+                b.killTimer = this.game.time.events.add(Phaser.Timer.SECOND * 3.6, function(b) { 
                     b.exploded = false;
                     b.timing = false;
                 }, this, b);
