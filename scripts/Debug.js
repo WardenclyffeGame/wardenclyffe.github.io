@@ -1124,7 +1124,7 @@ steamGame.Game.prototype = {
     },
     /////////////////////////////////////////////COLLISON FUNCTIONS/////////////////////////////////////////////////////////////
     debugHealth: function(player, source) {
-        if (this.player.invc == false) {
+        if (this.player.invc == false && this.player.state != "hurt" && this.menuState == "none") {
             if (source == this.HPSign) {
                 player.timer += 1;
                 if(player.timer === 100) {
