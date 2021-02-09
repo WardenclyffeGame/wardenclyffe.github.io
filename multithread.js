@@ -265,7 +265,7 @@
 	};
 
 	window['Multithread'] = Multithread;
-	var num_threads = 8;
+	var num_threads = 4;
 var MT = new Multithread(num_threads);
 
 }();
