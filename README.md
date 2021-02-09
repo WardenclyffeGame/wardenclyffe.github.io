@@ -1,4 +1,7 @@
 # wardenclyffe.github.io
+**v.0.2 13-xx-20**
+<ul>
+ +Added Mult-Thread support up to 4 cores<br></ul>
 **v.0.2 12-xx-20** <br>
   *~Abilities and Combat*
     <ul>
