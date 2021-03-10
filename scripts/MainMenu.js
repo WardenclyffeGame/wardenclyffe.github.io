@@ -91,6 +91,8 @@ steamGame.MainMenu.prototype = {
         downKey = this.game.input.keyboard.addKey(83);
         enterKey = this.game.input.keyboard.addKey(13);
         skipKey = this.game.input.keyboard.addKey(48); //debug key
+        altKey = this.game.input.keyboard.addKey(18);
+        EKey = this.game.input.keyboard.addKey(69);
 
         //default data
         this.defaultData ={
