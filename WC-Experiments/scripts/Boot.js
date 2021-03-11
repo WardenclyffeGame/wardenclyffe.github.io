@@ -7,9 +7,9 @@ steamGame.Boot.prototype = {
     preload: function() {
 
         //preload the loading screen stuff for the actual preload state later
-        this.load.atlasJSONHash('logo', 'sprites/load/logo.png', 'sprites/load/logo.json');
-        this.load.image('preloadbarF', 'sprites/load/preloadbar.png');
-        this.load.image('preloadbarB', 'sprites/load/preloadbarback.png');
+        this.load.atlasJSONHash('logo', '../sprites/load/logo.png', '../sprites/load/logo.json');
+        this.load.image('preloadbarF', '../sprites/load/preloadbar.png');
+        this.load.image('preloadbarB', '../sprites/load/preloadbarback.png');
     },
     create: function() {
 

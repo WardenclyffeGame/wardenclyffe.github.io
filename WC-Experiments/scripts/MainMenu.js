@@ -6,7 +6,7 @@ steamGame.MainMenu.prototype = {
         this.menustate = false;
         this.pointerPos = 0;
 
-        this.game.stage.backgroundColor = '#75a1a0';
+        this.game.stage.backgroundColor = '#220a80';
 
         this.backBlimp = this.game.add.sprite(this.game.world.width * 0.75, (this.game.world.centerY / 2), 'menuBlimp');
         this.backBlimp.anchor.setTo(0, 0.5);
@@ -15,6 +15,7 @@ steamGame.MainMenu.prototype = {
         this.backBlimp.height = this.game.world.width / this.backBlimp.scalingFactor * 0.3;
         this.backBlimp.animations.add('float');
         this.backBlimp.animations.play('float', 8, true);
+        this.backBlimp.tint = 0x787773;
 
         this.backBall2 = this.game.add.sprite(160, this.game.world.height, 'menuBall2');
         this.backBall2.anchor.setTo(0, 0.95);
@@ -23,6 +24,7 @@ steamGame.MainMenu.prototype = {
         this.backBall2.height = this.game.world.width / this.backBall2.scalingFactor * 0.35;
         this.backBall2.animations.add('float');
         this.backBall2.animations.play('float', 6, true);
+        this.backBall2.tint = 0x787773;
 
         //cloud script
         for (var i = 0; i < 3; i++) {
@@ -37,6 +39,7 @@ steamGame.MainMenu.prototype = {
             this['cloud' + i.toString()] = this.game.add.sprite(xAry(), yAry(), 'clouds');
             this['cloud' + i.toString()].frame = spriteAry();
             this['cloud' + i.toString()].anchor.setTo(1.1, 0.1);
+            this['cloud' + i.toString()].tint = 0x787773;
         }
 
         this.backBall1 = this.game.add.sprite(180, this.game.world.height, 'menuBall1');
@@ -46,15 +49,19 @@ steamGame.MainMenu.prototype = {
         this.backBall1.height = this.game.world.width / this.backBall1.scalingFactor * 0.45;
         this.backBall1.animations.add('float', [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         this.backBall1.animations.play('float', 6, true);
+        this.backBall1.tint = 0x787773;
 
         this.title = this.game.add.sprite(this.game.world.centerX, this.game.camera.height / 2.5, 'title');
         this.title.anchor.setTo(0.5, 0.5);
         this.title.scale.setTo((this.game.camera.width * 0.6) / this.title.width, (this.game.camera.width * 0.6) / this.title.width);
+        this.title.animations.add('shift');
+        this.title.animations.play('shift', 10, false);
 
         this.menuBGround2 = this.game.add.sprite(this.game.world.width + 2, this.game.world.height * 2, 'menuBG2');
         this.menuBGround2.anchor.setTo(1, 1);
         this.menuBGSizingVar = ((this.game.world.width / 10) * 3.5) / this.menuBGround2.width;
         this.menuBGround2.scale.setTo(this.menuBGSizingVar, this.menuBGSizingVar);
+        this.menuBGround2.tint = 0x787773;
 
         this.menuBack = this.game.add.sprite(this.game.world.centerX, this.backBall1.y, 'plaque');
         this.menuBack.anchor.setTo(0.5, 0);
@@ -83,6 +90,7 @@ steamGame.MainMenu.prototype = {
         this.menuBGround1.anchor.setTo(0, 1);
         this.menuBGround1.scale.setTo(this.menuBGSizingVar, this.menuBGSizingVar);
         this.menuBGround1.animations.add('zap', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0]);
+        this.menuBGround1.tint = 0x787773;
     
         space = this.game.input.keyboard.addKey(32);
         upArrow = this.game.input.keyboard.addKey(38);
@@ -91,6 +99,8 @@ steamGame.MainMenu.prototype = {
         downKey = this.game.input.keyboard.addKey(83);
         enterKey = this.game.input.keyboard.addKey(13);
         skipKey = this.game.input.keyboard.addKey(48); //debug key
+        altKey = this.game.input.keyboard.addKey(18);
+        EKey = this.game.input.keyboard.addKey(69);
 
         //default data
         this.defaultData ={
@@ -141,6 +151,16 @@ steamGame.MainMenu.prototype = {
                 this.game.state.start(this.defaultData.map);
             }, this)
         }
+
+        if (altKey.isDown && EKey.isDown && this.next == null) {
+            if (this.fade.alpha == 0) {
+                this.game.add.tween(this.fade).to({alpha: 1}, 500, Phaser.Easing.Quadratic.Out, true);
+            }
+            this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){
+                window.location.href = "../index.html"
+            }, this);
+        }
+
 
         if (this.starting != true) {
             if(this['cloud0'].x > 0) {
@@ -210,9 +230,9 @@ steamGame.MainMenu.prototype = {
             if(this.menuBGround1.y > this.game.world.height + 4) {
                 this.menuBGround1.y -= 4.2;
             } else {
-                if((Math.floor(Math.random() * 600) < 5) && (this.menuBGround1.animations.isPlaying != true)) {
+                /*if((Math.floor(Math.random() * 600) < 5) && (this.menuBGround1.animations.isPlaying != true)) {
                     this.menuBGround1.animations.play('zap', 10, false);
-                }
+                }*/
             }
             if(this.menuBGround2.y > this.game.world.height + 2) {
                 this.menuBGround2.y -= 4.2;

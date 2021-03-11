@@ -6,13 +6,13 @@ steamGame.Game.prototype = {
     /////////////////////////////////////////////DEFAULT PHASER FUNCTIONS///////////////////////////////////////////////////////
     preload: function() {
         this.game.stage.backgroundColor = '#000000';
-        this.load.tilemap('debugMap', 'maps/England.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.image('debugTiles', 'sprites/game/Tiles.png');
-        this.load.atlasJSONHash('Tesla', 'sprites/game/teslaSheet.png', 'sprites/game/jsonKeys/teslaSheet.json');
-        this.load.image('teslaPortrait', 'sprites/portraits/teslaPortrait.png');
-        this.load.atlasJSONHash('signSheets', 'sprites/game/signSheets.png', 'sprites/game/jsonKeys/signSheets.json');
-        this.load.atlasJSONHash('phonograph', 'sprites/game/phonograph.png', 'sprites/game/jsonKeys/phonograph.json');
-        this.load.audio('gymnopedie', 'audio/music/Gymnopedie.mp3');
+        this.load.tilemap('debugMap', '../maps/England.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('debugTiles', '../sprites/game/Tiles.png');
+        this.load.atlasJSONHash('Tesla', '../sprites/game/teslaSheet.png', '../sprites/game/jsonKeys/teslaSheet.json');
+        this.load.image('teslaPortrait', '../sprites/portraits/teslaPortrait.png');
+        this.load.atlasJSONHash('signSheets', '../sprites/game/signSheets.png', '../sprites/game/jsonKeys/signSheets.json');
+        this.load.atlasJSONHash('phonograph', '../sprites/game/phonograph.png', '../sprites/game/jsonKeys/phonograph.json');
+        this.load.audio('gymnopedie', '../audio/music/Gymnopedie.mp3');
 
         this.npcGroup = this.game.add.group();
         this.collectibles = this.game.add.group();

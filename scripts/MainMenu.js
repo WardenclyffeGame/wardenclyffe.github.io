@@ -144,6 +144,15 @@ steamGame.MainMenu.prototype = {
             }, this)
         }
 
+        if (altKey.isDown && EKey.isDown && this.next == null) {
+            if (this.fade.alpha == 0) {
+                this.game.add.tween(this.fade).to({alpha: 1}, 500, Phaser.Easing.Quadratic.Out, true);
+            }
+            this.next = this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){
+                window.location.href = "../WC-Experiments/index.html"
+            }, this);
+        }
+
         if (this.starting != true) {
             if(this['cloud0'].x > 0) {
                 this['cloud0'].x -= 1.2;
